@@ -129,8 +129,15 @@ const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 const hasCloudConfig = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
 const cloud = hasCloudConfig && window.supabase ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
 const STORAGE_KEY="levelup-life-rpg-v1";
-const DEFAULT_RANKS=[{name:"Beginner",xp:0,icon:"🌱",color:"#ffffff"},{name:"Rookie",xp:1500,icon:"🛡️",color:"#ffffff"},{name:"Adventurer",xp:4000,icon:"🧭",color:"#ffffff"},{name:"Elite",xp:8000,icon:"⚔️",color:"#ffffff"},{name:"Master",xp:14000,icon:"👑",color:"#ffffff"},{name:"Legend",xp:22000,icon:"💎",color:"#ffffff"},{name:"Mythic",xp:35000,icon:"🌌",color:"#ffffff"}];
-let ranks=structuredClone(DEFAULT_RANKS);
+const DEFAULT_RANKS=[
+{name:"Beginner",xp:0,icon:"beginner",color:"#ffffff"},
+{name:"Rookie",xp:1500,icon:"rookie",color:"#ffffff"},
+{name:"Adventurer",xp:4000,icon:"adventurer",color:"#ffffff"},
+{name:"Elite",xp:8000,icon:"elite",color:"#ffffff"},
+{name:"Master",xp:14000,icon:"master",color:"#ffffff"},
+{name:"Legend",xp:22000,icon:"legend",color:"#ffffff"},
+{name:"Mythic",xp:35000,icon:"mythic",color:"#ffffff"}
+];let ranks=structuredClone(DEFAULT_RANKS);
 const THEMES={modern:{bg:"#0b1220",panel:"#131f32",panel2:"#1b2a42",line:"#2b3c56",text:"#eef4ff",muted:"#9aacc5",page:"radial-gradient(ellipse at top,#142543 0,#0b1220 48%)",accent:"#6ca8ff"},black:{bg:"#000000",panel:"#080808",panel2:"#141414",line:"#303030",text:"#ffffff",muted:"#c2c2c2",page:"#000000",accent:"#ffffff"},midnight:{bg:"#071426",panel:"#0d2038",panel2:"#142c49",line:"#294766",text:"#eaf5ff",muted:"#9bb7d2",page:"linear-gradient(145deg,#071426,#102c4a)",accent:"#38bdf8"},light:{bg:"#f2f5f9",panel:"#ffffff",panel2:"#e9eef5",line:"#d5deea",text:"#172033",muted:"#64748b",page:"#f2f5f9",accent:"#3867d6"}};
 const defaultQuests=[
 {id:"school1",name:"Finish homework and assignments",category:"School",xp:8,done:false,custom:false},
