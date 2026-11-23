@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEVEL UP — Life RPG</title>
+<meta name="theme-color" content="#0b1220">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#0b1220;--panel:#131f32;--panel2:#1b2a42;--line:#2b3c56;--text:#eef4ff;--muted:#9aacc5;--blue:#6ca8ff;--green:#67d6a8;--gold:#ffd36b;--pink:#ff91bd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#142543 0,#0b1220 48%);color:var(--text);font:15px/1.45 Inter,system-ui,Segoe UI,Arial,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 14px;background:#315b91;color:white;font-weight:700}button:hover{filter:brightness(1.1)}button.secondary{background:#243650;color:#dce9ff;border:1px solid var(--line)}button.danger{background:#542c3a;color:#ffdce5}button:disabled{opacity:.45;cursor:not-allowed}
+.wrap{max-width:1100px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:#24436d;display:grid;place-items:center;font-size:25px}.brand h1{font-size:22px;letter-spacing:2px;margin:0}.brand small{color:var(--muted);letter-spacing:1px}.status{font-size:12px;color:var(--green);border:1px solid #285744;padding:6px 10px;border-radius:30px}
+.auth{max-width:430px;margin:7vh auto;background:var(--panel);padding:26px;border:1px solid var(--line);border-radius:20px}.auth h2{margin-top:0}.field{display:grid;gap:6px;margin:12px 0}.field label{color:var(--muted);font-size:13px}.field input,.field select,.field textarea,input,select{width:100%;padding:11px 12px;background:#0e192a;border:1px solid var(--line);border-radius:10px;color:var(--text);outline:none}.field input:focus,input:focus,select:focus{border-color:var(--blue)}.muted{color:var(--muted)}.small{font-size:12px}.hidden{display:none!important}
+.hero{background:linear-gradient(120deg,#1c3558,#17243a);border:1px solid #355276;border-radius:20px;padding:20px;margin-bottom:16px}.hero-row{display:flex;align-items:center;gap:15px}.emblem{width:65px;height:65px;border-radius:18px;background:#2b466a;display:grid;place-items:center;font-size:36px;flex-shrink:0}.hero h2{margin:0 0 4px;font-size:24px}.hero .rank{color:#b9d5ff;font-size:13px}.xpnum{margin-left:auto;text-align:right;font-size:23px;font-weight:800;color:#9bc4ff}.bar{height:11px;background:#34445e;border-radius:99px;overflow:hidden;margin:15px 0 7px}.bar>span{display:block;height:100%;background:linear-gradient(90deg,#548de8,#81bcff);border-radius:99px;width:0;transition:width .25s}.bar-label{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.stat,.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}.stat{text-align:center}.stat b{display:block;font-size:24px}.stat span{font-size:12px;color:var(--muted)}
+.nav{display:flex;gap:8px;overflow:auto;padding:4px 0 14px}.nav button{white-space:nowrap;background:#17263c;color:#adc0dc;border:1px solid var(--line)}.nav button.active{background:#315b91;color:#fff;border-color:#548bd0}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:15px}.main{min-width:0}.side{display:grid;align-content:start;gap:12px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 0 12px}.section-title h2{margin:0;font-size:20px}.quest{display:flex;align-items:center;gap:12px;padding:13px;background:var(--panel);border:1px solid var(--line);border-radius:13px;margin:8px 0}.quest.done{background:#142c29;border-color:#285544}.check{width:24px;height:24px;border:2px solid #7890af;border-radius:50%;display:grid;place-items:center;flex-shrink:0;color:#08251c}.quest.done .check{background:var(--green);border-color:var(--green)}.qbody{flex:1;min-width:0}.qbody b{display:block}.qbody small{color:var(--muted)}.xp-pill{font-size:12px;color:#a9ceff;background:#203b5f;padding:5px 8px;border-radius:20px;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap}.formrow{display:flex;gap:8px;align-items:end}.formrow .field{flex:1}.rank-row,.achievement,.workout-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;margin:8px 0}.rank-icon{width:48px;height:48px;border-radius:13px;background:#273a55;display:grid;place-items:center;font-size:27px}.rank-row .grow,.achievement .grow{flex:1}.locked{opacity:.55}.tag{font-size:11px;border-radius:20px;padding:4px 8px;background:#243650;color:#c7dcfa}.tag.good{background:#183a31;color:#8ce2bd}.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.quick button{background:#1b2d47;border:1px solid var(--line);text-align:left}.panel-note{background:#17263b;border:1px solid var(--line);border-radius:13px;padding:13px;color:var(--muted);font-size:13px}.view{display:none}.view.active{display:block}.footer{text-align:center;color:#7186a5;font-size:12px;padding:24px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#213753;border:1px solid #5276a5;padding:10px 15px;border-radius:12px;display:none;z-index:10;max-width:90vw}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,minmax(0,1fr))}.side .card:first-child{grid-column:1/-1}}
+@media(max-width:520px){.wrap{padding:13px}.top{align-items:flex-start}.brand h1{font-size:19px}.hero{padding:15px}.hero h2{font-size:20px}.emblem{width:55px;height:55px}.stats{gap:7px}.stat{padding:11px 5px}.stat b{font-size:20px}.side{grid-template-columns:1fr}.formrow{flex-direction:column;align-items:stretch}.xpnum{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">⚔️</div><div><h1>LEVEL UP</h1><small>YOUR REAL LIFE RPG</small></div></div>
+    <div class="actions"><span class="status" id="syncStatus">GUEST MODE</span><button class="secondary hidden" id="logoutBtn">Log out</button></div>
+  </header>
+
+  <section id="authScreen" class="auth">
+    <h2>Enter the system</h2><p class="muted">Create an account to sync your progress across devices, or continue as a guest on this device.</p>
+    <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
+    <div class="actions"><button id="signupBtn">Create account</button><button class="secondary" id="loginBtn">Log in</button></div>
+    <p class="small muted" id="authMessage">Cloud accounts require your own Supabase setup. Guest mode works without an account.</p>
+    <button class="secondary" id="guestBtn" style="width:100%;margin-top:8px">Continue as guest</button>
+  </section>
+
+  <main id="app" class="hidden">
+    <section class="hero">
+      <div class="hero-row"><div class="emblem" id="rankIcon">🌱</div><div><h2 id="rankName">Beginner</h2><div class="rank" id="rankLabel">CURRENT RANK</div><div class="muted small" id="playerLabel">Player</div></div><div class="xpnum"><span id="totalXP">0</span><div class="small muted">TOTAL XP</div></div></div>
+      <div class="bar"><span id="xpBar"></span></div><div class="bar-label"><span id="xpProgress">0% to next rank</span><span id="nextRank">200 XP to Rookie</span></div>
+    </section>
+    <section class="stats">
+      <div class="stat"><b id="doneCount">0</b><span>Quests done today</span></div>
+      <div class="stat"><b id="remainingCount">8</b><span>Quests remaining</span></div>
+      <div class="stat"><b id="achievementCount">0</b><span>Achievements</span></div>
+    </section>
+    <nav class="nav" id="nav">
+      <button class="active" data-view="home">🏠 Home</button><button data-view="quests">📜 Quests</button><button data-view="workout">🏋️ Workout</button><button data-view="ranks">🏆 Ranks</button><button data-view="achievements">🎖️ Achievements</button><button data-view="coach">🤖 AI Coach</button><button data-view="profile">👤 Profile</button>
+    </nav>
+    <div class="layout">
+      <div class="main">
+        <section class="view active" id="home">
+          <div class="section-title"><h2>Dashboard</h2><span class="tag" id="dateLabel"></span></div>
+          <div class="card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="bar"><span id="dailyBar"></span></div><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div>
+          <div class="section-title" style="margin-top:18px"><h2>Quick actions</h2></div>
+          <div class="quick"><button data-go="quests">📜 Open daily quests</button><button data-go="workout">🏋️ Training grounds</button><button data-go="coach">🤖 Ask AI Coach</button><button data-go="ranks">🏆 View rank hall</button></div>
+          <div class="section-title" style="margin-top:18px"><h2>Recent activity</h2></div><div id="recentActivity" class="panel-note">Complete your first quest to start your activity log.</div>
+        </section>
+        <section class="view" id="quests">
+          <div class="section-title"><h2>Daily Quests</h2><span class="tag" id="questCounter"></span></div>
+          <div id="questList"></div>
+          <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Create a custom quest</h3><div class="formrow"><div class="field"><label>Quest name</label><input id="newQuestName" placeholder="e.g. Practice guitar"></div><div class="field" style="max-width:130px"><label>XP reward</label><select id="newQuestXP"><option>10</option><option selected>15</option><option>20</option><option>30</option><option>50</option></select></div></div><button id="addQuestBtn">＋ Add quest</button></div>
+        </section>
+        <section class="view" id="workout">
+          <div class="section-title"><h2>Training Grounds</h2><span class="tag">Weekly plan</span></div>
+          <div class="field"><label>Select day</label><select id="workoutDay"></select></div><div class="card" id="workoutPlan"></div>
+          <div class="panel-note" style="margin-top:12px">Keep sessions comfortable and balanced. Take rest days, use good technique, and stop if something hurts. Recovery and sleep count as progress too.</div>
+        </section>
+        <section class="view" id="ranks"><div class="section-title"><h2>Rank Hall</h2><span class="tag">6 tiers</span></div><div id="rankList"></div></section>
+        <section class="view" id="achievements"><div class="section-title"><h2>Achievement Gallery</h2></div><div id="achievementList"></div></section>
+        <section class="view" id="coach">
+          <div class="section-title"><h2>AI Coach</h2><span class="tag">Planning assistant</span></div>
+          <div class="card"><h3>🤖 SYSTEM AI</h3><p class="muted">Use these prompts to ask an AI assistant to plan your quests, schedule, or workouts. This opens ChatGPT in a new tab; it does not silently modify your app data.</p><div class="actions"><button class="secondary coachPrompt" data-prompt="Create a realistic daily quest plan for my life RPG with school, skills, organization, health, and fitness. Give each quest an XP value.">Create daily quests</button><button class="secondary coachPrompt" data-prompt="Build a balanced weekly workout routine using bodyweight and light dumbbells, no bench. Keep it age-appropriate and include recovery.">Build workout plan</button><button class="secondary coachPrompt" data-prompt="Help me make a realistic weekly schedule balancing school, homework, hobbies, exercise, and enough sleep.">Build weekly schedule</button><button class="secondary coachPrompt" data-prompt="Give me realistic new life RPG challenges and achievements with XP rewards.">New challenges</button></div></div>
+        </section>
+        <section class="view" id="profile">
+          <div class="section-title"><h2>Player Profile</h2></div><div class="card">
+            <div class="field"><label>Player name</label><input id="playerName" maxlength="24" placeholder="Player"></div>
+            <div class="field"><label>Save mode</label><div id="saveMode" class="panel-note">Guest mode: progress is saved in this browser only.</div></div>
+            <div class="actions"><button id="saveProfileBtn">Save profile</button><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"></div>
+            <hr style="border-color:var(--line);margin:18px 0"><button class="danger" id="resetBtn">Reset all progress</button>
+          </div>
+        </section>
+      </div>
+      <aside class="side">
+        <div class="card"><b>Player summary</b><p class="muted small" id="sideRank">🌱 Beginner</p><h2 id="sideXP">0 XP</h2><div class="muted small">Lifetime experience</div></div>
+        <div class="card"><b>Daily reminder</b><p class="muted small">Consistency beats perfection. A missed quest is not a failure. Start again tomorrow.</p></div>
+      </aside>
+    </div>
+  </main>
+  <div class="footer">LEVEL UP · LIFE RPG · Your progress, your pace.</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+/* ===================== CONFIG =====================
+   Add your Supabase Project URL and anon/public key below.
+   Never put a service_role key in browser code.
+*/
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const hasCloudConfig = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
+const cloud = hasCloudConfig && window.supabase ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
+const STORAGE_KEY="levelup-life-rpg-v1";
+const ranks=[{name:"Beginner",xp:0,icon:"🌱",color:"#a5caff"},{name:"Rookie",xp:200,icon:"🛡️",color:"#69d6b0"},{name:"Adventurer",xp:600,icon:"🧭",color:"#64b7ff"},{name:"Elite",xp:1200,icon:"⚔️",color:"#b58aff"},{name:"Master",xp:2000,icon:"👑",color:"#ffd36b"},{name:"Legend",xp:3000,icon:"💎",color:"#ff8cbd"}];
+const defaultQuests=[
+{id:"school1",name:"Finish homework and assignments",category:"School",xp:30,done:false,custom:false},
+{id:"school2",name:"Review notes for 15 minutes",category:"School",xp:15,done:false,custom:false},
+{id:"skill1",name:"Practice a skill for 20 minutes",category:"Skills",xp:20,done:false,custom:false},
+{id:"fitness1",name:"Workout or active session",category:"Fitness",xp:25,done:false,custom:false},
+{id:"room1",name:"Reset your room",category:"Organization",xp:15,done:false,custom:false},
+{id:"room2",name:"Prepare for tomorrow",category:"Organization",xp:10,done:false,custom:false},
+{id:"health1",name:"Follow a relaxing bedtime routine",category:"Health",xp:20,done:false,custom:false},
+{id:"bonus1",name:"Learn something new",category:"Bonus",xp:15,done:false,custom:false}
+];
+const workouts={
+Monday:["Push-ups · 3 × 8–12 (or an easier variation)","Dumbbell floor press · 2 × 10–12","Dumbbell curls · 2 × 10–12","Overhead triceps extensions · 2 × 10"],
+Tuesday:["Easy walk or enjoyable activity · 15–20 minutes","Gentle mobility · 5 minutes"],
+Wednesday:["Dumbbell rows · 2 × 10–12","Reverse snow angels · 2 × 8–10","Bird dogs · 2 × 8 each side"],
+Thursday:["Recovery day","Optional easy walk or light stretching"],
+Friday:["Push-ups · 2 × 8–12","Dumbbell floor press · 2 × 10–12","Dumbbell curls · 2 × 10–12","Comfortable plank · 2 short holds"],
+Saturday:["Fun physical activity of your choice","Light stretching if it feels good"],
+Sunday:["Rest and recover"]
+};
+let state={player:"Player",xp:0,quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[],achievements:[],};
+let user=null, saveTimer=null, currentView="home";
+function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function freshDay(){state.quests=state.quests.map(q=>({...q,done:false}));state.lastReset=localDate();}
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",2600);}
+function currentRank(){let r=ranks[0];for(const item of ranks)if(state.xp>=item.xp)r=item;return r;}
+function rankIndex(){return ranks.findIndex(r=>r.name===currentRank().name);}
+function progress(){const i=rankIndex(),cur=ranks[i],next=ranks[i+1];return next?{pct:Math.min(100,(state.xp-cur.xp)/(next.xp-cur.xp)*100),remaining:next.xp-state.xp,next}: {pct:100,remaining:0,next:null};}
+function completed(){return state.quests.filter(q=>q.done);}
+function dailyXP(){return completed().reduce((s,q)=>s+q.xp,0);}
+function achievementData(){const done=completed(),cats=["School","Skills","Fitness","Organization","Health"];return [
+{name:"First Steps",desc:"Complete 5 quests in one day",icon:"👣",ok:done.length>=5},
+{name:"Scholar",desc:"Complete both school quests",icon:"🎓",ok:state.quests.filter(q=>q.category==="School"&&!q.custom).every(q=>q.done)},
+{name:"Jack of All Trades",desc:"Complete quests across all core categories",icon:"🎖️",ok:cats.every(c=>state.quests.some(q=>q.category===c&&q.done))},
+{name:"Quest Hunter",desc:"Complete every quest today",icon:"🎯",ok:state.quests.length>0&&done.length===state.quests.length},
+{name:"XP Collector",desc:"Earn 150 XP in a day",icon:"⚡",ok:dailyXP()>=150}
+];}
+function normalize(s){if(!s||typeof s!=="object")return;state={...state,...s};if(!Array.isArray(state.quests))state.quests=structuredClone(defaultQuests);if(!Array.isArray(state.activity))state.activity=[];if(!Number.isFinite(state.xp))state.xp=0;if(state.lastReset!==localDate())freshDay();}
+function loadLocal(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)normalize(JSON.parse(raw));else localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn(e);}}
+function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+async function save(){saveLocal();if(cloud&&user){document.getElementById("syncStatus").textContent="SAVING…";const {error}=await cloud.from("player_saves").upsert({user_id:user.id,state:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});document.getElementById("syncStatus").textContent=error?"SYNC ERROR":"CLOUD SAVED";if(error)console.error(error);}}
+function scheduleSave(){saveLocal();if(cloud&&user){clearTimeout(saveTimer);saveTimer=setTimeout(save,500);}}
+async function loadCloud(){if(!cloud||!user)return;document.getElementById("syncStatus").textContent="SYNCING…";const {data,error}=await cloud.from("player_saves").select("state").eq("user_id",user.id).maybeSingle();if(error){toast("Cloud load failed. Check Supabase setup.");console.error(error);}else if(data?.state){normalize(data.state);if(state.lastReset!==localDate())freshDay();}else{await save();}render();document.getElementById("syncStatus").textContent="CLOUD SAVED";}
+function render(){
+const r=currentRank(),p=progress(),done=completed(),ach=achievementData(),earned=ach.filter(a=>a.ok).length;
+document.getElementById("rankIcon").textContent=r.icon;document.getElementById("rankName").textContent=r.name;document.getElementById("rankLabel").textContent="CURRENT RANK";document.getElementById("playerLabel").textContent=state.player||"Player";document.getElementById("totalXP").textContent=state.xp.toLocaleString();document.getElementById("xpBar").style.width=p.pct+"%";document.getElementById("xpProgress").textContent=Math.floor(p.pct)+"% to next rank";document.getElementById("nextRank").textContent=p.next?`${p.remaining} XP to ${p.next.name}`:"MAX RANK";document.getElementById("doneCount").textContent=done.length;document.getElementById("remainingCount").textContent=state.quests.length-done.length;document.getElementById("achievementCount").textContent=earned;document.getElementById("dailyProgress").textContent=`${done.length} / ${state.quests.length}`;document.getElementById("dailyBar").style.width=(state.quests.length?done.length/state.quests.length*100:0)+"%";document.getElementById("todayXP").textContent=dailyXP()+" XP";document.getElementById("dateLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});document.getElementById("sideRank").textContent=r.icon+" "+r.name;document.getElementById("sideXP").textContent=state.xp.toLocaleString()+" XP";document.getElementById("playerName").value=state.player||"Player";
+document.getElementById("questCounter").textContent=`${done.length}/${state.quests.length} completed`;
+document.getElementById("questList").innerHTML=state.quests.map(q=>`<div class="quest ${q.done?"done":""}"><button class="check" aria-label="Toggle quest" data-toggle="${esc(q.id)}">${q.done?"✓":""}</button><div class="qbody"><b>${esc(q.name)}</b><small>${esc(q.category)}${q.custom?" · Custom":""}</small></div><span class="xp-pill">+${q.xp} XP</span>${q.custom?`<button class="secondary" data-delete="${esc(q.id)}" title="Delete quest">✕</button>`:""}</div>`).join("");
+document.getElementById("rankList").innerHTML=ranks.map((x,i)=>{const unlocked=state.xp>=x.xp,active=x.name===r.name;return `<div class="rank-row ${unlocked?"":"locked"}" style="${active?"border-color:#659eff;background:#1b304c":""}"><div class="rank-icon">${x.icon}</div><div class="grow"><b>${x.name}</b><div class="muted small">${x.xp.toLocaleString()} XP required</div></div><span class="tag ${unlocked?"good":""}">${active?"CURRENT":unlocked?"UNLOCKED":"🔒 LOCKED"}</span></div>`}).join("");
+document.getElementById("achievementList").innerHTML=ach.map(a=>`<div class="achievement ${a.ok?"":"locked"}"><div class="rank-icon">${a.icon}</div><div class="grow"><b>${a.name}</b><div class="muted small">${a.desc}</div></div><span class="tag ${a.ok?"good":""}">${a.ok?"UNLOCKED":"LOCKED"}</span></div>`).join("");
+document.getElementById("recentActivity").textContent=state.activity.length?state.activity.slice(-4).reverse().join(" · "):"Complete your first quest to start your activity log.";
+document.getElementById("workoutPlan").innerHTML=`<h3>${document.getElementById("workoutDay").value}</h3>`+workouts[document.getElementById("workoutDay").value].map(x=>`<div class="workout-row">🏋️ <span>${esc(x)}</span></div>`).join("");
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function go(view){currentView=view;document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===view));document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));}
+function toggleQuest(id){const q=state.quests.find(q=>q.id===id);if(!q)return;q.done=!q.done;state.xp=Math.max(0,state.xp+(q.done?q.xp:-q.xp));state.activity.push(`${q.done?"Completed":"Unchecked"}: ${q.name} (${q.done?"+":"−"}${q.xp} XP)`);state.activity=state.activity.slice(-30);scheduleSave();render();toast(q.done?`Quest completed! +${q.xp} XP`:`Quest unchecked: −${q.xp} XP`);}
+function dailyResetCheck(){if(state.lastReset!==localDate()){freshDay();scheduleSave();toast("New day detected. Daily quests reset! Lifetime XP kept.");}}
+function showApp(){document.getElementById("authScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("logoutBtn").classList.toggle("hidden",!user);document.getElementById("saveMode").textContent=user?"Cloud account: progress syncs to your Supabase account.":"Guest mode: progress is saved in this browser only.";document.getElementById("syncStatus").textContent=user?"CLOUD SAVED":"GUEST MODE";render();}
+function showAuth(){document.getElementById("authScreen").classList.remove("hidden");document.getElementById("app").classList.add("hidden");}
+document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(b)go(b.dataset.view);});
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+document.getElementById("questList").addEventListener("click",e=>{const t=e.target.closest("[data-toggle]"),d=e.target.closest("[data-delete]");if(t)toggleQuest(t.dataset.toggle);if(d){state.quests=state.quests.filter(q=>q.id!==d.dataset.delete);scheduleSave();render();toast("Custom quest deleted.");}});
+document.getElementById("addQuestBtn").addEventListener("click",()=>{const name=document.getElementById("newQuestName").value.trim();if(!name)return toast("Enter a quest name first.");state.quests.push({id:"custom-"+crypto.randomUUID(),name,category:"Custom",xp:Number(document.getElementById("newQuestXP").value),done:false,custom:true});document.getElementById("newQuestName").value="";scheduleSave();render();toast("Quest added.");});
+document.getElementById("workoutDay").innerHTML=Object.keys(workouts).map(d=>`<option>${d}</option>`).join("");document.getElementById("workoutDay").addEventListener("change",render);
+document.getElementById("saveProfileBtn").addEventListener("click",()=>{state.player=document.getElementById("playerName").value.trim().slice(0,24)||"Player";scheduleSave();render();toast("Profile saved.");});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(!confirm("Reset all XP, quests, custom tasks, and activity? This cannot be undone."))return;state={player:state.player,xp:0,quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[]};scheduleSave();render();toast("Progress reset.");});
+document.getElementById("exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="level-up-backup.json";a.click();URL.revokeObjectURL(a.href);});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{normalize(JSON.parse(await f.text()));scheduleSave();render();toast("Backup imported.");}catch(_){toast("That backup file could not be read.");}e.target.value="";});
+document.querySelectorAll(".coachPrompt").forEach(b=>b.addEventListener("click",()=>window.open("https://chatgpt.com/?q="+encodeURIComponent(b.dataset.prompt),"_blank","noopener")));
+document.getElementById("guestBtn").addEventListener("click",()=>{user=null;loadLocal();dailyResetCheck();showApp();});
+document.getElementById("signupBtn").addEventListener("click",async()=>{if(!cloud)return authMsg("Add your Supabase URL and anon key in the HTML first.");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;if(!email||password.length<6)return authMsg("Enter a valid email and a password with at least 6 characters.");const {data,error}=await cloud.auth.signUp({email,password});if(error)return authMsg(error.message);authMsg(data.session?"Account created!":"Check your email to confirm your account, then log in.");});
+document.getElementById("loginBtn").addEventListener("click",async()=>{if(!cloud)return authMsg("Add your Supabase URL and anon key in the HTML first.");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {data,error}=await cloud.auth.signInWithPassword({email,password});if(error)return authMsg(error.message);user=data.user;await loadCloud();dailyResetCheck();showApp();});
+function authMsg(m){document.getElementById("authMessage").textContent=m;}
+document.getElementById("logoutBtn").addEventListener("click",async()=>{if(cloud&&user)await cloud.auth.signOut();user=null;showAuth();});
+async function init(){document.getElementById("workoutDay").innerHTML=Object.keys(workouts).map(d=>`<option>${d}</option>`).join("");if(cloud){const {data}=await cloud.auth.getSession();if(data.session){user=data.session.user;await loadCloud();dailyResetCheck();showApp();}else{loadLocal();showAuth();}cloud.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){user=null;showAuth();}});}else{loadLocal();showAuth();document.getElementById("syncStatus").textContent="GUEST MODE";}}
+init();
+</script>
+</body></html>
