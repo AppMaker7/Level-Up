@@ -571,6 +571,12 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
 <div class="system-panel"><h3>◇ SYSTEM LOG</h3><div id="systemLog"></div></div></section>
         <section class="view active" id="home">
           <div class="section-title"><h2>Dashboard</h2><span class="tag" id="dateLabel"></span></div>
+          <section class="quest-first-card" aria-label="Today's quests">
+            <div class="quest-first-heading"><div><div class="system-kicker">YOUR NEXT ACTION</div><h2>Today's quests</h2><p id="questFirstSummary">Choose a mission and start earning XP.</p></div><div class="quest-first-count" id="questFirstCount">0/0</div></div>
+            <div class="quest-first-progress"><span id="questFirstBar"></span></div>
+            <div id="questFirstList" class="quest-first-list"></div>
+            <div class="quest-first-footer"><span id="questFirstXP">Complete a quest to earn XP.</span><button type="button" class="secondary" data-go="quests">OPEN QUEST BOARD →</button></div>
+          </section>
           <div class="awakening-panel">
             <div class="awakening-top"><div><div class="system-kicker">LEVEL UP // SYSTEM AWAKENING</div><h2>PLAYER COMMAND CENTER</h2><p id="awakeningGreeting">Your next evolution starts here.</p></div><div class="awakening-orb"><span>✦</span></div></div>
             <div class="awakening-metrics">
@@ -1379,4 +1385,55 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
 })();
 </script>
 
+<style id="quest-first-update">
+.quest-first-card{background:linear-gradient(145deg,#191919,#101010);border:1px solid #383838;border-radius:22px;padding:20px;margin:0 0 18px;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.quest-first-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.quest-first-heading h2{font-size:clamp(22px,4vw,30px);letter-spacing:-.7px;margin:5px 0}
+.quest-first-heading p{color:#aaa;font-size:13px;margin:0}
+.quest-first-count{font-size:22px;font-weight:850;border:1px solid #444;border-radius:14px;padding:9px 12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.quest-first-progress{height:8px;background:#303030;border-radius:99px;overflow:hidden;margin:17px 0}
+.quest-first-progress span{display:block;width:0;height:100%;background:#f2f2f2;border-radius:99px;transition:width .35s ease}
+.quest-first-list{display:grid;gap:8px}
+.quest-first-row{display:flex;align-items:center;gap:11px;border:1px solid #333;background:#1c1c1c;border-radius:14px;padding:11px}
+.quest-first-check{width:34px;height:34px;flex:none;border:1px solid #777;border-radius:11px;background:#f1f1f1;color:#111;font-weight:900;font-size:17px;padding:0}
+.quest-first-copy{min-width:0;flex:1;display:grid;gap:3px}
+.quest-first-copy b{font-size:13px;overflow-wrap:anywhere}
+.quest-first-copy small{font-size:11px;color:#aaa}
+.quest-first-reward{font-size:12px;font-weight:800;white-space:nowrap}
+.quest-first-empty{border:1px dashed #444;border-radius:14px;padding:16px;color:#c8c8c8;font-size:13px}
+.quest-first-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.quest-first-footer>span{font-size:11px;color:#aaa}
+.quest-first-footer button{font-size:11px;letter-spacing:.35px}
+@media(max-width:560px){.quest-first-card{padding:15px;border-radius:18px}.quest-first-footer{align-items:stretch;flex-direction:column}.quest-first-footer button{width:100%}.quest-first-row{padding:9px}.quest-first-count{font-size:19px}}
+</style>
+<script id="quest-first-logic">
+(function(){
+  function paintQuestFirst(){
+    const root=document.getElementById("questFirstList");
+    if(!root||!window.state)return;
+    const quests=Array.isArray(state.quests)?state.quests:[];
+    const done=quests.filter(q=>q.done).length;
+    const open=quests.filter(q=>!q.done);
+    const count=document.getElementById("questFirstCount");
+    const summary=document.getElementById("questFirstSummary");
+    const bar=document.getElementById("questFirstBar");
+    const xp=document.getElementById("questFirstXP");
+    if(count)count.textContent=done+"/"+quests.length;
+    if(summary)summary.textContent=open.length?open.length+" mission"+(open.length===1?"":"s")+" left today. Pick one and make progress.":"All today's missions are cleared. Great work.";
+    if(bar)bar.style.width=(quests.length?done/quests.length*100:0)+"%";
+    if(xp)xp.textContent=(typeof dailyXP==="function"?dailyXP():0)+" XP earned today";
+    root.innerHTML=open.length?open.slice(0,3).map(q=>'<div class="quest-first-row"><button type="button" class="quest-first-check" data-home-quest="'+esc(q.id)+'" aria-label="Complete '+esc(q.name)+'">✓</button><div class="quest-first-copy"><b>'+esc(q.name)+'</b><small>'+esc(q.category||"Custom")+'</small></div><span class="quest-first-reward">+'+(Number(q.xp)||0)+' XP</span></div>').join(""):'<div class="quest-first-empty">All caught up. Open the quest board to create another mission or review your progress.</div>';
+  }
+  const priorRender=render;
+  render=function(){priorRender();paintQuestFirst();};
+  document.getElementById("questFirstList")?.addEventListener("click",function(event){
+    const button=event.target.closest("[data-home-quest]");
+    if(!button)return;
+    const id=button.dataset.homeQuest;
+    if(typeof toggleQuest==="function")toggleQuest(id);
+    paintQuestFirst();
+  });
+  paintQuestFirst();
+})();
+</script>
 </body></html>
