@@ -522,7 +522,6 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
     <nav class="nav bottom-dock" id="nav" aria-label="Main navigation">
       <button class="dock-item active" data-view="home"><span class="ui-icon" data-icon="home"></span><small>Home</small></button>
       <button class="dock-item" data-view="quests"><span class="ui-icon" data-icon="scroll"></span><small>Quests</small></button>
-      <button class="dynamic-island" type="button" data-open-sfx aria-label="Open sound effects settings"><span class="island-wave"><i></i><i></i><i></i><i></i></span><span>SOUND</span></button>
       <button class="dock-item" data-view="settings"><span class="ui-icon" data-icon="settings"></span><small>Settings</small></button>
     </nav>
     <div class="layout">
@@ -1436,4 +1435,33 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
   paintQuestFirst();
 })();
 </script>
+<style id="simple-ui-refresh">
+/* Simple, quiet interface: fewer decorative panels and less visual noise. */
+:root{--bg:#090909;--panel:#151515;--panel2:#1d1d1d;--line:#333;--text:#f4f4f4;--muted:#aaa;--accent:#eee;--page-bg:#090909}
+body{background:#090909!important;color:#f4f4f4}
+.wrap{max-width:900px;padding:18px 16px 105px}
+.card,.panel-note,.quest,.stat,.system-panel,.roadmap-card,.settings-hero,.settings-tile,.awakening-panel,.quest-first-card{box-shadow:none!important;background:#151515!important;border:1px solid #333!important;border-radius:10px!important}
+button,input,select,textarea{border-radius:8px!important;box-shadow:none!important}
+button{background:#eee!important;color:#111!important;border:1px solid #eee!important}
+button.secondary,.settings-tile{background:#1b1b1b!important;color:#f2f2f2!important;border:1px solid #444!important}
+.tag,.xp-pill,.rarity{background:#222!important;color:#eee!important;border:1px solid #444!important}
+.bar,.quest-first-progress{background:#333!important;border-radius:3px!important}
+.bar span,.quest-first-progress span{background:#eee!important}
+.awakening-panel,.awakening-panel:after,.awakening-orb,.awakening-metrics,.awakening-footer,.week-activity{display:none!important}
+#home>.section-title:not(:first-child),#dailyChallengeBoard,#categoryProgress,.roadmap-card,.daily-progress-card,#recentActivity,.quick{display:none!important}
+#home{display:block}
+.quest-first-card{padding:16px!important;margin:12px 0 16px!important}
+.quest-first-heading h2{font-size:24px!important;letter-spacing:0!important}
+.quest-first-heading p{font-size:13px!important}
+.quest-first-row{background:#1b1b1b!important;border:1px solid #363636!important;border-radius:8px!important}
+.quest-first-check{width:30px!important;height:30px!important;border-radius:7px!important}
+.quest-first-footer{margin-top:12px}
+.quest-first-footer button{font-size:11px}
+.section-title h2{font-size:21px;letter-spacing:0}
+.bottom-dock{grid-template-columns:repeat(3,1fr)!important;gap:8px!important;height:62px!important;border-radius:14px!important;background:#111!important;border:1px solid #383838!important;box-shadow:none!important;backdrop-filter:none!important}
+.bottom-dock .dock-item{border-radius:8px!important}
+.settings-grid{gap:7px!important}
+.settings-tile{min-height:76px!important;padding:10px!important}
+@media(max-width:560px){.wrap{padding:14px 12px 96px}.quest-first-card{padding:13px!important}.quest-first-footer{flex-direction:column;align-items:stretch}.quest-first-footer button{width:100%}}
+</style>
 </body></html>
