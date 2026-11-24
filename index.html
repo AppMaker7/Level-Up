@@ -787,7 +787,11 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
   document.getElementById("coachAnalyze")?.addEventListener("click",function(){
     const stats=state.questStats||{},cats=["School","Skills","Fitness","Organization","Health"],ranked=cats.map(name=>({name,count:num(stats[name])})).sort((a,b)=>b.count-a.count);
     const total=Object.values(stats).reduce((a,b)=>a+num(b),0),strong=ranked[0],focus=ranked[ranked.length-1],pending=(state.quests||[]).filter(q=>!q.done).length;
-    const lines=[
+    const lines=total===0?[
+      ["CURRENT STATUS","Your journey is ready to begin. Complete a quest and your progress report will start taking shape."],
+      ["NEXT OPPORTUNITY","Choose one small task that fits your day. You can build momentum without doing everything at once."],
+      ["CONSISTENCY",streakCountText()+" active days in your current streak. Rest days are part of a sustainable plan."]
+    ]:[
       ["CURRENT STATUS",total+" quests completed across your journey, with "+pending+" missions currently open."],
       ["STRONGEST AREA",strong.name+" is your most-developed category with "+strong.count+" completed quests."],
       ["NEXT OPPORTUNITY",focus.name+" has "+focus.count+" completions. Try one small mission in this category when it fits your day."],
@@ -804,9 +808,10 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       {category:"Health",name:"Take a screen break and hydrate",xp:5}
     ];
     const selected=templates.slice().sort((a,b)=>num(stats[a.category])-num(stats[b.category])).slice(0,3);
-    selected.forEach(t=>{if(!state.quests.some(q=>q.name===t.name)){state.quests.push({id:"coach-"+crypto.randomUUID(),name:t.name,category:t.category,xp:t.xp,done:false,custom:true});}});
-    state.activity=state.activity||[];state.activity.push("System Strategist generated a balanced 3-quest plan.");state.activity=state.activity.slice(-30);
-    scheduleSave();render();go("quests");toast("Balanced quest plan added to your mission board.");
+    let added=0;selected.forEach(t=>{if(!state.quests.some(q=>String(q.name).toLowerCase()===t.name.toLowerCase())){state.quests.push({id:"coach-"+crypto.randomUUID(),name:t.name,category:t.category,xp:t.xp,done:false,custom:true});added++;}});
+    if(!added){toast("Those suggested quests are already on your mission board.");return;}
+    state.activity=state.activity||[];state.activity.push("System Strategist added "+added+" balanced quest"+(added===1?"":"s")+".");state.activity=state.activity.slice(-30);
+    scheduleSave();render();go("quests");toast(added+" balanced quest"+(added===1?"":"s")+" added to your mission board.");
   });
   function streakCountText(){
     const set=new Set(state.activeDays||[]),key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
