@@ -38,7 +38,7 @@ html[data-theme="black"] .quest.done{background:#101010!important;border-color:#
 html[data-theme="black"] .quest.done .check{background:#fff;border-color:#fff;color:#000}
 html[data-theme="black"] .toast{background:#171717;border-color:#666;color:#fff}
 .emblem svg,.rank-icon svg{width:76%;height:76%;display:block;overflow:visible}
-.ui-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:-4px;margin-right:5px}
+.ui-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:-4px;margin-right:5px}.ui-icon{width:21px;height:21px;min-width:21px;color:inherit}.nav button .ui-icon,.quick button .ui-icon{vertical-align:middle}
 .ui-icon-svg{width:19px;height:19px;display:inline-block;flex:none}
 .nav .ui-icon-svg{width:17px;height:17px}
 .quick .ui-icon-svg{width:18px;height:18px}
@@ -53,7 +53,7 @@ html[data-theme="black"] .toast{background:#171717;border-color:#666;color:#fff}
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="logo"><img src="./icons/icon-192.png" alt="LEVEL UP icon"></div><div><h1>LEVEL UP</h1><small>YOUR REAL LIFE RPG</small></div></div>
+    <div class="brand"><div class="logo" aria-label="LEVEL UP logo"><svg viewBox="0 0 48 48" role="img" aria-hidden="true" style="width:34px;height:34px;display:block"><path d="M24 4 7 22h10v19h14V22h10L24 4Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M19 29h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div><h1>LEVEL UP</h1><small>YOUR REAL LIFE RPG</small></div></div>
     <div class="actions"><span class="status" id="syncStatus">GUEST MODE</span><button class="secondary hidden" id="logoutBtn">Log out</button></div>
   </header>
 
@@ -78,7 +78,7 @@ html[data-theme="black"] .toast{background:#171717;border-color:#666;color:#fff}
       <div class="stat"><b id="achievementCount">0</b><span>Achievements</span></div>
     </section>
     <nav class="nav" id="nav">
-      <button class="active" data-view="home"><span class="ui-icon" data-icon="home"></span> Home</button><button data-view="rpg">✦ RPG Hub</button><button data-view="quests"><span class="ui-icon" data-icon="scroll"></span> Quests</button><button data-view="workout"><span class="ui-icon" data-icon="dumbbell"></span> Workout</button><button data-view="ranks"><span class="ui-icon" data-icon="trophy"></span> Ranks</button><button data-view="achievements"><span class="ui-icon" data-icon="medal"></span> Achievements</button><button data-view="coach"><span class="ui-icon" data-icon="bot"></span> AI Coach</button><button data-view="friends">Friends</button><button data-view="profile"><span class="ui-icon" data-icon="user"></span> Profile</button><button data-view="themes"><span class="ui-icon" data-icon="palette"></span> Themes</button>
+      <button class="active" data-view="home"><span class="ui-icon" data-icon="home"></span> Home</button><button data-view="rpg"><span class="ui-icon" data-icon="spark"></span> RPG Hub</button><button data-view="quests"><span class="ui-icon" data-icon="scroll"></span> Quests</button><button data-view="workout"><span class="ui-icon" data-icon="dumbbell"></span> Workout</button><button data-view="ranks"><span class="ui-icon" data-icon="trophy"></span> Ranks</button><button data-view="achievements"><span class="ui-icon" data-icon="medal"></span> Achievements</button><button data-view="coach"><span class="ui-icon" data-icon="bot"></span> AI Coach</button><button data-view="friends"><span class="ui-icon" data-icon="user"></span> Friends</button><button data-view="profile"><span class="ui-icon" data-icon="user"></span> Profile</button><button data-view="themes"><span class="ui-icon" data-icon="palette"></span> Themes</button>
     </nav>
     <div class="layout">
       <div class="main">
@@ -253,7 +253,7 @@ function iconSvg(name){
   'apex-rank':'<path d="M2 12h20M12 2v20M5 5l14 14"/>',
   'sovereign-rank':'<path d="M6 3h12v18H6z M9 7h6M9 12h6M9 17h6"/>',
  };
- return '<svg class="ui-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[name]||paths.target)+'</svg>';
+ return '<svg class="ui-icon-svg" viewBox="0 0 24 24" width="19" height="19" style="display:inline-block;width:19px;height:19px;min-width:19px;vertical-align:middle;overflow:visible;color:inherit" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[name]||paths.target)+'</svg>';
 }
 const THEMES={modern:{bg:"#0b1220",panel:"#131f32",panel2:"#1b2a42",line:"#2b3c56",text:"#eef4ff",muted:"#9aacc5",page:"radial-gradient(ellipse at top,#142543 0,#0b1220 48%)",accent:"#6ca8ff"},black:{bg:"#000000",panel:"#080808",panel2:"#141414",line:"#303030",text:"#ffffff",muted:"#c2c2c2",page:"#000000",accent:"#ffffff"},midnight:{bg:"#071426",panel:"#0d2038",panel2:"#142c49",line:"#294766",text:"#eaf5ff",muted:"#9bb7d2",page:"linear-gradient(145deg,#071426,#102c4a)",accent:"#38bdf8"},light:{bg:"#f2f5f9",panel:"#ffffff",panel2:"#e9eef5",line:"#d5deea",text:"#172033",muted:"#64748b",page:"#f2f5f9",accent:"#3867d6"}};
 const defaultQuests=[
