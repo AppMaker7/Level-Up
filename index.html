@@ -378,6 +378,79 @@ html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="
 #saveMode{margin-top:3px;background:transparent!important;border:0!important;padding:0!important;border-radius:0!important}
 @media(max-width:520px){.cloud-actions{gap:7px}.cloud-actions button{flex:1}}
 </style>
+
+<style id="duolingo-monochrome-refresh">
+/* Friendly, high-contrast learning-game feel — monochrome only */
+:root{
+ --bg:#080808;--panel:#151515;--panel2:#202020;--line:#3a3a3a;
+ --text:#fff;--muted:#b8b8b8;--blue:#fff;--green:#fff;--gold:#fff;
+ --pink:#fff;--accent:#fff;--page-bg:#080808;
+}
+html,body{background:#080808!important;color:#fff!important}
+body{font-family:Nunito,Inter,system-ui,-apple-system,"Segoe UI",sans-serif!important;font-weight:600}
+.wrap{max-width:1080px;padding:20px}
+.brand h1{font-weight:1000;letter-spacing:1.5px}
+.logo{border-radius:16px;border:2px solid #fff}
+.auth,.card,.stat,.hero,.quest,.rank-row,.achievement,.workout-row,.panel-note,
+.system-shell,.system-panel,.settings-hero,.sfx-panel,.settings-account{
+ background:#141414!important;color:#fff!important;border:2px solid #383838!important;
+ border-radius:20px!important;box-shadow:0 4px 0 #292929!important;
+}
+.auth{border:2px solid #fff!important;box-shadow:0 7px 0 #fff!important}
+.hero{background:#171717!important;border-color:#fff!important;box-shadow:0 5px 0 #fff!important}
+.hero h2,.section-title h2,.card h2,.card h3{font-weight:900;letter-spacing:-.35px}
+.stat{border-radius:18px!important;text-align:left;padding:15px 17px}
+.stat b{font-size:27px;font-weight:1000}
+.stat span{font-weight:800;letter-spacing:.35px;text-transform:uppercase}
+button,.nav button,.quick button{
+ border-radius:15px!important;font-weight:900!important;letter-spacing:.1px;
+ transition:transform .12s ease,box-shadow .12s ease,background .12s ease!important;
+}
+button:not(.secondary){
+ background:#fff!important;color:#080808!important;border:2px solid #fff!important;
+ box-shadow:0 4px 0 #999!important;
+}
+button.secondary,.nav button,.quick button{
+ background:#202020!important;color:#fff!important;border:2px solid #505050!important;
+ box-shadow:0 4px 0 #333!important;
+}
+button:active,.nav button:active,.quick button:active{transform:translateY(3px)!important;box-shadow:0 1px 0 #333!important}
+.nav{gap:10px;padding:5px 0 17px}
+.nav button{padding:11px 17px!important}
+.nav button.active{background:#fff!important;color:#000!important;border-color:#fff!important;box-shadow:0 4px 0 #aaa!important}
+.field input,.field select,.field textarea,input,select,textarea{
+ background:#090909!important;color:#fff!important;border:2px solid #454545!important;border-radius:14px!important;
+}
+.field input:focus,input:focus,select:focus,textarea:focus{border-color:#fff!important;box-shadow:0 0 0 3px #ffffff22!important}
+.quest{padding:14px!important;border-radius:17px!important;box-shadow:0 3px 0 #292929!important}
+.quest.done{background:#242424!important;border-color:#777!important}
+.check{border:2px solid #aaa!important;color:#000!important}
+.quest.done .check{background:#fff!important;border-color:#fff!important}
+.xp-pill,.tag{background:#292929!important;color:#fff!important;border:1px solid #555!important;font-weight:900}
+.bar{height:13px!important;background:#353535!important;border:1px solid #555}
+.bar>span{background:#fff!important;border-radius:99px!important}
+.rank-row,.achievement,.workout-row{border-radius:17px!important}
+.rank-icon,.emblem{border-radius:17px!important;background:#242424!important;color:#fff!important}
+.bottom-dock{background:#080808f5!important;border:2px solid #555!important;border-radius:27px!important;box-shadow:0 8px 0 #333,0 15px 38px #0009!important}
+.bottom-dock button{box-shadow:none!important}
+.toast{background:#fff!important;color:#000!important;border:2px solid #000!important;font-weight:900!important;border-radius:15px!important}
+.status{background:#171717!important;color:#fff!important;border:1px solid #777!important;font-weight:900}
+.section-title{margin-bottom:14px}
+.section-title h2{font-size:22px}
+.system-shell,.system-panel,.system-stat{background:#141414!important;color:#fff!important;border-color:#3a3a3a!important}
+.system-kicker,.system-rank,.system-panel h3,.system-stat b,.system-stat small{color:#fff!important}
+.system-rank{background:#252525!important;border-color:#666!important}
+.system-attribute .bar span{background:#fff!important}
+@media(max-width:520px){
+ .wrap{padding:12px}
+ .hero,.card,.auth{border-radius:18px!important}
+ .stats{gap:8px}
+ .stat{padding:12px 10px}
+ .stat b{font-size:23px}
+ .nav button{padding:10px 13px!important}
+}
+</style>
+
 </head>
 <body>
 <div class="wrap">
