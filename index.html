@@ -86,7 +86,14 @@ html[data-theme="light"] button:not(.secondary){background:var(--accent);color:#
 html[data-theme="light"] .nav button{background:#e5ebf4;color:#34445d;border-color:#cbd5e1}
 html[data-theme="light"] .nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
-</style>
+/* SYSTEM MODE */
+.system-shell{background:radial-gradient(ellipse at 85% 0%,rgba(38,125,207,.2),transparent 45%),linear-gradient(145deg,#081321,#0b1727 65%,#101d31);border:1px solid #244766;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 14px 40px rgba(0,0,0,.18)}
+.system-kicker{font-size:10px;letter-spacing:2.4px;color:#79c9ff;font-weight:800}.system-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:8px 0 16px}.system-head h2{font-size:25px;letter-spacing:1px;margin:2px 0}.system-level{font-size:12px;color:#a8c6e2}.system-rank{border:1px solid #3c83b6;color:#9bdbff;background:rgba(25,95,145,.18);border-radius:9px;padding:7px 10px;font-size:11px;font-weight:800;white-space:nowrap}
+.system-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.system-stat{background:rgba(13,31,51,.82);border:1px solid #24415e;border-radius:13px;padding:13px;min-width:0}.system-stat b{display:block;font-size:23px;color:#d9f2ff}.system-stat span{font-size:11px;color:#8eabc6;letter-spacing:.8px;text-transform:uppercase}.system-stat small{display:block;color:#74bfe9;font-size:11px;margin-top:4px}
+.system-panel{background:rgba(11,26,43,.88);border:1px solid #213c58;border-radius:15px;padding:15px;margin:12px 0}.system-panel h3{font-size:14px;letter-spacing:1px;margin:0 0 11px;color:#bce7ff}.system-attribute{display:grid;grid-template-columns:86px 1fr 30px;align-items:center;gap:9px;margin:10px 0;font-size:12px;color:#c2d7e9}.system-attribute .bar{margin:0;height:7px;background:#1c344b}.system-attribute .bar span{background:linear-gradient(90deg,#278acb,#83d9ff)}
+.system-quest{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(91,139,177,.18)}.system-quest:last-child{border:0;padding-bottom:0}.system-quest .grow{flex:1;min-width:0}.system-quest b{font-size:13px;display:block;overflow-wrap:anywhere}.system-quest small{color:#86a7c5;font-size:11px}.system-quest button{padding:7px 10px;font-size:11px;background:#14517a;border:1px solid #347eae}.system-log{font-size:12px;color:#91abc3;padding:7px 0;border-bottom:1px solid rgba(91,139,177,.15)}.system-log:last-child{border:0}.system-select{background:#0c1c2e!important;border-color:#315574!important;color:#d9f2ff!important}
+html[data-theme="light"] .system-shell,html[data-theme="black"] .system-shell{background:#081321!important;color:#e8f5ff!important;border-color:#244766!important}
+@media(max-width:520px){.system-shell{padding:14px}.system-head h2{font-size:21px}.system-grid{gap:7px}.system-stat{padding:10px}.system-stat b{font-size:20px}.system-attribute{grid-template-columns:75px 1fr 25px;gap:6px}}</style>
 </head>
 <body>
 <div class="wrap">
@@ -116,10 +123,17 @@ html[data-theme="light"] .nav button.active{background:var(--accent);color:#fff;
       <div class="stat"><b id="achievementCount">0</b><span>Achievements</span></div>
     </section>
     <nav class="nav" id="nav">
-      <button class="active" data-view="home"><span class="ui-icon" data-icon="home"></span> Home</button><button data-view="rpg"><span class="ui-icon" data-icon="spark"></span> RPG Hub</button><button data-view="quests"><span class="ui-icon" data-icon="scroll"></span> Quests</button><button data-view="workout"><span class="ui-icon" data-icon="dumbbell"></span> Workout</button><button data-view="ranks"><span class="ui-icon" data-icon="trophy"></span> Ranks</button><button data-view="achievements"><span class="ui-icon" data-icon="medal"></span> Achievements</button><button data-view="coach"><span class="ui-icon" data-icon="bot"></span> AI Coach</button><button data-view="friends"><span class="ui-icon" data-icon="user"></span> Friends</button><button data-view="profile"><span class="ui-icon" data-icon="user"></span> Profile</button><button data-view="themes"><span class="ui-icon" data-icon="palette"></span> Themes</button>
+      <button class="active" data-view="home"><span class="ui-icon" data-icon="home"></span> Home</button><button data-view="system"><span class="ui-icon" data-icon="spark"></span> SYSTEM</button><button data-view="rpg"><span class="ui-icon" data-icon="spark"></span> RPG Hub</button><button data-view="quests"><span class="ui-icon" data-icon="scroll"></span> Quests</button><button data-view="workout"><span class="ui-icon" data-icon="dumbbell"></span> Workout</button><button data-view="ranks"><span class="ui-icon" data-icon="trophy"></span> Ranks</button><button data-view="achievements"><span class="ui-icon" data-icon="medal"></span> Achievements</button><button data-view="coach"><span class="ui-icon" data-icon="bot"></span> AI Coach</button><button data-view="friends"><span class="ui-icon" data-icon="user"></span> Friends</button><button data-view="profile"><span class="ui-icon" data-icon="user"></span> Profile</button><button data-view="themes"><span class="ui-icon" data-icon="palette"></span> Themes</button>
     </nav>
     <div class="layout">
       <div class="main">
+        <section class="view" id="system">
+<div class="system-shell"><div class="system-kicker">LEVEL UP // PLAYER INTERFACE</div><div class="system-head"><div><h2>PLAYER STATUS</h2><div class="system-level" id="systemPlayerName">PLAYER · LEVEL 1</div></div><div class="system-rank" id="systemRank">AWAKENED</div></div><div class="bar"><span id="systemXPBar"></span></div><div class="bar-label"><span id="systemXPText">0 XP</span><span id="systemNextRank">NEXT RANK</span></div>
+<div class="system-grid"><div class="system-stat"><b id="systemLifetime">0</b><span>Total experience</span><small>Lifetime progress</small></div><div class="system-stat"><b id="systemStreak">0 days</b><span>Active streak</span><small>Consistency record</small></div><div class="system-stat"><b id="systemCompleted">0</b><span>Quests completed</span><small>All-time missions</small></div><div class="system-stat"><b id="systemTraining">0</b><span>Training sessions</span><small>Logged workouts</small></div></div></div>
+<div class="system-panel"><h3>◇ SELECT YOUR CLASS</h3><p class="muted small">A cosmetic identity for your journey. Your class never changes XP or locks you out of content.</p><div class="field"><select id="systemClass" class="system-select"><option value="Vanguard">Vanguard · All-rounder</option><option value="Scholar">Scholar · Knowledge seeker</option><option value="Strategist">Strategist · Planner</option><option value="Creator">Creator · Builder</option></select></div><div class="muted small" id="systemClassStatus">CLASS INITIALIZATION COMPLETE</div></div>
+<div class="system-panel"><h3>◇ PLAYER ATTRIBUTES</h3><p class="muted small">Game stats based on completed quest categories, not measurements of your body or ability.</p><div id="systemAttributes"></div></div>
+<div class="system-panel"><div class="section-title"><h3 style="margin:0">◇ ACTIVE MISSIONS</h3><button class="secondary" data-go="quests">Mission board</button></div><div id="systemMissions"></div></div>
+<div class="system-panel"><h3>◇ SYSTEM LOG</h3><div id="systemLog"></div></div></section>
         <section class="view active" id="home">
           <div class="section-title"><h2>Dashboard</h2><span class="tag" id="dateLabel"></span></div>
           <div class="card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="bar"><span id="dailyBar"></span></div><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div>
@@ -489,6 +503,25 @@ let lastQuestReminder=Date.now();setInterval(()=>{if(!state.questReminders||docu
     if(buy){const costs={"title-scout":15,"title-veteran":30,"title-elite":50,"aura":40},cost=costs[buy.dataset.buy];if(!cost||state.inventory.includes(buy.dataset.buy)||state.coins<cost)return;state.coins-=cost;state.inventory.push(buy.dataset.buy);scheduleSave();renderRPG();toast("Item added to inventory.");}
   });
   renderRPG();
+})();
+</script>
+<script>
+(function(){
+const classes=["Vanguard","Scholar","Strategist","Creator"],num=v=>Math.max(0,Number(v)||0);
+function streak(){const days=new Set(state.activeDays||[]);let d=new Date(),n=0;const key=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");if(!days.has(key(d)))d.setDate(d.getDate()-1);for(let i=0;i<400;i++){if(!days.has(key(d)))break;n++;d.setDate(d.getDate()-1);}return n;}
+function renderSystem(){if(!document.getElementById("systemAttributes"))return;const r=currentRank(),p=progress(),stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+num(b),0),life=num(state.lifetimeXP),xp=num(state.xp),level=Math.max(1,Math.floor(Math.sqrt(life/100))+1),set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+set("systemPlayerName",(state.player||"PLAYER").toUpperCase()+" · LEVEL "+level);set("systemRank",String(r.name||"ROOKIE").toUpperCase());set("systemLifetime",life.toLocaleString());set("systemStreak",streak()+" days");set("systemCompleted",total.toLocaleString());set("systemTraining",(state.workoutDays||[]).length.toLocaleString());
+const bar=document.getElementById("systemXPBar");if(bar)bar.style.width=p.pct+"%";set("systemXPText",xp.toLocaleString()+" XP · "+Math.floor(p.pct)+"% TO NEXT RANK");set("systemNextRank",p.next?String(p.next.name).toUpperCase():"MAX RANK");
+const select=document.getElementById("systemClass");if(select){const cls=classes.includes(state.systemClass)?state.systemClass:"Vanguard";state.systemClass=cls;select.value=cls;set("systemClassStatus",cls.toUpperCase()+" CLASS ACTIVE");}
+const attrs=[["FOCUS",num(stats.School)+num(stats.Skills)],["DISCIPLINE",num(stats.Organization)+num(stats.Custom)],["VITALITY",num(stats.Fitness)+num(stats.Health)],["MASTERY",life>0?Math.floor(life/100):0]],max=Math.max(10,...attrs.map(x=>x[1]));
+document.getElementById("systemAttributes").innerHTML=attrs.map(([name,value])=>'<div class="system-attribute"><span>'+name+'</span><div class="bar"><span style="width:'+Math.min(100,value/max*100)+'%"></span></div><b>'+value+'</b></div>').join("");
+const active=(state.quests||[]).filter(q=>!q.done).slice(0,5);document.getElementById("systemMissions").innerHTML=active.length?active.map(q=>'<div class="system-quest"><div class="grow"><b>'+esc(q.name)+'</b><small>'+esc(q.category)+' · '+num(q.xp)+' XP</small></div><button type="button" data-system-quest="'+esc(q.id)+'">COMPLETE</button></div>').join(""):'<div class="muted small">ALL DAILY MISSIONS CLEARED. CHECK THE MISSION BOARD FOR MORE.</div>';
+const logs=(state.activity||[]).slice(-5).reverse();document.getElementById("systemLog").innerHTML=logs.length?logs.map(x=>'<div class="system-log">› '+esc(x)+'</div>').join(""):'<div class="muted small">SYSTEM ONLINE. YOUR ACTIVITY WILL APPEAR HERE.</div>';
+}
+const oldRender=render;render=function(){oldRender();renderSystem();};
+document.getElementById("systemClass").addEventListener("change",function(){state.systemClass=classes.includes(this.value)?this.value:"Vanguard";scheduleSave();renderSystem();toast("Class updated: "+state.systemClass+".");});
+document.getElementById("system").addEventListener("click",function(e){const b=e.target.closest("[data-system-quest]");if(b)toggleQuest(b.dataset.systemQuest);});
+renderSystem();
 })();
 </script>
 <script>
