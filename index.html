@@ -480,41 +480,13 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
 </style>
 
 
-<style id="levelup-final-mobile-fix">
-/* Final visual layer: overrides the older monochrome refresh intentionally. */
-:root{--bg:#080c12!important;--panel:#111821!important;--panel2:#172331!important;--line:#263443!important;--text:#f2f6fb!important;--muted:#91a1b3!important;--blue:#78aaff!important;--green:#55dfa4!important;--accent:#78aaff!important;--page-bg:#080c12!important}
-html,body{background:#080c12!important;color:#f2f6fb!important;min-height:100%;overflow-x:hidden}
-body{padding-bottom:calc(112px + env(safe-area-inset-bottom))!important}
-.wrap{max-width:1180px!important;padding:20px 16px calc(174px + env(safe-area-inset-bottom))!important}
-.card,.stat,.category-meter,.season-track-progress,.season-tier,.skill-tree-awakening,.skill-node,.quest,.rank-row,.achievement,.workout-row,.panel-note{background:linear-gradient(145deg,#131d28,#0e151e)!important;border-color:#263646!important;color:#f2f6fb;border-radius:18px}
-.hero,.awakening-panel,.coach-awakening,.settings-hero,.profile-showcase{background:radial-gradient(circle at 92% 0,rgba(93,151,255,.15),transparent 36%),linear-gradient(145deg,#172536,#0c131d)!important;border:1px solid #30475f!important;border-radius:22px}
-.status{color:#69e5ad!important;border-color:rgba(85,223,164,.32)!important;background:rgba(85,223,164,.07)!important}
-.tag,.pill{background:#172b3c!important;color:#b8d7f8!important;border:1px solid #2c465d!important}
-button:not(.secondary){background:linear-gradient(135deg,#78aaff,#4f83d6)!important;color:#06101b!important;border:0!important;border-radius:12px!important}
-button.secondary{background:#172331!important;color:#d8e5f2!important;border:1px solid #304253!important;border-radius:12px!important}
-.bar{background:#263545!important;border-radius:99px}.bar>span{background:linear-gradient(90deg,#6d9fff,#55dfa4)!important}
-.quest.done{background:linear-gradient(100deg,rgba(38,111,79,.2),#111b25)!important;border-color:#3a9b72!important}
-.quest.done .check{background:#55dfa4!important;border-color:#55dfa4!important;color:#06170f!important}
-.bottom-dock{position:fixed!important;z-index:100!important;left:50%!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;width:calc(100vw - 24px)!important;max-width:520px!important;height:76px!important;padding:8px 10px!important;display:grid!important;grid-template-columns:1fr 1fr 1.15fr 1fr!important;gap:6px!important;background:rgba(7,12,19,.97)!important;border:1px solid #34485c!important;border-radius:23px!important;box-shadow:0 12px 42px rgba(0,0,0,.62)!important;backdrop-filter:blur(20px)!important}
-.bottom-dock .dock-item{height:56px!important;min-width:0!important;padding:4px 2px!important;border-radius:15px!important;color:#a9bdd6!important;background:transparent!important}
-.bottom-dock .dock-item.active{background:#1c3045!important;color:#f2f6fb!important}
-.bottom-dock .dock-item small{font-size:10px!important;white-space:nowrap}
-.dynamic-island{background:#020407!important;border-color:#34485c!important;color:#d8edff!important}
-.roadmap-card{background:linear-gradient(145deg,#131d28,#0e151e)!important;border-color:#304253!important}
-.roadmap-kicker{color:#78aaff!important}
-.daily-progress-ring{background:conic-gradient(#55dfa4 var(--ring-progress),#263545 0)!important}
-.daily-progress-ring:before{background:#111b25!important}
-.roadmap-track{background:#253646!important}.roadmap-track i{background:linear-gradient(90deg,#78aaff,#55dfa4)!important}
-input,select,textarea{background:#101923!important;color:#f5f8fc!important;border-color:#34485c!important}
-@media(max-width:520px){
- .wrap{padding:14px 13px calc(184px + env(safe-area-inset-bottom))!important}
- .bottom-dock{width:calc(100vw - 24px)!important;height:72px!important;bottom:calc(9px + env(safe-area-inset-bottom))!important}
- .bottom-dock .dock-item{height:54px!important}
- .bottom-dock .dock-item small{font-size:9px!important}
- .awakening-panel{padding:16px!important}
- .daily-progress-layout{gap:13px}
-}
+
+
+<style id="sound-pill-dimensions">
+/* Keep the sound control at its original Dynamic Island dimensions. */
+.bottom-dock .dynamic-island{height:46px!important;min-height:46px!important;max-height:46px!important;padding:0 14px!important;box-sizing:border-box!important;align-self:center!important;flex:none!important}
 </style>
+
 </head>
 <body>
 <div class="wrap">
