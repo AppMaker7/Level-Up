@@ -555,7 +555,7 @@ function playCompleteSound(){playSfx("quest");}
 function syncSfxControls(){const s=state.sfx||{};const enabled=document.getElementById("sfxEnabled");if(!enabled)return;enabled.checked=!!s.enabled;document.getElementById("sfxVolume").value=s.volume??50;document.getElementById("sfxVolumeLabel").textContent=(s.volume??50)+"%";for(const k of ["quest","rank","achievement","chest","notify"]){const el=document.getElementById("sfx"+k[0].toUpperCase()+k.slice(1));if(el)el.checked=s[k]!==false;}}
 function toggleQuest(id){const q=state.quests.find(q=>q.id===id);if(!q||q.done)return;const oldRank=currentRank().name,oldAchievementCount=achievementData().filter(a=>a.ok).length;q.done=true;state.xp=Math.max(0,state.xp+q.xp);state.lifetimeXP=(state.lifetimeXP||0)+q.xp;state.activity.push(`Completed: ${q.name} (+${q.xp} XP)`);state.activity=state.activity.slice(-30);scheduleSave();playCompleteSound();if(currentRank().name!==oldRank)playSfx("rank");if(achievementData().filter(a=>a.ok).length>oldAchievementCount)playSfx("achievement");const row=document.querySelector(`[data-toggle="${CSS.escape(id)}"]`)?.closest(".quest");if(row){row.classList.add("done");const check=row.querySelector(".check");if(check)check.innerHTML=iconSvg("check");row.style.transition="opacity .22s ease, transform .22s ease";row.style.opacity="0";row.style.transform="translateY(-5px)";}setTimeout(render,230);toast(`Quest complete: ${q.name} · +${q.xp} XP`);if(state.questReminders&&"Notification" in window&&Notification.permission==="granted"){playSfx("notify");new Notification("LEVEL UP · Quest complete",{body:`${q.name} · +${q.xp} XP`});}}
 function dailyResetCheck(){checkMonthReset();if(state.lastReset!==localDate()){freshDay();scheduleSave();toast("New day detected. Daily quests reset!");}}
-function showApp(){document.getElementById("authScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("logoutBtn").classList.toggle("hidden",!user);document.getElementById("saveMode").textContent=user?"Cloud account: progress syncs to your Supabase account.":"Guest mode: progress is saved in this browser only.";document.getElementById("syncStatus").textContent=user?"CLOUD SAVED":"GUEST MODE";clearFriendUI();const coach=document.getElementById("coachOutput");if(coach)coach.textContent="Run an analysis to see your strongest categories, neglected areas, and a realistic next step.";const search=document.getElementById("questSearch"),filter=document.getElementById("questFilter"),sort=document.getElementById("questSort");if(search)search.value="";if(filter)filter.value="All";if(sort)sort.value="default";go("home");render();}
+function showApp(){document.getElementById("authScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("logoutBtn").classList.toggle("hidden",!user);document.getElementById("saveMode").textContent=user?"Cloud account: progress syncs to your Supabase account.":"Guest mode: progress is saved in this browser only.";document.getElementById("syncStatus").textContent=user?"CLOUD SAVED":"GUEST MODE";clearFriendUI();const coach=document.getElementById("coachOutput");if(coach)coach.textContent="Run an analysis to see your strongest categories, neglected areas, and a realistic next step.";const search=document.getElementById("questSearch"),filter=document.getElementById("questFilter"),sort=document.getElementById("questSort");if(search)search.value="";if(filter)filter.value="All";if(sort)sort.value="default";go("home");render();if(user)setTimeout(()=>window.openGoalSurveyIfNeeded?.(),250);}
 function showAuth(){clearFriendUI();currentView="home";document.getElementById("authScreen").classList.remove("hidden");document.getElementById("app").classList.add("hidden");}
 document.getElementById("nav").addEventListener("click",e=>{if(e.target.closest("[data-open-sfx]")){openSfxSettings();return;}const b=e.target.closest("button[data-view]");if(b){go(b.dataset.view);if(b.dataset.view==="friends")loadFriends();}});
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{go(b.dataset.go);if(b.dataset.go==="friends")loadFriends();}));
@@ -912,5 +912,94 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
     }
   });
 })();</script>
+
+
+<style>
+#goalSurveyOverlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.78);backdrop-filter:blur(9px)}
+#goalSurveyOverlay.open{display:flex}
+.goal-survey{width:min(620px,100%);max-height:min(90vh,850px);overflow:auto;background:var(--panel,#131f32);color:var(--text,#eef4ff);border:1px solid var(--line,#2b3c56);border-radius:22px;padding:22px;box-shadow:0 24px 80px #0009}
+.goal-survey-kicker{font-size:10px;letter-spacing:2px;color:var(--accent,#6ca8ff);font-weight:800}
+.goal-survey h2{margin:5px 0;font-size:25px}.goal-survey-intro{color:var(--muted);margin:0 0 18px;font-size:13px}
+.goal-survey-group{border:0;padding:0;margin:17px 0}.goal-survey-group legend{font-weight:750;margin-bottom:9px}
+.goal-survey-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.goal-survey-option{display:flex;align-items:center;gap:9px;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);font-size:13px;cursor:pointer}
+.goal-survey-option input{width:17px;height:17px;accent-color:var(--accent);flex:none}
+.goal-survey select,.goal-survey textarea{width:100%;padding:11px 12px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px}
+.goal-survey textarea{min-height:82px;resize:vertical}
+.goal-survey-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+@media(max-width:480px){.goal-survey{padding:17px}.goal-survey h2{font-size:22px}.goal-survey-options{grid-template-columns:1fr}.goal-survey-actions button{flex:1}}
+</style>
+<div id="goalSurveyOverlay" role="dialog" aria-modal="true" aria-labelledby="goalSurveyTitle">
+ <form class="goal-survey" id="goalSurveyForm">
+  <div class="goal-survey-kicker">PLAYER SETUP · 01</div>
+  <h2 id="goalSurveyTitle">What are your goals?</h2>
+  <p class="goal-survey-intro">A quick setup so LEVEL UP can shape your quests around what actually matters to you. You can change your goals later.</p>
+  <fieldset class="goal-survey-group">
+   <legend>What do you want to work on? <span class="muted small">(Choose any)</span></legend>
+   <div class="goal-survey-options">
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="School"> School and grades</label>
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="Fitness"> Fitness and movement</label>
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="Skills"> Skills and hobbies</label>
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="Organization"> Organization and routines</label>
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="Health"> Health and wellbeing</label>
+    <label class="goal-survey-option"><input type="checkbox" name="goalArea" value="Confidence"> Confidence and focus</label>
+   </div>
+  </fieldset>
+  <fieldset class="goal-survey-group">
+   <legend>What's your biggest priority right now?</legend>
+   <select id="goalSurveyPriority" required>
+    <option value="">Choose your main focus</option><option>Build better habits</option><option>Improve at school</option><option>Get stronger and more active</option><option>Learn or master a skill</option><option>Stay organized</option><option>Feel more balanced</option><option>Work toward a personal goal</option>
+   </select>
+  </fieldset>
+  <fieldset class="goal-survey-group">
+   <legend>How much time usually feels realistic for a daily quest?</legend>
+   <select id="goalSurveyTime" required>
+    <option value="">Choose a time range</option><option>5–10 minutes</option><option>10–20 minutes</option><option>20–30 minutes</option><option>It depends on the day</option>
+   </select>
+  </fieldset>
+  <fieldset class="goal-survey-group">
+   <legend>Anything specific you're aiming for? <span class="muted small">(Optional)</span></legend>
+   <textarea id="goalSurveyDetails" maxlength="500" placeholder="Example: practice guitar consistently, keep up with homework, or build a better morning routine."></textarea>
+  </fieldset>
+  <div class="goal-survey-actions"><button type="button" class="secondary" id="goalSurveySkip">Skip for now</button><button type="submit" id="goalSurveySubmit">Save My Goals</button></div>
+ </form>
+</div>
+<script>
+(function(){
+ const overlay=document.getElementById("goalSurveyOverlay"),form=document.getElementById("goalSurveyForm");
+ if(!overlay||!form)return;
+ function openSurvey(){
+  if(!user||state.goalSurveyCompleted===true)return;
+  form.reset();
+  const saved=state.goalSurvey||{};
+  (saved.areas||[]).forEach(value=>{const input=[...form.querySelectorAll('input[name="goalArea"]')].find(x=>x.value===value);if(input)input.checked=true;});
+  document.getElementById("goalSurveyPriority").value=saved.priority||"";
+  document.getElementById("goalSurveyTime").value=saved.time||"";
+  document.getElementById("goalSurveyDetails").value=saved.details||"";
+  overlay.classList.add("open");
+  document.body.style.overflow="hidden";
+ }
+ function closeSurvey(){overlay.classList.remove("open");document.body.style.overflow="";}
+ window.openGoalSurveyIfNeeded=openSurvey;
+ document.getElementById("goalSurveySkip").addEventListener("click",function(){
+  state.goalSurveyCompleted=true;state.goalSurveySkipped=true;state.goalSurvey=state.goalSurvey||{};
+  scheduleSave();closeSurvey();toast("You can add your goals later.");
+ });
+ form.addEventListener("submit",function(event){
+  event.preventDefault();
+  const areas=[...form.querySelectorAll('input[name="goalArea"]:checked')].map(x=>x.value);
+  const priority=document.getElementById("goalSurveyPriority").value;
+  const time=document.getElementById("goalSurveyTime").value;
+  const details=document.getElementById("goalSurveyDetails").value.trim();
+  if(!areas.length){toast("Choose at least one area to work on.");return;}
+  if(!priority||!time){toast("Finish the two quick questions first.");return;}
+  state.goalSurvey={areas,priority,time,details,completedAt:new Date().toISOString()};
+  state.goalSurveyCompleted=true;state.goalSurveySkipped=false;
+  state.activity=state.activity||[];state.activity.push("Completed the player goals survey.");
+  state.activity=state.activity.slice(-30);
+  scheduleSave();closeSurvey();toast("Goals saved. Your player profile is updated.");
+ });
+})();
+</script>
 
 </body></html>
