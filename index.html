@@ -140,6 +140,7 @@ html[data-theme="light"] .rank-row{background:#fff}
 .awakening-metrics small,.awakening-metrics span{display:block;color:#8fa7c5;font-size:9px;letter-spacing:.8px}.awakening-metrics b{display:block;font-size:22px;line-height:1.25;margin:4px 0;color:#f2f7ff}.awakening-metrics span{font-size:10px;letter-spacing:0}
 .awakening-footer{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(132,164,203,.2);padding-top:12px;color:#9fc5ee;font-size:9px;letter-spacing:1px;font-weight:800}
 .awakening-section-title{margin-top:20px!important}
+.week-activity{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:13px}.week-activity-day{padding:8px 3px;text-align:center;border-radius:9px;background:rgba(7,13,23,.55);border:1px solid rgba(132,164,203,.16);color:#7f96b4;font-size:9px}.week-activity-day b{display:block;width:8px;height:8px;margin:0 auto 5px;border-radius:50%;background:#34475f}.week-activity-day.active{color:#d8edff;border-color:#4b83b1;background:rgba(46,103,151,.2)}.week-activity-day.active b{background:#8fd4ff;box-shadow:0 0 10px rgba(105,191,255,.7)}
 .daily-challenge-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .daily-challenge{min-width:0;padding:13px;border-radius:15px;background:var(--panel);border:1px solid var(--line)}
 .daily-challenge.complete{border-color:#3e9276;background:linear-gradient(145deg,rgba(32,91,72,.22),var(--panel))}
@@ -269,7 +270,7 @@ html[data-theme="light"] .rank-row{background:#fff}
               <div><small>COINS</small><b id="awakeningCoins">0</b><span>available</span></div>
               <div><small>QUESTS CLEARED</small><b id="awakeningCleared">0</b><span>all time</span></div>
             </div>
-            <div class="awakening-footer"><span id="awakeningTitle">UNTITLEd PLAYER</span><span id="awakeningSkill">NEXT LEVEL · 100 XP</span></div>
+            <div class="awakening-footer"><span id="awakeningTitle">UNTITLEd PLAYER</span><span id="awakeningSkill">NEXT LEVEL · 100 XP</span></div><div class="week-activity" id="weekActivity" aria-label="Weekly activity"></div>
           </div>
           <div class="section-title awakening-section-title"><h2>Daily operations</h2><span class="tag">Bonus objectives</span></div>
           <div id="dailyChallengeBoard" class="daily-challenge-board"></div>
@@ -743,13 +744,16 @@ window.levelUpLogin = function(){
   function renderAwakening(){
     if(!document.getElementById("dailyChallengeBoard"))return;
     const stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+num(b),0);
-    const life=num(state.lifetimeXP),level=Math.max(1,Math.floor(Math.sqrt(life/100))+1),next=level*level*100,streakCount=(state.activeDays||[]).length;
+    const life=num(state.lifetimeXP),level=Math.max(1,Math.floor(Math.sqrt(life/100))+1),next=level*level*100;
+    const activeSet=new Set(state.activeDays||[]),dateKey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    let streakDate=new Date(),streakCount=0;if(!activeSet.has(dateKey(streakDate)))streakDate.setDate(streakDate.getDate()-1);for(let n=0;n<400&&activeSet.has(dateKey(streakDate));n++){streakCount++;streakDate.setDate(streakDate.getDate()-1);}
     const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
     set("awakeningGreeting","Welcome back, "+(state.player||"Player")+". Your progress is saved.");
     set("awakeningLevel",level.toLocaleString());set("awakeningClass",(state.systemClass||"Vanguard").toUpperCase());
     set("awakeningStreak",String(streakCount));set("awakeningCoins",String(num(state.coins)));
     set("awakeningCleared",total.toLocaleString());set("awakeningTitle",(state.equippedTitle||"UNTITLED PLAYER").replace("title-","").replaceAll("-"," ").toUpperCase());
     set("awakeningSkill","LEVEL "+level+" · "+Math.max(0,next-life).toLocaleString()+" XP TO NEXT");
+    const monday=new Date();monday.setDate(monday.getDate()-((monday.getDay()+6)%7));const weekLabels=["MON","TUE","WED","THU","FRI","SAT","SUN"];const week=document.getElementById("weekActivity");if(week)week.innerHTML=weekLabels.map((label,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);const active=activeSet.has(dateKey(d));return '<div class="week-activity-day '+(active?"active":"")+'"><b></b>'+label+'</div>';}).join("");
     const claimed=state.dailyChallengeClaims&&state.dailyChallengeClaims[localDate()]||[];
     document.getElementById("dailyChallengeBoard").innerHTML=dailyTasks().map(t=>{
       const did=claimed.includes(t.id),ready=t.ok;
