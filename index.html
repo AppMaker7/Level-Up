@@ -264,7 +264,9 @@ const defaultQuests=[
 {id:"room1",name:"Reset your room",category:"Organization",xp:4,done:false,custom:false},
 {id:"room2",name:"Prepare for tomorrow",category:"Organization",xp:3,done:false,custom:false},
 {id:"health1",name:"Follow a relaxing bedtime routine",category:"Health",xp:5,done:false,custom:false},
-{id:"bonus1",name:"Learn something new",catfunction achievementData(){const done=completed(),cats=["School","Skills","Fitness","Organization","Health"];return [
+{id:"bonus1",name:"Learn something new",category:"Skills",xp:5,done:false,custom:false}
+];
+function achievementData(){const done=completed(),cats=["School","Skills","Fitness","Organization","Health"];return [
 {name:"First Steps",desc:"Complete 5 quests in one day",icon:"footprints",ok:done.length>=5},
 {name:"Scholar",desc:"Complete both school quests",icon:"graduation",ok:state.quests.filter(q=>q.category==="School"&&!q.custom).every(q=>q.done)},
 {name:"Jack of All Trades",desc:"Complete quests across all core categories",icon:"medal",ok:cats.every(c=>state.quests.some(q=>q.category===c&&q.done))},
