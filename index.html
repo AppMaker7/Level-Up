@@ -131,6 +131,7 @@ html[data-theme="light"] .rank-row{background:#fff}
 @media(max-width:520px){.bottom-dock{height:68px;bottom:max(9px,env(safe-area-inset-bottom));padding:7px 9px}.settings-grid{gap:8px}.settings-tile{min-height:92px;padding:11px!important}.settings-hero{padding:16px}}
 
 /* SYSTEM AWAKENING — command center and progression layer */
+.profile-showcase{display:flex;align-items:center;gap:14px;padding:18px;margin:0 0 12px;border-radius:18px;border:1px solid rgba(120,169,220,.3);background:radial-gradient(circle at 100% 0,rgba(82,158,255,.2),transparent 45%),linear-gradient(130deg,#142943,#09111e);overflow:hidden}.profile-avatar{width:66px;height:66px;flex:0 0 66px;display:grid;place-items:center;border-radius:18px;background:#081321;border:1px solid #5b91c7;color:#d9edff;font-size:34px;box-shadow:inset 0 0 22px rgba(95,168,255,.17)}.profile-showcase-copy{min-width:0;display:grid;gap:3px}.profile-showcase-copy small{font-size:9px;letter-spacing:1px;color:#8faed0}.profile-showcase-copy h2{font-size:20px;margin:0;overflow-wrap:anywhere}.profile-showcase-copy b{font-size:11px;color:#d7eaff;letter-spacing:1px}.profile-showcase-copy span{font-size:10px;color:#9cb6d2}.profile-card-emblem{width:58px;height:58px;flex:0 0 58px;margin-left:auto}.profile-card-emblem svg{width:100%;height:100%}
 .coach-awakening{padding:19px;border-radius:18px;border:1px solid rgba(111,166,224,.3);background:radial-gradient(circle at 100% 0,rgba(80,156,255,.19),transparent 42%),linear-gradient(145deg,#13263e,#0a111d)}.coach-awakening h2{margin:8px 0;font-size:23px}.coach-awakening p{max-width:580px;color:#a9bdd6;font-size:12px}.coach-output{display:grid;gap:10px}.coach-insight{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}.coach-insight b{display:block;margin-bottom:3px}.coach-insight p{margin:0;color:var(--muted);font-size:12px}
 .quest-tools{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:10px 0}.quest-tools input,.quest-tools select{min-width:0;padding:10px;background:var(--panel);border-color:var(--line);color:var(--text);border-radius:11px;font-size:12px}@media(max-width:520px){.quest-tools{grid-template-columns:1fr 1fr}.quest-tools input{grid-column:1/-1}}
 .awakening-panel{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(124,177,235,.32);border-radius:20px;background:radial-gradient(circle at 88% 5%,rgba(80,156,255,.2),transparent 33%),linear-gradient(135deg,#101d30,#090f1a 75%);box-shadow:0 18px 48px rgba(0,0,0,.24);margin:14px 0 20px}
@@ -320,10 +321,10 @@ html[data-theme="light"] .rank-row{background:#fff}
           <div class="card" style="margin-top:12px"><b>Your friends</b><div id="friendList" class="muted small">No friends loaded.</div></div>
         </section>
         <section class="view" id="profile">
-          <div class="section-title"><h2>Player Profile</h2></div><div class="card">
-            <div class="field"><label>Player name</label><input id="playerName" maxlength="24" placeholder="Player"></div>
+          <div class="section-title"><h2>Player Profile</h2><span class="tag">Identity card</span></div><div class="profile-showcase"><div class="profile-avatar" id="profileAvatar">◈</div><div class="profile-showcase-copy"><small>LEVEL UP PLAYER CARD</small><h2 id="profileCardName">Player</h2><b id="profileCardRank">BEGINNER</b><span id="profileCardClass">VANGUARD</span><small id="profileCardXP">0 LIFETIME XP</small></div><div class="profile-card-emblem" id="profileCardEmblem"></div></div><div class="card">
+            <div class="field"><label>Player name</label><input id="playerName" maxlength="24" placeholder="Player"></div><div class="field"><label>Player emblem</label><select id="playerAvatar"><option value="◈">◇ Core</option><option value="✦">✦ Star</option><option value="⚡">⚡ Spark</option><option value="♜">♜ Tower</option><option value="⬡">⬡ Hex</option><option value="☄">☄ Comet</option><option value="✧">✧ Nova</option><option value="◎">◎ Orbit</option></select></div>
             <div class="field"><label>Save mode</label><div id="saveMode" class="panel-note">Guest mode: progress is saved in this browser only.</div></div>
-            <div class="actions"><button id="saveProfileBtn">Save profile</button><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"></div>
+            <div class="actions"><button id="saveProfileBtn">Save profile</button><button type="button" class="secondary" id="copyProfileBtn">Copy player card</button><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"></div>
             <hr style="border-color:var(--line);margin:18px 0"><button class="danger" id="resetBtn">Reset all progress</button>
           </div>
         </section>
@@ -516,7 +517,7 @@ document.getElementById("addQuestBtn").addEventListener("click",()=>{const name=
 document.getElementById("workoutDay").innerHTML=Object.keys(workouts).map(d=>`<option>${d}</option>`).join("");document.getElementById("workoutDay").addEventListener("change",render);
 document.getElementById("completeWorkoutBtn").addEventListener("click",()=>{if((state.workoutDays||[]).includes(localDate()))return toast("Today's workout reward is already claimed.");const oldRank=currentRank().name;state.workoutDays=state.workoutDays||[];state.workoutDays.push(localDate());state.xp+=150;state.lifetimeXP=(state.lifetimeXP||0)+150;state.activity.push("Completed workout (+150 XP)");state.activity=state.activity.slice(-30);scheduleSave();if(currentRank().name!==oldRank)playSfx("rank");render();toast("Workout complete! +150 XP");});
 document.getElementById("reminderToggle").addEventListener("click",async()=>{if(!state.questReminders&&"Notification" in window){try{const permission=await Notification.requestPermission();if(permission!=="granted")toast("Browser notifications were not enabled. In-app reminders can still run.");}catch(_){}}state.questReminders=!state.questReminders;scheduleSave();render();toast(state.questReminders?"Quest reminders enabled.":"Quest reminders disabled.");});
-document.getElementById("saveProfileBtn").addEventListener("click",()=>{state.player=document.getElementById("playerName").value.trim().slice(0,24)||"Player";scheduleSave();render();toast("Profile saved.");});
+document.getElementById("saveProfileBtn").addEventListener("click",()=>{state.player=document.getElementById("playerName").value.trim().slice(0,24)||"Player";state.playerAvatar=document.getElementById("playerAvatar")?.value||"◈";scheduleSave();render();toast("Profile saved.");});
 document.getElementById("resetBtn").addEventListener("click",()=>{if(!confirm("Reset all XP, quests, custom tasks, and activity? This cannot be undone."))return;state={...state,player:state.player,xp:0,lifetimeXP:0,monthKey:localMonth(),quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[]};scheduleSave();render();toast("Progress reset.");});
 document.getElementById("exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="level-up-backup.json";a.click();URL.revokeObjectURL(a.href);});
 document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
@@ -746,6 +747,14 @@ window.levelUpLogin = function(){
     ];
   };
   function renderAwakening(){
+    const avatar=state.playerAvatar||"◈";
+    const avatarEl=document.getElementById("profileAvatar");if(avatarEl)avatarEl.textContent=avatar;
+    const avatarSelect=document.getElementById("playerAvatar");if(avatarSelect)avatarSelect.value=avatar;
+    const profileName=document.getElementById("profileCardName");if(profileName)profileName.textContent=state.player||"Player";
+    const profileRank=document.getElementById("profileCardRank");if(profileRank)profileRank.textContent=String(currentRank().name||"Beginner").toUpperCase();
+    const profileClass=document.getElementById("profileCardClass");if(profileClass)profileClass.textContent=String(state.systemClass||"Vanguard").toUpperCase();
+    const profileXP=document.getElementById("profileCardXP");if(profileXP)profileXP.textContent=num(state.lifetimeXP).toLocaleString()+" LIFETIME XP";
+    const emblem=document.getElementById("profileCardEmblem");if(emblem)emblem.innerHTML=rankEmblem(currentRank().icon,rankIndex());
     if(!document.getElementById("dailyChallengeBoard"))return;
     const stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+num(b),0);
     const life=num(state.lifetimeXP),level=Math.max(1,Math.floor(Math.sqrt(life/100))+1),next=level*level*100;
@@ -818,6 +827,10 @@ window.levelUpLogin = function(){
     const set=new Set(state.activeDays||[]),key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
     let d=new Date(),n=0;if(!set.has(key(d)))d.setDate(d.getDate()-1);for(let i=0;i<400&&set.has(key(d));i++){n++;d.setDate(d.getDate()-1);}return n;
   }
+  document.getElementById("copyProfileBtn")?.addEventListener("click",async function(){
+    const summary="LEVEL UP PLAYER CARD\\n"+(state.player||"Player")+"\\nRank: "+currentRank().name+"\\nClass: "+(state.systemClass||"Vanguard")+"\\nLifetime XP: "+num(state.lifetimeXP).toLocaleString();
+    try{await navigator.clipboard.writeText(summary);toast("Player card copied.");}catch(_){toast("Copy isn't available in this browser.");}
+  });
   const board=document.getElementById("dailyChallengeBoard");
   board?.addEventListener("click",function(e){
     const b=e.target.closest("[data-claim-challenge]");if(!b)return;
