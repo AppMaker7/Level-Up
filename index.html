@@ -408,6 +408,49 @@ init();
 let lastQuestReminder=Date.now();setInterval(()=>{if(!state.questReminders||document.hidden||!document.getElementById("app")||document.getElementById("app").classList.contains("hidden"))return;const pending=state.quests.filter(q=>!q.done).length;if(pending&&Date.now()-lastQuestReminder>=45*60*1000){lastQuestReminder=Date.now();toast(`Quest reminder: ${pending} quest${pending===1?"":"s"} still waiting to be checked off.`);if("Notification" in window&&Notification.permission==="granted")new Notification("LEVEL UP · Quest reminder",{body:`You have ${pending} unfinished quests.`});}},60*1000);
 </script>
 <script>
+(function(){
+  if(typeof state!=="object"||typeof render!=="function")return;
+  const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+  const weekKey=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+  const defaults=()=>{state.coins=Number(state.coins)||0;state.activeDays=Array.isArray(state.activeDays)?state.activeDays:[];state.weeklyCount=Number(state.weeklyCount)||0;state.weeklyKey=state.weeklyKey||weekKey();state.bossClaims=Array.isArray(state.bossClaims)?state.bossClaims:[];state.inventory=Array.isArray(state.inventory)?state.inventory:[];state.questStats=state.questStats&&typeof state.questStats==="object"?state.questStats:{};state.featuredAchievement=state.featuredAchievement||"First Steps";};
+  defaults();
+  const oldNormalize=normalize;
+  normalize=function(data){oldNormalize(data);defaults();};
+  const oldRender=render;
+  function rarity(q){const x=Number(q.xp)||0;return x>=15?"Legendary":x>=10?"Epic":x>=8?"Rare":x>=5?"Uncommon":"Common";}
+  function streak(){const days=new Set(state.activeDays);let d=new Date(),n=0;if(!days.has(dayKey()))d.setDate(d.getDate()-1);for(let i=0;i<400;i++){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(!days.has(k))break;n++;d.setDate(d.getDate()-1);}return n;}
+  function renderRPG(){
+    defaults();const wk=weekKey();
+    if(state.weeklyKey!==wk){state.weeklyKey=wk;state.weeklyCount=0;state.bossClaims=[];state.weeklyRewardKey="";scheduleSave();}
+    if(state.weeklyCount>=12&&state.weeklyRewardKey!==wk){state.weeklyRewardKey=wk;state.xp+=100;state.lifetimeXP+=100;state.coins+=30;state.inventory.push("weekly");scheduleSave();toast("Weekly challenge complete! +100 XP and 30 coins.");}
+    const n=Math.min(12,state.weeklyCount),coins=state.coins;
+    document.getElementById("rpgCoins").textContent=coins;document.getElementById("rpgStreak").textContent=streak();document.getElementById("rpgWeekly").textContent=n+"/12";document.getElementById("weeklyBar").style.width=(n/12*100)+"%";document.getElementById("weeklyStatus").textContent=n>=12?"Completed":"In progress";
+    const bosses=[["scout","Scout Trial",3,35,10],["guardian","Guardian Trial",6,65,20],["overlord","Overlord Trial",10,100,35]];
+    document.getElementById("bossList").innerHTML=bosses.map(b=>{const done=state.bossClaims.includes(b[0]),ready=n>=b[2];return '<div class="rpg-tile"><b>'+b[1]+'</b><p>Complete '+b[2]+' quests this week. Reward: '+b[3]+' XP + '+b[4]+' coins.</p><div class="bar"><span style="width:'+Math.min(100,n/b[2]*100)+'%"></span></div><button data-boss="'+b[0]+'" '+(!ready||done?'disabled':'')+'>'+(done?'Cleared':ready?'Claim reward':'Progress '+n+'/'+b[2])+'</button></div>';}).join("");
+    const skills=[["Focused Mind",100],["Discipline Core",500],["Adaptive Thinking",1500],["Resilience",4000],["Mastery",10000]];
+    document.getElementById("skillTree").innerHTML='<div class="rpg-grid">'+skills.map(x=>'<div class="rpg-tile"><b>'+(state.lifetimeXP>=x[1]?'✦ ':'◇ ')+x[0]+'</b><p>Requires '+x[1].toLocaleString()+' lifetime XP.</p><span class="tag '+(state.lifetimeXP>=x[1]?'good':'')+'">'+(state.lifetimeXP>=x[1]?'UNLOCKED':'LOCKED')+'</span></div>').join("")+'</div>';
+    const shop=[["title-scout","Scout title",15],["title-veteran","Veteran title",30],["title-elite","Elite title",50],["aura","Neon aura",40]];
+    document.getElementById("shopBalance").textContent=coins+" coins";document.getElementById("shopList").innerHTML='<div class="rpg-grid">'+shop.map(x=>'<div class="rpg-tile"><b>'+x[1]+'</b><p>Cosmetic collectible.</p><button data-buy="'+x[0]+'" '+(state.inventory.includes(x[0])||coins<x[2]?'disabled':'')+'>'+(state.inventory.includes(x[0])?'Owned':'Buy · '+x[2]+' coins')+'</button></div>').join("")+'</div>';
+    const labels={"title-scout":"Scout title","title-veteran":"Veteran title","title-elite":"Elite title","aura":"Neon aura","boss-scout":"Scout Trial trophy","boss-guardian":"Guardian Trial trophy","boss-overlord":"Overlord Trial trophy","weekly":"Weekly champion badge"};
+    document.getElementById("inventoryCount").textContent=state.inventory.length+" items";document.getElementById("inventoryList").innerHTML=state.inventory.length?'<div class="rpg-grid">'+state.inventory.map(x=>'<div class="rpg-tile"><b>✧ '+(labels[x]||x)+'</b><p>Collected item</p></div>').join("")+'</div>':'<div class="panel-note">No items yet. Clear boss battles or visit the shop.</div>';
+    const stats=state.questStats,cats=["School","Skills","Fitness","Organization","Health","Custom"],total=Object.values(stats).reduce((a,b)=>a+(Number(b)||0),0);
+    document.getElementById("rpgStats").innerHTML='<div class="rpg-grid"><div class="rpg-tile"><b>'+total+'</b><p>Quests completed</p></div><div class="rpg-tile"><b>'+(state.workoutDays||[]).length+'</b><p>Training sessions</p></div><div class="rpg-tile"><b>'+Number(state.lifetimeXP||0).toLocaleString()+'</b><p>Lifetime XP</p></div><div class="rpg-tile"><b>'+streak()+'</b><p>Current streak</p></div>'+cats.map(c=>'<div class="rpg-tile"><b>'+(stats[c]||0)+'</b><p>'+c+'</p></div>').join("")+'</div>';
+    const a=achievementData().find(x=>x.name===state.featuredAchievement&&x.ok);document.getElementById("featuredAchievement").innerHTML=a?'<b>★ '+a.name+'</b><p class="muted small">'+a.desc+'</p>':'Unlock an achievement, then feature it from the gallery.';
+  }
+  render=function(){oldRender();document.querySelectorAll("#questList .quest").forEach(row=>{const b=row.querySelector("[data-toggle]"),q=state.quests.find(x=>x.id===(b&&b.dataset.toggle));const small=row.querySelector(".qbody small");if(q&&small)small.textContent=small.textContent.split(" · ")[0]+" · "+rarity(q);});document.querySelectorAll("#achievementList .achievement").forEach((row,i)=>{const a=achievementData()[i];if(a&&a.ok&&!row.querySelector("[data-feature-ach]")){const b=document.createElement("button");b.className="secondary";b.textContent="Feature";b.dataset.featureAch=a.name;row.appendChild(b);}});renderRPG();};
+  const oldToggle=toggleQuest;
+  toggleQuest=function(id){const q=state.quests.find(x=>x.id===id),before=currentRank().name;oldToggle(id);if(!q||!q.done)return;state.coins+=Math.max(1,Math.floor(q.xp/2));state.weeklyCount++;state.activeDays=Array.from(new Set(state.activeDays.concat(dayKey()))).slice(-400);state.questStats[q.category]=(state.questStats[q.category]||0)+1;scheduleSave();const after=currentRank().name;if(after!==before){const hero=document.querySelector(".hero");hero.classList.remove("rank-up");void hero.offsetWidth;hero.classList.add("rank-up");toast("RANK UP! "+after+" unlocked.");}renderRPG();};
+  document.getElementById("completeWorkoutBtn").addEventListener("click",function(){if((state.workoutDays||[]).includes(dayKey()))return;state.coins+=20;state.activeDays=Array.from(new Set(state.activeDays.concat(dayKey()))).slice(-400);scheduleSave();renderRPG();});
+  document.getElementById("achievementList").addEventListener("click",function(e){const b=e.target.closest("[data-feature-ach]");if(!b)return;state.featuredAchievement=b.dataset.featureAch;scheduleSave();renderRPG();toast("Achievement featured in RPG Hub.");});
+  document.getElementById("rpg").addEventListener("click",function(e){
+    const b=e.target.closest("[data-boss]"),buy=e.target.closest("[data-buy]");
+    if(b){const data={scout:[3,35,10],guardian:[6,65,20],overlord:[10,100,35]}[b.dataset.boss];if(!data||state.weeklyCount<data[0]||state.bossClaims.includes(b.dataset.boss))return;state.bossClaims.push(b.dataset.boss);state.xp+=data[1];state.lifetimeXP+=data[1];state.coins+=data[2];state.inventory.push("boss-"+b.dataset.boss);scheduleSave();render();toast("Boss cleared! +"+data[1]+" XP and "+data[2]+" coins.");}
+    if(buy){const costs={"title-scout":15,"title-veteran":30,"title-elite":50,"aura":40},cost=costs[buy.dataset.buy];if(!cost||state.inventory.includes(buy.dataset.buy)||state.coins<cost)return;state.coins-=cost;state.inventory.push(buy.dataset.buy);scheduleSave();renderRPG();toast("Item added to inventory.");}
+  });
+  renderRPG();
+})();
+</script>
+<script>
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
 </script>
 </body></html>
