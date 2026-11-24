@@ -62,7 +62,7 @@ html[data-theme="black"] .toast{background:#171717;border-color:#666;color:#fff}
     <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
     <div class="actions"><button id="signupBtn">Create account</button><button class="secondary" id="loginBtn">Log in</button></div>
     <p class="small muted" id="authMessage">Accounts and friends require Supabase setup. Guest mode works on this device only.</p>
-    <button class="secondary" id="guestBtn" style="width:100%;margin-top:8px">Continue as guest</button>
+    <button class="secondary" id="guestBtn" onclick="if(typeof window.enterGuestMode==='function'){window.enterGuestMode()}else{document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('syncStatus').textContent='GUEST MODE';document.getElementById('logoutBtn').classList.add('hidden');}" style="width:100%;margin-top:8px">Continue as guest</button>
   </section>
 
   <main id="app" class="hidden">
