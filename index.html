@@ -638,4 +638,37 @@ renderSystem();
 <script>
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
 </script>
+
+<script>
+/* Reliable signup click bridge: catches the tap before inline handlers and gives immediate feedback. */
+(function(){
+  document.addEventListener("click",function(event){
+    const button=event.target.closest("#signupBtn");
+    if(!button)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const message=document.getElementById("authMessage");
+    const setMessage=(value)=>{if(message)message.textContent=value;};
+    if(button.disabled)return;
+    button.disabled=true;
+    setMessage("Starting account creation…");
+    try{
+      if(typeof window.levelUpSignup!=="function"){
+        setMessage("Signup code did not load. Reload LEVEL UP. Your guest progress is unchanged.");
+        button.disabled=false;
+        return;
+      }
+      Promise.resolve(window.levelUpSignup()).catch(error=>{
+        console.error("Signup click bridge:",error);
+        setMessage(error&&error.message?error.message:"Account creation failed. Please try again.");
+      }).finally(()=>{button.disabled=false;});
+    }catch(error){
+      console.error("Signup click bridge:",error);
+      setMessage(error&&error.message?error.message:"Account creation failed. Please try again.");
+      button.disabled=false;
+    }
+  },true);
+})();
+</script>
+
 </body></html>
