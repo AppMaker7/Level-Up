@@ -130,6 +130,37 @@ html[data-theme="light"] .rank-row{background:#fff}
 .settings-hero{padding:20px;border:1px solid #28517a;border-radius:18px;background:radial-gradient(circle at 90% 0,rgba(67,155,228,.22),transparent 45%),linear-gradient(135deg,#101f35,#0b1525);margin-bottom:14px}.settings-hero h2{margin:7px 0 3px}.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 20px}.settings-tile{min-height:98px;padding:14px!important;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;background:var(--panel)!important;color:var(--text)!important;border:1px solid var(--line)!important;border-radius:15px}.settings-tile .ui-icon{margin:0;color:var(--accent)}.settings-tile b{font-size:14px}.settings-tile small{font-size:11px;color:var(--muted);font-weight:500}.sfx-panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px;margin:16px 0}.sound-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.sound-row:last-child{border-bottom:0}.sound-row span{display:grid;gap:2px}.sound-row small{font-size:11px;color:var(--muted)}.sound-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}.sound-actions{display:flex;align-items:center;gap:10px}.sound-actions button{padding:7px 10px;font-size:11px}body{padding-bottom:104px}
 @media(max-width:520px){.bottom-dock{height:68px;bottom:max(9px,env(safe-area-inset-bottom));padding:7px 9px}.settings-grid{gap:8px}.settings-tile{min-height:92px;padding:11px!important}.settings-hero{padding:16px}}
 
+/* SYSTEM AWAKENING — command center and progression layer */
+.awakening-panel{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(124,177,235,.32);border-radius:20px;background:radial-gradient(circle at 88% 5%,rgba(80,156,255,.2),transparent 33%),linear-gradient(135deg,#101d30,#090f1a 75%);box-shadow:0 18px 48px rgba(0,0,0,.24);margin:14px 0 20px}
+.awakening-panel:after{content:"";position:absolute;right:-45px;bottom:-100px;width:230px;height:230px;border:1px solid rgba(125,183,255,.13);border-radius:50%;box-shadow:0 0 0 24px rgba(125,183,255,.025),0 0 0 50px rgba(125,183,255,.02);pointer-events:none}
+.awakening-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.awakening-top h2{font-size:clamp(19px,4vw,25px);letter-spacing:1.4px;margin:6px 0}.awakening-top p{margin:0;color:#9fb5d2;font-size:12px}
+.awakening-orb{width:62px;height:62px;flex:0 0 62px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#1d3a5c,#0b1524);border:1px solid #5b91c7;color:#d7edff;font-size:29px;box-shadow:inset 0 0 22px rgba(95,168,255,.18),0 0 24px rgba(82,158,255,.12)}
+.awakening-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:19px 0 12px}
+.awakening-metrics>div{min-width:0;padding:11px 10px;border:1px solid rgba(132,164,203,.19);border-radius:13px;background:rgba(9,18,31,.68)}
+.awakening-metrics small,.awakening-metrics span{display:block;color:#8fa7c5;font-size:9px;letter-spacing:.8px}.awakening-metrics b{display:block;font-size:22px;line-height:1.25;margin:4px 0;color:#f2f7ff}.awakening-metrics span{font-size:10px;letter-spacing:0}
+.awakening-footer{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(132,164,203,.2);padding-top:12px;color:#9fc5ee;font-size:9px;letter-spacing:1px;font-weight:800}
+.awakening-section-title{margin-top:20px!important}
+.daily-challenge-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.daily-challenge{min-width:0;padding:13px;border-radius:15px;background:var(--panel);border:1px solid var(--line)}
+.daily-challenge.complete{border-color:#3e9276;background:linear-gradient(145deg,rgba(32,91,72,.22),var(--panel))}
+.daily-challenge small{display:block;color:var(--muted);font-size:9px;letter-spacing:1px;font-weight:800}
+.daily-challenge b{display:block;font-size:13px;margin:6px 0}.daily-challenge p{font-size:11px;color:var(--muted);min-height:34px;margin:0 0 10px}
+.daily-challenge .challenge-reward{display:flex;gap:8px;font-size:10px;color:#a9cfff;margin-bottom:10px}
+.daily-challenge button{width:100%;padding:8px 9px;font-size:11px}.daily-challenge button.claimed{background:#1d4b3b;color:#9ce8c4}
+.category-progress{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.category-meter{padding:11px 12px;background:var(--panel);border:1px solid var(--line);border-radius:13px}
+.category-meter-head{display:flex;justify-content:space-between;gap:8px;font-size:11px}.category-meter-head span{color:var(--muted)}
+.category-meter .bar{height:6px;margin:9px 0 0}
+.skill-tree-awakening{padding:15px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(160deg,var(--panel),rgba(8,15,26,.65))}
+.skill-tree-head{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;letter-spacing:1px;margin-bottom:13px}
+.skill-tree-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.skill-node{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:13px;background:rgba(7,13,23,.38);min-width:0}
+.skill-node.unlocked{border-color:#477d9e;background:linear-gradient(130deg,rgba(46,100,137,.2),rgba(7,13,23,.4))}
+.skill-node-symbol{width:30px;height:30px;flex:0 0 30px;border:1px solid #55728e;border-radius:10px;display:grid;place-items:center;color:#b7d8ff}
+.skill-node.locked .skill-node-symbol{color:#7b8ca1;border-color:#435166}
+.skill-node-copy{min-width:0}.skill-node-copy small{display:block;color:var(--muted);font-size:8px;letter-spacing:.8px}.skill-node-copy b{display:block;font-size:12px;margin:4px 0}.skill-node-copy p{margin:0 0 7px;color:var(--muted);font-size:10px}.skill-node-copy .tag{display:inline-block;font-size:8px}
+@media(max-width:620px){.awakening-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.daily-challenge-board{grid-template-columns:1fr}.daily-challenge p{min-height:0}.skill-tree-track{grid-template-columns:1fr}.awakening-panel{padding:15px}.category-progress{grid-template-columns:1fr}}
+
 /* Rank emblems: strict monochrome black-and-white finish. */
 .rank-row{--rank-color:#fff!important}
 .rank-row .rank-icon{background:#050505!important;color:#fff!important;border:1px solid #f2f2f2;box-shadow:inset 0 0 0 2px #181818,0 2px 8px rgba(0,0,0,.35)}
@@ -230,6 +261,20 @@ html[data-theme="light"] .rank-row{background:#fff}
 <div class="system-panel"><h3>◇ SYSTEM LOG</h3><div id="systemLog"></div></div></section>
         <section class="view active" id="home">
           <div class="section-title"><h2>Dashboard</h2><span class="tag" id="dateLabel"></span></div>
+          <div class="awakening-panel">
+            <div class="awakening-top"><div><div class="system-kicker">LEVEL UP // SYSTEM AWAKENING</div><h2>PLAYER COMMAND CENTER</h2><p id="awakeningGreeting">Your next evolution starts here.</p></div><div class="awakening-orb"><span>✦</span></div></div>
+            <div class="awakening-metrics">
+              <div><small>PLAYER LEVEL</small><b id="awakeningLevel">1</b><span id="awakeningClass">VANGUARD</span></div>
+              <div><small>ACTIVE STREAK</small><b id="awakeningStreak">0</b><span>days</span></div>
+              <div><small>COINS</small><b id="awakeningCoins">0</b><span>available</span></div>
+              <div><small>QUESTS CLEARED</small><b id="awakeningCleared">0</b><span>all time</span></div>
+            </div>
+            <div class="awakening-footer"><span id="awakeningTitle">UNTITLEd PLAYER</span><span id="awakeningSkill">NEXT LEVEL · 100 XP</span></div>
+          </div>
+          <div class="section-title awakening-section-title"><h2>Daily operations</h2><span class="tag">Bonus objectives</span></div>
+          <div id="dailyChallengeBoard" class="daily-challenge-board"></div>
+          <div class="section-title awakening-section-title"><h2>Attribute development</h2><span class="tag">Lifetime progress</span></div>
+          <div id="categoryProgress" class="category-progress"></div>
           <div class="card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="bar"><span id="dailyBar"></span></div><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div>
           <div class="section-title" style="margin-top:18px"><h2>Quick actions</h2></div>
           <div class="quick"><button data-go="quests"><span class="ui-icon" data-icon="scroll"></span> Open daily quests</button><button data-go="workout"><span class="ui-icon" data-icon="dumbbell"></span> Training grounds</button><button data-go="coach"><span class="ui-icon" data-icon="bot"></span> Ask AI Coach</button><button data-go="ranks"><span class="ui-icon" data-icon="trophy"></span> View rank hall</button></div>
@@ -415,80 +460,21 @@ const defaultQuests=[
 {id:"health1",name:"Follow a relaxing bedtime routine",category:"Health",xp:5,done:false,custom:false},
 {id:"bonus1",name:"Learn something new",category:"Skills",xp:5,done:false,custom:false}
 ];
-function achievementData(){const done=completed(),cats=["School","Skills","Fitness","Organization","Health"];return [
+function achievementData(){
+const done=completed(),cats=["School","Skills","Fitness","Organization","Health"],stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+(Number(b)||0),0);
+return [
 {name:"First Steps",desc:"Complete 5 quests in one day",icon:"footprints",ok:done.length>=5},
 {name:"Scholar",desc:"Complete both school quests",icon:"graduation",ok:state.quests.filter(q=>q.category==="School"&&!q.custom).every(q=>q.done)},
-{name:"Jack of All Trades",desc:"Complete quests across all core categories",icon:"medal",ok:cats.every(c=>state.quests.some(q=>q.category===c&&q.done))},
+{name:"Jack of All Trades",desc:"Complete quests across all core categories",icon:"medal",ok:cats.every(c=>(stats[c]||0)>0)},
 {name:"Quest Hunter",desc:"Complete every quest today",icon:"target",ok:state.quests.length>0&&done.length===state.quests.length},
 {name:"XP Collector",desc:"Earn 150 XP in a day",icon:"zap",ok:dailyXP()>=150},
-{name:"XP Spark",desc:"Earn 250 lifetime XP",icon:"spark",ok:state.lifetimeXP>=250},
-{name:"XP Builder",desc:"Earn 500 lifetime XP",icon:"building",ok:state.lifetimeXP>=500},
-{name:"XP Runner",desc:"Earn 1,000 lifetime XP",icon:"runner",ok:state.lifetimeXP>=1000},
-{name:"XP Veteran",desc:"Earn 2,500 lifetime XP",icon:"veteran",ok:state.lifetimeXP>=2500},
-{name:"XP Champion",desc:"Earn 5,000 lifetime XP",icon:"champion",ok:state.lifetimeXP>=5000},
-{name:"XP Titan",desc:"Earn 10,000 lifetime XP",icon:"titan",ok:state.lifetimeXP>=10000},
-{name:"XP Legend",desc:"Earn 25,000 lifetime XP",icon:"xp-legend",ok:state.lifetimeXP>=25000},
-{name:"XP Monarch",desc:"Earn 50,000 lifetime XP",icon:"monarch",ok:state.lifetimeXP>=50000},
-{name:"XP Beyond",desc:"Earn 100,000 lifetime XP",icon:"beyond",ok:state.lifetimeXP>=100000},
-{name:"XP Infinite",desc:"Earn 200,000 lifetime XP",icon:"infinite",ok:state.lifetimeXP>=200000},
-{name:"Training: Initiate",desc:"Complete 1 workout reward",icon:"training-one",ok:(state.workoutDays||[]).length>=1},
-{name:"Training: Regular",desc:"Complete 3 workout rewards",icon:"training-three",ok:(state.workoutDays||[]).length>=3},
-{name:"Training: Dedicated",desc:"Complete 7 workout rewards",icon:"training-seven",ok:(state.workoutDays||[]).length>=7},
-{name:"Training: Consistent",desc:"Complete 14 workout rewards",icon:"training-fourteen",ok:(state.workoutDays||[]).length>=14},
-{name:"Training: Committed",desc:"Complete 30 workout rewards",icon:"training-thirty",ok:(state.workoutDays||[]).length>=30},
-{name:"Training: Veteran",desc:"Complete 50 workout rewards",icon:"training-fifty",ok:(state.workoutDays||[]).length>=50},
-{name:"Training: Master",desc:"Complete 100 workout rewards",icon:"training-hundred",ok:(state.workoutDays||[]).length>=100},
-{name:"Daily Starter",desc:"Complete 1 quest today",icon:"daily-one",ok:done.length>=1},
-{name:"Daily Momentum",desc:"Complete 3 quests today",icon:"daily-three",ok:done.length>=3},
-{name:"Daily Finisher",desc:"Complete 8 quests today",icon:"daily-eight",ok:done.length>=8},
-{name:"Perfect Day",desc:"Complete every daily quest",icon:"perfect-day",ok:state.quests.length>0&&done.length===state.quests.length},
-{name:"Focused Mind",desc:"Earn 25 XP in one day",icon:"focus",ok:dailyXP()>=25},
-{name:"Big Day",desc:"Earn 50 XP in one day",icon:"big-day",ok:dailyXP()>=50},
-{name:"Power Day",desc:"Earn 100 XP in one day",icon:"power-day",ok:dailyXP()>=100},
-{name:"Skill Seeker",desc:"Complete a Skills quest today",icon:"skill-seeker",ok:done.some(q=>q.category==="Skills")},
-{name:"Fitness First",desc:"Complete a Fitness quest today",icon:"fitness-first",ok:done.some(q=>q.category==="Fitness")},
-{name:"Organized",desc:"Complete an Organization quest today",icon:"organized",ok:done.some(q=>q.category==="Organization")},
-{name:"Healthy Habits",desc:"Complete a Health quest today",icon:"healthy-habits",ok:done.some(q=>q.category==="Health")},
-{name:"School Streak",desc:"Complete 3 School quests today",icon:"school-streak",ok:done.filter(q=>q.category==="School").length>=3},
-{name:"Category Collector",desc:"Complete quests in 3 categories today",icon:"category-collector",ok:new Set(done.map(q=>q.category)).size>=3},
-{name:"All-Rounder",desc:"Complete quests in 5 categories today",icon:"all-rounder",ok:new Set(done.map(q=>q.category)).size>=5},
-{name:"Rookie Rank",desc:"Reach Rookie rank",icon:"rookie-rank",ok:state.xp>=1500},
-{name:"Adventurer Rank",desc:"Reach Adventurer rank",icon:"adventurer-rank",ok:state.xp>=4000},
-{name:"Elite Rank",desc:"Reach Elite rank",icon:"elite-rank",ok:state.xp>=8000},
-{name:"Master Rank",desc:"Reach Master rank",icon:"master-rank",ok:state.xp>=14000},
-{name:"Legend Rank",desc:"Reach Legend rank",icon:"legend-rank",ok:state.xp>=22000},
-{name:"Mythic Rank",desc:"Reach Mythic rank",icon:"mythic-rank",ok:state.xp>=35000},
-{name:"Ascendant Rank",desc:"Reach Ascendant rank",icon:"ascendant-rank",ok:state.xp>=50000},
-{name:"Overlord Rank",desc:"Reach Overlord rank",icon:"overlord-rank",ok:state.xp>=70000},
-{name:"Celestial Rank",desc:"Reach Celestial rank",icon:"celestial-rank",ok:state.xp>=95000},
-{name:"Divine Rank",desc:"Reach Divine rank",icon:"divine-rank",ok:state.xp>=125000},
-{name:"Eternal Rank",desc:"Reach Eternal rank",icon:"eternal-rank",ok:state.xp>=160000},
-{name:"Transcendent Rank",desc:"Reach Transcendent rank",icon:"transcendent-rank",ok:state.xp>=200000},
-{name:"Apex Rank",desc:"Reach Apex rank",icon:"apex-rank",ok:state.xp>=250000},
-{name:"Sovereign Rank",desc:"Reach Sovereign rank",icon:"sovereign-rank",ok:state.xp>=310000}
-];}
-let state={player:"Player",xp:0,lifetimeXP:0,monthKey:localMonth(),customRanks:null,theme:{preset:"black",accent:"#ffffff"},quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[],achievements:[],workoutDays:[],questReminders:false,sfx:{enabled:false,volume:50,quest:true,rank:true,achievement:true,chest:true,notify:true}};
-let user=null, saveTimer=null, currentView="home", guestModeActive=false;
-const GUEST_BACKUP_KEY="levelup-life-rpg-guest-pending-v1";
-function readGuestBackup(){try{const raw=localStorage.getItem(GUEST_BACKUP_KEY);return raw?JSON.parse(raw):null;}catch(e){console.warn("Guest backup could not be read:",e);return null;}}
-function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
-function localMonth(){return localDate().slice(0,7);}
-function activeRanks(){return Array.isArray(state.customRanks)&&state.customRanks.length?state.customRanks:ranks;}
-function applyTheme(){const t=state.theme||{preset:"black",accent:"#ffffff"},base=THEMES[t.preset]||THEMES.black,root=document.documentElement;root.dataset.theme=t.preset||"black";for(const k of ["bg","panel","panel2","line","text","muted"])root.style.setProperty("--"+k,base[k]);root.style.setProperty("--page-bg",base.page);root.style.setProperty("--accent",t.accent||base.accent);document.body.style.background=base.page;const picker=document.getElementById("accentColor");if(picker)picker.value=t.accent||base.accent;}
-function checkMonthReset(){if(state.monthKey!==localMonth()){state.xp=0;state.monthKey=localMonth();state.quests=state.quests.map(q=>({...q,done:false}));state.lastReset=localDate();state.activity.push("New monthly season started — rank reset to Beginner.");state.activity=state.activity.slice(-30);scheduleSave();toast("New month, fresh rank climb!");}}
-function freshDay(){state.quests=state.quests.map(q=>({...q,done:false}));state.lastReset=localDate();}
-function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",2600);}
-function currentRank(){const list=activeRanks();let r=list[0];for(const item of list)if(state.xp>=item.xp)r=item;return r;}
-function rankIndex(){return activeRanks().findIndex(r=>r.name===currentRank().name);}
-function progress(){const list=activeRanks(),i=rankIndex(),cur=list[i],next=list[i+1];return next?{pct:Math.min(100,(state.xp-cur.xp)/(next.xp-cur.xp)*100),remaining:next.xp-state.xp,next}: {pct:100,remaining:0,next:null};}
-function completed(){return state.quests.filter(q=>q.done);}
-function dailyXP(){return completed().reduce((s,q)=>s+q.xp,0);}
-function achievementData(){const done=completed(),cats=["School","Skills","Fitness","Organization","Health"];return [
-{name:"First Steps",desc:"Complete 5 quests in one day",icon:"footprints",ok:done.length>=5},
-{name:"Scholar",desc:"Complete both school quests",icon:"graduation",ok:state.quests.filter(q=>q.category==="School"&&!q.custom).every(q=>q.done)},
-{name:"Jack of All Trades",desc:"Complete quests across all core categories",icon:"medal",ok:cats.every(c=>state.quests.some(q=>q.category===c&&q.done))},
-{name:"Quest Hunter",desc:"Complete every quest today",icon:"target",ok:state.quests.length>0&&done.length===state.quests.length},
-{name:"XP Collector",desc:"Earn 150 XP in a day",icon:"zap",ok:dailyXP()>=150}
+{name:"Rising Force",desc:"Reach 1,000 lifetime XP",icon:"trending-up",ok:(state.lifetimeXP||0)>=1000},
+{name:"Seasoned Player",desc:"Reach 5,000 lifetime XP",icon:"award",ok:(state.lifetimeXP||0)>=5000},
+{name:"Elite Mindset",desc:"Reach 10,000 lifetime XP",icon:"crown",ok:(state.lifetimeXP||0)>=10000},
+{name:"Mission Specialist",desc:"Complete 25 quests across your journey",icon:"crosshair",ok:total>=25},
+{name:"Quest Veteran",desc:"Complete 100 quests across your journey",icon:"shield-check",ok:total>=100},
+{name:"Training Log",desc:"Log 5 training sessions",icon:"dumbbell",ok:(state.workoutDays||[]).length>=5},
+{name:"Consistent",desc:"Build a 7-day activity streak",icon:"calendar-check",ok:(state.activeDays||[]).length>=7 && new Set(state.activeDays||[]).size>=7}
 ];}
 function normalize(s){if(!s||typeof s!=="object")return;state={...state,...s};if(!Array.isArray(state.quests))state.quests=structuredClone(defaultQuests);if(!Array.isArray(state.activity))state.activity=[];if(!Number.isFinite(state.xp))state.xp=0;if(!Number.isFinite(state.lifetimeXP))state.lifetimeXP=state.xp;if(!state.monthKey)state.monthKey=localMonth();if(!state.theme||!THEMES[state.theme.preset])state.theme={preset:"modern",accent:THEMES.modern.accent};else state.theme={...state.theme,accent:state.theme.accent||THEMES[state.theme.preset].accent};if(!Array.isArray(state.workoutDays))state.workoutDays=[];if(typeof state.questReminders!=="boolean")state.questReminders=false;if(!state.sfx||typeof state.sfx!=="object")state.sfx={enabled:false,volume:50,quest:true,rank:true,achievement:true,chest:true,notify:true};else state.sfx={enabled:false,volume:50,quest:true,rank:true,achievement:true,chest:true,notify:true,...state.sfx};state.sfx.volume=Math.max(0,Math.min(100,Number(state.sfx.volume)||0));if(Array.isArray(state.customRanks)&&state.customRanks.length){ranks=state.customRanks;while(ranks.length<DEFAULT_RANKS.length){const template=DEFAULT_RANKS[ranks.length],last=ranks[ranks.length-1];ranks.push({...template,xp:Math.max(template.xp,(last?.xp||0)+15000)});}state.customRanks=ranks;}if(state.lastReset!==localDate())freshDay();checkMonthReset();}
 function loadLocal(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)normalize(JSON.parse(raw));else localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn(e);}}
@@ -590,8 +576,18 @@ let lastQuestReminder=Date.now();setInterval(()=>{if(!state.questReminders||docu
     document.getElementById("rpgCoins").textContent=coins;document.getElementById("rpgStreak").textContent=streak();document.getElementById("rpgWeekly").textContent=n+"/12";document.getElementById("weeklyBar").style.width=(n/12*100)+"%";document.getElementById("weeklyStatus").textContent=n>=12?"Completed":"In progress";
     const bosses=[["scout","Scout Trial",3,35,10],["guardian","Guardian Trial",6,65,20],["overlord","Overlord Trial",10,100,35]];
     document.getElementById("bossList").innerHTML=bosses.map(b=>{const done=state.bossClaims.includes(b[0]),ready=n>=b[2];return '<div class="rpg-tile"><b>'+b[1]+'</b><p>Complete '+b[2]+' quests this week. Reward: '+b[3]+' XP + '+b[4]+' coins.</p><div class="bar"><span style="width:'+Math.min(100,n/b[2]*100)+'%"></span></div><button data-boss="'+b[0]+'" '+(!ready||done?'disabled':'')+'>'+(done?'Cleared':ready?'Claim reward':'Progress '+n+'/'+b[2])+'</button></div>';}).join("");
-    const skills=[["Focused Mind",100],["Discipline Core",500],["Adaptive Thinking",1500],["Resilience",4000],["Mastery",10000]];
-    document.getElementById("skillTree").innerHTML='<div class="rpg-grid">'+skills.map(x=>'<div class="rpg-tile"><b>'+(state.lifetimeXP>=x[1]?'✦ ':'◇ ')+x[0]+'</b><p>Requires '+x[1].toLocaleString()+' lifetime XP.</p><span class="tag '+(state.lifetimeXP>=x[1]?'good':'')+'">'+(state.lifetimeXP>=x[1]?'UNLOCKED':'LOCKED')+'</span></div>').join("")+'</div>';
+    const skills=[
+      ["Focused Mind",100,"FOCUS","Build a steady quest rhythm."],
+      ["Discipline Core",500,"CORE","Strengthen your consistency record."],
+      ["Adaptive Thinking",1500,"MIND","Explore more than one quest category."],
+      ["Resilience",3000,"GUARD","Keep progress moving at your own pace."],
+      ["Strategist",6000,"TACTICS","Plan your week with intention."],
+      ["Creator's Spark",10000,"CREATION","Turn ideas into completed projects."],
+      ["Mastery",20000,"MASTERY","A milestone for long-term progress."],
+      ["Sovereign Mind",40000,"ASCENSION","A high-tier lifetime XP milestone."]
+    ];
+    const unlocked=skills.filter(x=>state.lifetimeXP>=x[1]).length;
+    document.getElementById("skillTree").innerHTML='<div class="skill-tree-awakening"><div class="skill-tree-head"><b>AWAKENING PATH</b><span>'+unlocked+' / '+skills.length+' NODES</span></div><div class="skill-tree-track">'+skills.map((x,i)=>'<div class="skill-node '+(state.lifetimeXP>=x[1]?'unlocked':'locked')+'"><div class="skill-node-symbol">'+(state.lifetimeXP>=x[1]?'✦':'◇')+'</div><div class="skill-node-copy"><small>'+x[2]+' · NODE '+String(i+1).padStart(2,"0")+'</small><b>'+x[0]+'</b><p>'+x[3]+'</p><span class="tag '+(state.lifetimeXP>=x[1]?'good':'')+'">'+(state.lifetimeXP>=x[1]?'AWAKENED':'LOCKED · '+x[1].toLocaleString()+' XP')+'</span></div></div>').join("")+'</div><p class="muted small">Nodes unlock automatically through lifetime XP. No coins, purchases, or paywalls required.</p></div>';
     const shop=[["title-scout","Scout title",15],["title-veteran","Veteran title",30],["title-elite","Elite title",50],["aura","Neon aura",40]];
     document.getElementById("shopBalance").textContent=coins+" coins";document.getElementById("shopList").innerHTML='<div class="rpg-grid">'+shop.map(x=>'<div class="rpg-tile"><b>'+x[1]+'</b><p>Cosmetic collectible.</p><button data-buy="'+x[0]+'" '+(state.inventory.includes(x[0])||coins<x[2]?'disabled':'')+'>'+(state.inventory.includes(x[0])?'Owned':'Buy · '+x[2]+' coins')+'</button></div>').join("")+'</div>';
     const labels={"title-scout":"Scout title","title-veteran":"Veteran title","title-elite":"Elite title","aura":"Neon aura","boss-scout":"Scout Trial trophy","boss-guardian":"Guardian Trial trophy","boss-overlord":"Overlord Trial trophy","weekly":"Weekly champion badge"};
@@ -730,6 +726,58 @@ window.levelUpLogin = function(){
     }
   });
 };
+</script>
+
+<script>
+/* SYSTEM AWAKENING runtime: additive state only; existing saves remain intact. */
+(function(){
+  const num=v=>Math.max(0,Number(v)||0);
+  const dailyTasks=()=>{
+    const done=completed(),cats=state.questStats||{},total=Object.values(cats).reduce((a,b)=>a+num(b),0);
+    return [
+      {id:"clear-two",name:"Clear the board",desc:"Complete any 2 daily quests.",ok:done.length>=2,xp:30,coins:10},
+      {id:"focus",name:"Focus protocol",desc:"Complete a School or Skills quest.",ok:done.some(q=>["School","Skills"].includes(q.category)),xp:20,coins:8},
+      {id:"balance",name:"Balance protocol",desc:"Complete an Organization or Health quest.",ok:done.some(q=>["Organization","Health"].includes(q.category)),xp:20,coins:8}
+    ];
+  };
+  function renderAwakening(){
+    if(!document.getElementById("dailyChallengeBoard"))return;
+    const stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+num(b),0);
+    const life=num(state.lifetimeXP),level=Math.max(1,Math.floor(Math.sqrt(life/100))+1),next=level*level*100,streakCount=(state.activeDays||[]).length;
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+    set("awakeningGreeting","Welcome back, "+(state.player||"Player")+". Your progress is saved.");
+    set("awakeningLevel",level.toLocaleString());set("awakeningClass",(state.systemClass||"Vanguard").toUpperCase());
+    set("awakeningStreak",String(streakCount));set("awakeningCoins",String(num(state.coins)));
+    set("awakeningCleared",total.toLocaleString());set("awakeningTitle",(state.equippedTitle||"UNTITLED PLAYER").replace("title-","").replaceAll("-"," ").toUpperCase());
+    set("awakeningSkill","LEVEL "+level+" · "+Math.max(0,next-life).toLocaleString()+" XP TO NEXT");
+    const claimed=state.dailyChallengeClaims&&state.dailyChallengeClaims[localDate()]||[];
+    document.getElementById("dailyChallengeBoard").innerHTML=dailyTasks().map(t=>{
+      const did=claimed.includes(t.id),ready=t.ok;
+      return '<article class="daily-challenge '+(ready?'complete':'')+'"><small>'+ (ready?'OBJECTIVE COMPLETE':'ACTIVE OBJECTIVE') +'</small><b>'+t.name+'</b><p>'+t.desc+'</p><div class="challenge-reward"><span>+'+t.xp+' XP</span><span>+'+t.coins+' coins</span></div><button type="button" class="'+(did?'claimed':'secondary')+'" data-claim-challenge="'+t.id+'" '+(!ready||did?'disabled':'')+'>'+(did?'REWARD CLAIMED':ready?'CLAIM REWARD':'IN PROGRESS')+'</button></article>';
+    }).join("");
+    const categories=["School","Skills","Fitness","Organization","Health","Custom"],max=Math.max(1,...categories.map(x=>num(stats[x])));
+    document.getElementById("categoryProgress").innerHTML=categories.map(cat=>'<div class="category-meter"><div class="category-meter-head"><b>'+cat+'</b><span>'+num(stats[cat])+' cleared</span></div><div class="bar"><span style="width:'+Math.min(100,num(stats[cat])/max*100)+'%"></span></div></div>').join("");
+  }
+  const previousRender=render;
+  render=function(){previousRender();renderAwakening();};
+  const board=document.getElementById("dailyChallengeBoard");
+  board?.addEventListener("click",function(e){
+    const b=e.target.closest("[data-claim-challenge]");if(!b)return;
+    const task=dailyTasks().find(x=>x.id===b.dataset.claimChallenge);if(!task||!task.ok)return;
+    state.dailyChallengeClaims=state.dailyChallengeClaims||{};
+    const day=localDate(),claimed=state.dailyChallengeClaims[day]||[];
+    if(claimed.includes(task.id))return;
+    state.dailyChallengeClaims[day]=claimed.concat(task.id);
+    state.xp=num(state.xp)+task.xp;state.lifetimeXP=lifeSafe(state.lifetimeXP)+task.xp;
+    state.coins=num(state.coins)+task.coins;
+    state.activity=state.activity||[];state.activity.push("Claimed "+task.name+" (+"+task.xp+" XP, +"+task.coins+" coins)");state.activity=state.activity.slice(-30);
+    scheduleSave();playSfx("chest");render();toast("Objective reward claimed · +"+task.xp+" XP · +"+task.coins+" coins");
+  });
+  function lifeSafe(v){return num(v);}
+  const previousNormalize=normalize;
+  normalize=function(data){previousNormalize(data);if(!state.dailyChallengeClaims||typeof state.dailyChallengeClaims!=="object")state.dailyChallengeClaims={};};
+  renderAwakening();
+})();
 </script>
 
 </body></html>
