@@ -703,4 +703,33 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
 })();
 </script>
 
+<script>
+/* Define the login action after the app's main script has initialized. */
+window.levelUpLogin = function(){
+  return withAuthBusy(async()=>{
+    if(!cloud)return authMsg("Account setup is not connected yet. Check the Supabase connection.");
+    const email=document.getElementById("email").value.trim();
+    const password=document.getElementById("password").value;
+    if(!email||!password)return authMsg("Enter your email and password.");
+    const guestSnapshot=readGuestBackup();
+    const {data,error}=await cloud.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    user=data.user;
+    const loaded=await loadCloud(guestSnapshot);
+    if(!loaded){await cloud.auth.signOut();user=null;return;}
+    guestModeActive=false;
+    dailyResetCheck();
+    showApp();
+    const meta=user.user_metadata||{};
+    if(meta.username){
+      const {error:profileError}=await cloud.from("profiles").upsert(
+        {user_id:user.id,username:String(meta.username).toLowerCase(),display_name:state.player||meta.username},
+        {onConflict:"user_id"}
+      );
+      if(profileError)console.warn("Profile metadata sync:",profileError);
+    }
+  });
+};
+</script>
+
 </body></html>
