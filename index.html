@@ -131,6 +131,7 @@ html[data-theme="light"] .rank-row{background:#fff}
 @media(max-width:520px){.bottom-dock{height:68px;bottom:max(9px,env(safe-area-inset-bottom));padding:7px 9px}.settings-grid{gap:8px}.settings-tile{min-height:92px;padding:11px!important}.settings-hero{padding:16px}}
 
 /* SYSTEM AWAKENING — command center and progression layer */
+.quest-tools{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:10px 0}.quest-tools input,.quest-tools select{min-width:0;padding:10px;background:var(--panel);border-color:var(--line);color:var(--text);border-radius:11px;font-size:12px}@media(max-width:520px){.quest-tools{grid-template-columns:1fr 1fr}.quest-tools input{grid-column:1/-1}}
 .awakening-panel{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(124,177,235,.32);border-radius:20px;background:radial-gradient(circle at 88% 5%,rgba(80,156,255,.2),transparent 33%),linear-gradient(135deg,#101d30,#090f1a 75%);box-shadow:0 18px 48px rgba(0,0,0,.24);margin:14px 0 20px}
 .awakening-panel:after{content:"";position:absolute;right:-45px;bottom:-100px;width:230px;height:230px;border:1px solid rgba(125,183,255,.13);border-radius:50%;box-shadow:0 0 0 24px rgba(125,183,255,.025),0 0 0 50px rgba(125,183,255,.02);pointer-events:none}
 .awakening-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.awakening-top h2{font-size:clamp(19px,4vw,25px);letter-spacing:1.4px;margin:6px 0}.awakening-top p{margin:0;color:#9fb5d2;font-size:12px}
@@ -283,7 +284,7 @@ html[data-theme="light"] .rank-row{background:#fff}
         </section>
         <section class="view" id="quests">
           <div class="section-title"><h2>Daily Quests</h2><span class="tag" id="questCounter"></span></div>
-          <div id="questList"></div>
+          <div class="quest-tools"><input id="questSearch" type="search" placeholder="Search your missions..." aria-label="Search quests"><select id="questFilter" aria-label="Filter quests"><option value="All">All categories</option><option>School</option><option>Skills</option><option>Fitness</option><option>Organization</option><option>Health</option><option>Custom</option></select><select id="questSort" aria-label="Sort quests"><option value="default">Default order</option><option value="xp-high">Highest XP</option><option value="xp-low">Lowest XP</option><option value="az">A to Z</option></select></div><div id="questList"></div>
           <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Create a custom quest</h3><div class="formrow"><div class="field"><label>Quest name</label><input id="newQuestName" placeholder="e.g. Practice guitar"></div><div class="field"><label>Category</label><select id="newQuestCategory"><option>Custom</option><option>School</option><option>Skills</option><option>Fitness</option><option>Organization</option><option>Health</option></select></div><div class="field" style="max-width:130px"><label>XP reward</label><select id="newQuestXP"><option>2</option><option selected>5</option><option>8</option><option>10</option><option>15</option></select></div></div><button id="addQuestBtn">＋ Add quest</button></div>
         </section>
         <section class="view" id="workout">
@@ -762,8 +763,29 @@ window.levelUpLogin = function(){
     const categories=["School","Skills","Fitness","Organization","Health","Custom"],max=Math.max(1,...categories.map(x=>num(stats[x])));
     document.getElementById("categoryProgress").innerHTML=categories.map(cat=>'<div class="category-meter"><div class="category-meter-head"><b>'+cat+'</b><span>'+num(stats[cat])+' cleared</span></div><div class="bar"><span style="width:'+Math.min(100,num(stats[cat])/max*100)+'%"></span></div></div>').join("");
   }
+  function applyQuestFilters(){
+    const list=document.getElementById("questList");if(!list)return;
+    const query=(document.getElementById("questSearch")?.value||"").trim().toLowerCase();
+    const category=document.getElementById("questFilter")?.value||"All";
+    const sort=document.getElementById("questSort")?.value||"default";
+    const rows=[...list.querySelectorAll(".quest")];
+    rows.forEach(row=>{
+      const label=row.querySelector(".qbody small")?.textContent||"";
+      const cat=label.split(" · ")[0].trim();
+      row.hidden=!!((category!=="All"&&cat!==category)||(query&&!row.textContent.toLowerCase().includes(query)));
+    });
+    const visible=rows.filter(row=>!row.hidden);
+    visible.sort((a,b)=>{
+      if(sort==="az")return (a.querySelector(".qbody b")?.textContent||"").localeCompare(b.querySelector(".qbody b")?.textContent||"");
+      const xp=row=>Number((row.querySelector(".xp-pill")?.textContent||"").replace(/[^0-9]/g,""))||0;
+      if(sort==="xp-high")return xp(b)-xp(a);
+      if(sort==="xp-low")return xp(a)-xp(b);
+      return rows.indexOf(a)-rows.indexOf(b);
+    }).forEach(row=>list.appendChild(row));
+  }
+  ["questSearch","questFilter","questSort"].forEach(id=>document.getElementById(id)?.addEventListener(id==="questSearch"?"input":"change",applyQuestFilters));
   const previousRender=render;
-  render=function(){previousRender();renderAwakening();};
+  render=function(){previousRender();renderAwakening();applyQuestFilters();};
   const board=document.getElementById("dailyChallengeBoard");
   board?.addEventListener("click",function(e){
     const b=e.target.closest("[data-claim-challenge]");if(!b)return;
