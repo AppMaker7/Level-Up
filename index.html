@@ -535,7 +535,6 @@ document.addEventListener("click",e=>{const open=e.target.closest("[data-open-sf
 window.enterGuestMode=function(){user=null;guestModeActive=true;try{loadLocal();localStorage.setItem(GUEST_BACKUP_KEY,JSON.stringify(state));}catch(e){console.error("Guest load failed:",e);}const auth=document.getElementById("authScreen"),app=document.getElementById("app"),logout=document.getElementById("logoutBtn"),status=document.getElementById("syncStatus"),saveMode=document.getElementById("saveMode");auth.classList.add("hidden");app.classList.remove("hidden");logout.classList.add("hidden");status.textContent="GUEST MODE";if(saveMode)saveMode.textContent="Guest mode: progress is saved in this browser only.";try{render();}catch(e){console.error("Guest screen render failed:",e);document.getElementById("rankName").textContent="Beginner";document.getElementById("playerLabel").textContent="Guest";}};document.getElementById("guestBtn").onclick=window.enterGuestMode;
 async function withAuthBusy(task){const buttons=["signupBtn","loginBtn","forgotPasswordBtn"].map(id=>document.getElementById(id));buttons.forEach(b=>b.disabled=true);try{await task();}catch(error){console.error("Account action failed:",error);authMsg(error?.message||"Something went wrong. Please try again.");}finally{buttons.forEach(b=>b.disabled=false);}}
 
-window.levelUpLogin=()=>withAuthBusy(async()=>{if(!cloud)return authMsg("Account setup is not connected yet. The app still needs your Supabase Project URL and publishable/anon key.");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;if(!email||!password)return authMsg("Enter your email and password.");const guestSnapshot=readGuestBackup();const {data,error}=await cloud.auth.signInWithPassword({email,password});if(error)throw error;user=data.user;const loaded=await loadCloud(guestSnapshot);if(!loaded){await cloud.auth.signOut();user=null;return;}guestModeActive=false;dailyResetCheck();showApp();const meta=user.user_metadata||{};if(meta.username){const {error:profileError}=await cloud.from("profiles").upsert({user_id:user.id,username:String(meta.username).toLowerCase(),display_name:state.player||meta.username},{onConflict:"user_id"});if(profileError)console.warn("Profile metadata sync:",profileError);}});
 document.getElementById("forgotPasswordBtn").addEventListener("click",()=>withAuthBusy(async()=>{if(!cloud)return authMsg("Password reset will be available after the Supabase account connection is configured.");const email=document.getElementById("email").value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg("Enter your account email in the email field first.");const {error}=await cloud.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;authMsg("Password reset email sent if an account exists for that address. Check your inbox.");}));
 document.getElementById("updatePasswordBtn").addEventListener("click",()=>withAuthBusy(async()=>{if(!cloud)return;const password=document.getElementById("newPassword").value;if(password.length<8)return authMsg("Use a new password with at least 8 characters.");const {error}=await cloud.auth.updateUser({password});if(error)throw error;document.getElementById("passwordRecoveryPanel").classList.add("hidden");document.getElementById("newPassword").value="";await cloud.auth.signOut();user=null;showAuth();authMsg("Password updated. Log in with your new password.");}));
 
@@ -680,66 +679,6 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
 })();
 </script>
 
-<script>
-/* Reliable login click bridge: show immediate feedback and surface auth errors. */
-(function(){
-  document.addEventListener("click",function(event){
-    const button=event.target.closest("#loginBtn");
-    if(!button)return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const message=document.getElementById("authMessage");
-    const setMessage=value=>{if(message)message.textContent=value;};
-    if(button.disabled)return;
-    button.disabled=true;
-    setMessage("Signing in…");
-    try{
-      if(typeof window.levelUpLogin!=="function"){
-        setMessage("Login code did not load. Reload LEVEL UP. Your guest progress is unchanged.");
-        button.disabled=false;
-        return;
-      }
-      Promise.resolve(window.levelUpLogin()).catch(error=>{
-        console.error("Login click bridge:",error);
-        setMessage(error&&error.message?error.message:"Login failed. Please try again.");
-      }).finally(()=>{button.disabled=false;});
-    }catch(error){
-      console.error("Login click bridge:",error);
-      setMessage(error&&error.message?error.message:"Login failed. Please try again.");
-      button.disabled=false;
-    }
-  },true);
-})();
-</script>
-
-<script>
-/* Define the login action after the app's main script has initialized. */
-window.levelUpLogin = function(){
-  return withAuthBusy(async()=>{
-    if(!cloud)return authMsg("Account setup is not connected yet. Check the Supabase connection.");
-    const email=document.getElementById("email").value.trim();
-    const password=document.getElementById("password").value;
-    if(!email||!password)return authMsg("Enter your email and password.");
-    const guestSnapshot=readGuestBackup();
-    const {data,error}=await cloud.auth.signInWithPassword({email,password});
-    if(error)throw error;
-    user=data.user;
-    const loaded=await loadCloud(guestSnapshot);
-    if(!loaded){await cloud.auth.signOut();user=null;return;}
-    guestModeActive=false;
-    dailyResetCheck();
-    showApp();
-    const meta=user.user_metadata||{};
-    if(meta.username){
-      const {error:profileError}=await cloud.from("profiles").upsert(
-        {user_id:user.id,username:String(meta.username).toLowerCase(),display_name:state.player||meta.username},
-        {onConflict:"user_id"}
-      );
-      if(profileError)console.warn("Profile metadata sync:",profileError);
-    }
-  });
-};
-</script>
 
 <script>
 /* SYSTEM AWAKENING runtime: additive state only; existing saves remain intact. */
@@ -855,6 +794,91 @@ window.levelUpLogin = function(){
   const previousNormalize=normalize;
   normalize=function(data){previousNormalize(data);if(!state.dailyChallengeClaims||typeof state.dailyChallengeClaims!=="object")state.dailyChallengeClaims={};};
   renderAwakening();
+})();
+</script>
+
+
+<script>
+/* Single login implementation: bind after the app and its auth helpers load. */
+(function(){
+  const button=document.getElementById("loginBtn");
+  if(!button)return;
+  async function login(){
+    const message=document.getElementById("authMessage");
+    const setMessage=value=>{if(message)message.textContent=value;};
+    if(typeof cloud==="undefined"||!cloud){
+      setMessage("Account connection unavailable. Check that Supabase loaded, then refresh. Your guest progress is safe.");
+      return;
+    }
+    const required=["withAuthBusy","readGuestBackup","loadCloud","dailyResetCheck","showApp"];
+    const missing=required.filter(name=>typeof window[name]!=="function" && typeof evalSafeFunction(name)!=="function");
+    if(missing.length){
+      setMessage("LEVEL UP did not finish starting its account system. Refresh the page; your guest progress is safe.");
+      console.error("Login initialization missing:",missing);
+      return;
+    }
+    const email=document.getElementById("email")?.value.trim()||"";
+    const password=document.getElementById("password")?.value||"";
+    if(!email||!password){setMessage("Enter your email and password.");return;}
+    button.disabled=true;
+    const signup=document.getElementById("signupBtn");
+    const forgot=document.getElementById("forgotPasswordBtn");
+    if(signup)signup.disabled=true;
+    if(forgot)forgot.disabled=true;
+    setMessage("Signing in…");
+    try{
+      const guestSnapshot=readGuestBackup();
+      const {data,error}=await cloud.auth.signInWithPassword({email,password});
+      if(error){
+        if(error.code==="email_not_confirmed"||/email not confirmed/i.test(error.message||"")){
+          throw new Error("This account still needs email confirmation. In Supabase, open Authentication → Users, select your account, and confirm its email. Then try logging in again.");
+        }
+        throw error;
+      }
+      user=data.user;
+      const loaded=await loadCloud(guestSnapshot);
+      if(!loaded){
+        await cloud.auth.signOut();
+        user=null;
+        return;
+      }
+      guestModeActive=false;
+      dailyResetCheck();
+      showApp();
+      const meta=user.user_metadata||{};
+      if(meta.username){
+        const {error:profileError}=await cloud.from("profiles").upsert(
+          {user_id:user.id,username:String(meta.username).toLowerCase(),display_name:state.player||meta.username},
+          {onConflict:"user_id"}
+        );
+        if(profileError)console.warn("Profile metadata sync:",profileError);
+      }
+    }catch(error){
+      console.error("Login failed:",error);
+      setMessage(error?.message||"Login failed. Please try again.");
+    }finally{
+      button.disabled=false;
+      if(signup)signup.disabled=false;
+      if(forgot)forgot.disabled=false;
+    }
+  }
+  function evalSafeFunction(name){
+    switch(name){
+      case "withAuthBusy": return typeof withAuthBusy==="function"?withAuthBusy:null;
+      case "readGuestBackup": return typeof readGuestBackup==="function"?readGuestBackup:null;
+      case "loadCloud": return typeof loadCloud==="function"?loadCloud:null;
+      case "dailyResetCheck": return typeof dailyResetCheck==="function"?dailyResetCheck:null;
+      case "showApp": return typeof showApp==="function"?showApp:null;
+      default:return null;
+    }
+  }
+  window.levelUpLogin=login;
+  button.addEventListener("click",function(event){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(button.disabled)return;
+    login();
+  });
 })();
 </script>
 
