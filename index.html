@@ -93,7 +93,21 @@ html[data-theme="light"] .nav button.active{background:var(--accent);color:#fff;
 .system-panel{background:rgba(11,26,43,.88);border:1px solid #213c58;border-radius:15px;padding:15px;margin:12px 0}.system-panel h3{font-size:14px;letter-spacing:1px;margin:0 0 11px;color:#bce7ff}.system-attribute{display:grid;grid-template-columns:86px 1fr 30px;align-items:center;gap:9px;margin:10px 0;font-size:12px;color:#c2d7e9}.system-attribute .bar{margin:0;height:7px;background:#1c344b}.system-attribute .bar span{background:linear-gradient(90deg,#278acb,#83d9ff)}
 .system-quest{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(91,139,177,.18)}.system-quest:last-child{border:0;padding-bottom:0}.system-quest .grow{flex:1;min-width:0}.system-quest b{font-size:13px;display:block;overflow-wrap:anywhere}.system-quest small{color:#86a7c5;font-size:11px}.system-quest button{padding:7px 10px;font-size:11px;background:#14517a;border:1px solid #347eae}.system-log{font-size:12px;color:#91abc3;padding:7px 0;border-bottom:1px solid rgba(91,139,177,.15)}.system-log:last-child{border:0}.system-select{background:#0c1c2e!important;border-color:#315574!important;color:#d9f2ff!important}
 html[data-theme="light"] .system-shell,html[data-theme="black"] .system-shell{background:#081321!important;color:#e8f5ff!important;border-color:#244766!important}
-@media(max-width:520px){.system-shell{padding:14px}.system-head h2{font-size:21px}.system-grid{gap:7px}.system-stat{padding:10px}.system-stat b{font-size:20px}.system-attribute{grid-template-columns:75px 1fr 25px;gap:6px}}</style>
+@media(max-width:520px){.system-shell{padding:14px}.system-head h2{font-size:21px}.system-grid{gap:7px}.system-stat{padding:10px}.system-stat b{font-size:20px}.system-attribute{grid-template-columns:75px 1fr 25px;gap:6px}}
+/* Minimal monochrome rank emblems inspired by the original LEVEL UP rank set. */
+.rank-icon{background:transparent!important;border:1px solid var(--line);box-shadow:none!important;border-radius:13px}
+.rank-icon .rank-emblem-art{width:82%;height:82%;display:block;color:#f4f7ff;filter:none}
+.hero .emblem{background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:16px}
+.hero .emblem .rank-emblem-art{width:86%;height:86%;color:#fff;filter:none}
+.rank-row{transition:border-color .2s,background .2s}
+.rank-row:not(.locked){border-color:rgba(255,255,255,.28)}
+.rank-row.locked .rank-icon{opacity:.42;filter:grayscale(1)}
+html[data-theme="light"] .rank-icon .rank-emblem-art{color:#25344b}
+html[data-theme="light"] .hero .emblem .rank-emblem-art{color:#25344b}
+html[data-theme="light"] .hero .emblem{border-color:#c3cfdf}
+html[data-theme="black"] .rank-icon .rank-emblem-art,html[data-theme="black"] .hero .emblem .rank-emblem-art{color:#fff}
+@media(max-width:520px){.rank-row{gap:9px;padding:11px}.rank-row .rank-icon{width:46px;height:46px;flex:0 0 46px}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -222,34 +236,26 @@ const DEFAULT_RANKS=[
 {name:"Sovereign",xp:310000,icon:"sovereign",color:"#ffffff"}
 ];let ranks=structuredClone(DEFAULT_RANKS);
 function rankEmblem(key,index=0){
- const shapes=[
-  '<circle cx="32" cy="32" r="21" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="32" cy="32" r="6" fill="currentColor"/>',
-  '<path d="M32 5 57 32 32 59 7 32Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M32 18 45 32 32 46 19 32Z" fill="currentColor"/>',
-  '<path d="M32 4 39 24 60 32 39 40 32 60 25 40 4 32 25 24Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>',
-  '<path d="M32 5 55 18 55 46 32 59 9 46 9 18Z" fill="none" stroke="currentColor" stroke-width="4"/><path d="m32 16 13 8v15l-13 8-13-8V24Z" fill="currentColor"/>',
-  '<path d="m8 17 24 13 24-13M8 32l24 13 24-13M8 47l24 13 24-13" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>',
-  '<path d="m32 4 7 18 19 1-15 12 5 19-16-11-16 11 5-19L6 23l19-1Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="currentColor"/>',
-  '<path d="M8 48 14 17l18 15 18-15 6 31Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M8 53h48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="m14 17 8 10 10-12 10 12 8-10" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>',
-  '<path d="M32 4 38 20 55 12 48 29 63 36 45 40 49 58 32 48 15 58 19 40 1 36 16 29 9 12 26 20Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="currentColor"/>',
-  '<path d="M12 54V22l20-12 20 12v32Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M22 54V34h20v20M8 22h48" fill="none" stroke="currentColor" stroke-width="4"/>',
-  '<circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="3"/><ellipse cx="32" cy="32" rx="12" ry="25" fill="none" stroke="currentColor" stroke-width="3"/><path d="M8 32h48M14 17h36M14 47h36" fill="none" stroke="currentColor" stroke-width="3"/>',
-  '<path d="M32 5 38 24 58 24 42 36 48 56 32 44 16 56 22 36 6 24 26 24Z" fill="currentColor"/><path d="M32 13 36 27 50 27 39 35 43 49 32 41 21 49 25 35 14 27 28 27Z" fill="none" stroke="currentColor" stroke-width="2"/>',
-  '<path d="M32 5c-12 12-20 20-20 31a20 20 0 0 0 40 0C52 25 44 17 32 5Z" fill="none" stroke="currentColor" stroke-width="4"/><path d="M22 38c4-8 16-8 20 0M25 47c4 4 10 4 14 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
-  '<path d="M32 3 39 18 56 11 49 28 62 38 44 41 42 60 30 46 14 57 18 39 3 29 22 25Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><circle cx="32" cy="32" r="5" fill="currentColor"/>',
-  '<path d="M32 4 58 32 32 60 6 32Z" fill="none" stroke="currentColor" stroke-width="4"/><path d="M32 13 49 32 32 51 15 32Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M32 22 41 32 32 42 23 32Z" fill="currentColor"/>',
-  '<path d="M32 3 39 23 60 23 43 36 49 58 32 45 15 58 21 36 4 23 25 23Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="32" r="7" fill="currentColor"/><path d="M32 0v8M64 32h-8M32 64v-8M0 32h8" stroke="currentColor" stroke-width="3"/>'
- ];
  const keys=["beginner","rookie","adventurer","elite","master","legend","mythic","ascendant","overlord","celestial","divine","eternal","transcendent","apex","sovereign"];
- const tiers=[
-  ["#8f9aa8","#dce3eb"],["#a66a42","#e4ad79"],["#9da9b8","#f4f7fb"],
-  ["#d59a35","#ffe09a"],["#31a98d","#a5f4dc"],["#4e8fe5","#b8d7ff"],
-  ["#42c6e8","#d0f7ff"],["#8c64d9","#ddc5ff"],["#d95768","#ffb1bd"],
-  ["#d7a6f2","#fff0ff"],["#f0c34e","#fff2ad"],["#45c9d6","#c5ffff"],
-  ["#a78bfa","#f0eaff"],["#f47fce","#ffe0f4"],["#f8df91","#ffffff"]
+ const shapes=[
+  '<circle cx="50" cy="50" r="29"/><path d="M50 7 59 37 90 50 59 63 50 93 41 63 10 50 41 37Z"/>',
+  '<path d="M50 7 82 20v30c0 20-13 34-32 43-19-9-32-23-32-43V20Z"/><path d="m34 50 11 11 22-24"/>',
+  '<path d="M50 6 61 39 94 50 61 61 50 94 39 61 6 50 39 39Z"/><circle cx="50" cy="50" r="9"/>',
+  '<path d="M50 5 91 50 50 95 9 50Z"/><path d="M50 22 75 50 50 78 25 50Z"/><path d="m50 35 14 15-14 15-14-15Z"/>',
+  '<path d="m50 7 10 28 30 1-23 18 8 29-25-17-25 17 8-29-23-18 30-1Z"/><circle cx="50" cy="50" r="8"/>',
+  '<path d="M15 84V34l35-20 35 20v50Z"/><path d="M28 84V43l22-13 22 13v41"/><path d="m38 55 12 12 12-12"/>',
+  '<path d="M50 5 61 34 92 20 78 49 97 67 65 70 66 98 50 78 34 98 35 70 3 67 22 49 8 20 39 34Z"/><circle cx="50" cy="52" r="10"/>',
+  '<path d="M50 7 88 29 88 71 50 93 12 71 12 29Z"/><path d="M50 22 74 36 74 64 50 78 26 64 26 36Z"/>',
+  '<path d="M50 6 62 37 94 38 69 58 78 90 50 71 22 90 31 58 6 38 38 37Z"/><path d="M50 28v44M28 50h44"/>',
+  '<circle cx="50" cy="50" r="37"/><ellipse cx="50" cy="50" rx="18" ry="37"/><path d="M14 50h72M22 29h56M22 71h56"/>',
+  '<path d="m18 83 5-55 27 22 27-22 5 55Z"/><path d="M12 88h76M31 50l19-17 19 17"/>',
+  '<path d="M50 7c-17 17-29 29-29 46a29 29 0 0 0 58 0C79 36 67 24 50 7Z"/><path d="M35 57c7-12 23-12 30 0M39 69c7 7 15 7 22 0"/>',
+  '<path d="M50 6 62 35 93 25 75 51 92 77 61 66 50 95 39 66 8 77 25 51 7 25 38 35Z"/><circle cx="50" cy="51" r="7"/>',
+  '<path d="M50 6 90 50 50 94 10 50Z"/><path d="M50 20 77 50 50 80 23 50Z"/><circle cx="50" cy="50" r="8"/>',
+  '<path d="M50 5 61 35 93 35 67 55 77 87 50 68 23 87 33 55 7 35 39 35Z"/><path d="M50 14v72M14 50h72"/>'
  ];
  let n=keys.indexOf(String(key));if(n<0)n=Math.max(0,Math.min(shapes.length-1,index));
- const c=tiers[n]||tiers[0],shape=shapes[n]||shapes[0],id="rankMetal"+n;
- return '<svg class="rank-emblem-art" viewBox="0 0 64 64" aria-hidden="true" focusable="false" style="color:'+c[1]+'"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c[1]+'"/><stop offset=".48" stop-color="'+c[0]+'"/><stop offset="1" stop-color="#172338"/></linearGradient></defs><path d="M32 2 58 13v22c0 13-10 22-26 27C16 57 6 48 6 35V13Z" fill="url(#'+id+')" stroke="'+c[1]+'" stroke-width="1.8"/><path d="M32 8 52 17v18c0 10-8 18-20 22C20 53 12 45 12 35V17Z" fill="#101a2a" stroke="'+c[0]+'" stroke-width="1.3"/><path d="M17 17 32 10l15 7M17 45l15 9 15-9" fill="none" stroke="'+c[1]+'" stroke-opacity=".65" stroke-width="1.5"/><g>'+shape+'</g><path d="M21 58h22" stroke="'+c[1]+'" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="31" r="1.8" fill="'+c[1]+'"/><circle cx="49" cy="31" r="1.8" fill="'+c[1]+'"/></svg>';
+ return '<svg class="rank-emblem-art" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+shapes[n]+'</svg>';
 }
 function iconSvg(name){
  const paths={
@@ -540,18 +546,3 @@ renderSystem();
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
 </script>
 </body></html>
-
-<style>
-/* Original competitive-rank emblems: metallic shields and tier-specific palettes. */
-.rank-icon{border-radius:14px;background:linear-gradient(145deg,#1a2a40,#0b1422);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 5px 14px rgba(0,0,0,.18);overflow:visible}
-.rank-icon .rank-emblem-art{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
-.hero .emblem .rank-emblem-art{width:100%;height:100%;padding:3px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.4))}
-.rank-row{position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
-.rank-row:not(.locked){background:linear-gradient(100deg,rgba(255,255,255,.035),transparent 65%),var(--panel)}
-.rank-row:not(.locked) .rank-icon{border-color:rgba(255,255,255,.22)}
-.rank-row.locked .rank-icon{filter:grayscale(.8);opacity:.62}
-.rank-row .tag.good{border:1px solid rgba(105,220,171,.28)}
-html[data-theme="light"] .rank-icon{background:linear-gradient(145deg,#e8eef7,#cbd7e8);border-color:#bdcbe0}
-html[data-theme="black"] .rank-icon{background:linear-gradient(145deg,#202020,#080808);border-color:#555}
-@media(max-width:520px){.rank-row{gap:9px;padding:11px}.rank-row .rank-icon{width:46px;height:46px;flex:0 0 46px}}
-</style>
