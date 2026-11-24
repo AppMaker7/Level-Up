@@ -1,4 +1,4 @@
-const CACHE = "level-up-shell-v62";
+const CACHE = "level-up-shell-v63";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png"];
 
 self.addEventListener("install", event => {
