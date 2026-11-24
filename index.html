@@ -188,6 +188,34 @@ html[data-theme="light"] .rank-row{background:#fff}
 .rank-row .rl-rank-badge .rl-wing,
 .rank-row .rl-rank-badge .rl-division{stroke:#fff!important}
 
+
+/* LEVEL UP — Critique-inspired player dashboard, with RPG progression retained. */
+:root{--bg:#080c12;--panel:#111821;--panel2:#172331;--line:#263443;--text:#f2f6fb;--muted:#91a1b3;--blue:#78aaff;--green:#55dfa4;--accent:#78aaff;--page-bg:radial-gradient(ellipse at 50% -20%,#172a40 0,#080c12 58%)}
+body{background:var(--page-bg)!important;color:var(--text)}.wrap{max-width:1180px;padding-top:26px}
+.stat,.card,.quest,.rank-row,.achievement,.workout-row,.panel-note{background:linear-gradient(145deg,#131d28,#0e151e);border-color:#263646;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.top{margin-bottom:22px}.brand h1{letter-spacing:2.5px;font-weight:850}.status{color:#69e5ad;border-color:rgba(85,223,164,.32);background:rgba(85,223,164,.07)}
+.hero,.awakening-panel,.coach-awakening,.settings-hero,.profile-showcase{background:radial-gradient(circle at 92% 0,rgba(93,151,255,.15),transparent 36%),linear-gradient(145deg,#172536,#0c131d)!important;border:1px solid #30475f!important;border-radius:22px}
+.awakening-panel{padding:22px}.awakening-top h2{letter-spacing:1.5px;font-weight:850}.awakening-orb{border-radius:50%;background:radial-gradient(circle at 35% 30%,#294a69,#101b29 70%);border:1px solid rgba(120,170,255,.55);box-shadow:0 0 0 7px rgba(120,170,255,.045),0 0 32px rgba(85,145,255,.18);color:#9fc5ff}
+.awakening-metrics>div{background:rgba(7,13,20,.68);border-color:#2a3a4b;border-radius:15px}.awakening-metrics b{color:#f5f8fc}.awakening-metrics small{color:#91a8c2}
+.section-title h2{font-weight:800;letter-spacing:-.3px}.tag{background:#172b3c;color:#b8d7f8;border:1px solid #2c465d;border-radius:30px}
+button:not(.secondary){background:linear-gradient(135deg,#78aaff,#4f83d6);color:#06101b;border-radius:12px;box-shadow:0 5px 0 #315b91,0 8px 18px rgba(65,123,205,.13);transition:transform .16s,filter .16s}
+button:not(.secondary):active{transform:translateY(3px);box-shadow:0 2px 0 #315b91}
+button.secondary{background:#172331;color:#d8e5f2;border:1px solid #304253;border-radius:12px}
+.nav button,.bottom-dock .dock-item{border-radius:13px}
+.quest{background:#111b25;border-radius:15px;transition:border-color .18s,transform .18s}.quest.done{background:linear-gradient(100deg,rgba(38,111,79,.2),#111b25);border-color:#3a9b72}.quest.done .check{background:#55dfa4;border-color:#55dfa4;color:#06170f}.check{border-color:#60778c}
+.xp-pill{background:#172c42;color:#a9ceff;border:1px solid #294561}
+.bar{height:8px;background:#263545;border-radius:99px}.bar>span{background:linear-gradient(90deg,#6d9fff,#55dfa4)}
+.daily-progress-layout{display:flex;align-items:center;gap:18px}.daily-progress-ring{--ring-progress:0%;width:104px;height:104px;flex:0 0 104px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#55dfa4 var(--ring-progress),#263545 0);position:relative;box-shadow:0 0 24px rgba(85,223,164,.08)}
+.daily-progress-ring:before{content:"";position:absolute;inset:8px;border-radius:50%;background:#111b25;border:1px solid #2a3a4a}.daily-progress-ring span{position:relative;font-size:20px;font-weight:850;color:#7be8b8}.daily-progress-copy{min-width:0}.daily-progress-copy h2{font-size:26px;margin:0 0 4px}.daily-progress-copy p{margin:0}.legacy-daily-bar{display:none}
+.roadmap-card{margin:14px 0;padding:18px}.roadmap-kicker{font-size:9px;letter-spacing:1.8px;font-weight:850;color:#78aaff}.personal-roadmap{display:grid;gap:0;margin:14px 0}.roadmap-step{display:flex;gap:12px;position:relative;padding:0 0 15px}.roadmap-step:not(:last-child):after{content:"";position:absolute;left:15px;top:32px;bottom:0;width:1px;background:#2a3d50}.roadmap-step-marker{width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:50%;border:1px solid #3c5269;background:#172535;color:#a8c2de;font-size:11px;font-weight:850;z-index:1}.roadmap-step.complete .roadmap-step-marker{background:#173b30;border-color:#55dfa4;color:#73e9b5}.roadmap-step-body{flex:1;min-width:0;padding-top:2px}.roadmap-step-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.roadmap-step-head b{font-size:13px}.roadmap-step-head span{font-size:9px;letter-spacing:.6px;color:#85a5c5;white-space:nowrap}.roadmap-step.complete .roadmap-step-head span{color:#69e5ad}.roadmap-step p{margin:3px 0 8px;color:var(--muted);font-size:11px}.roadmap-track{height:5px;border-radius:20px;background:#253646;overflow:hidden}.roadmap-track i{height:100%;display:block;border-radius:20px;background:linear-gradient(90deg,#78aaff,#55dfa4)}.roadmap-coach-btn{width:100%}
+.category-meter{background:#111b25;border-color:#293a4a;border-radius:14px}.category-meter .bar{height:5px}.category-meter .bar span{background:linear-gradient(90deg,#78aaff,#55dfa4)}
+.daily-challenge{background:#111b25;border-color:#293a4a;border-radius:16px}.daily-challenge.complete{background:linear-gradient(145deg,rgba(36,105,76,.24),#111b25);border-color:#398c69}
+.coach-awakening{padding:22px}.coach-awakening .system-kicker{color:#80b4ff}.coach-insight{background:#172331;border-color:#2b4053;border-radius:14px}
+.bottom-dock{background:rgba(7,12,19,.94);border-color:#2a3c50;box-shadow:0 12px 42px rgba(0,0,0,.55)}.dynamic-island{border-color:#34485c;box-shadow:0 0 20px rgba(99,156,240,.13)}
+html[data-theme="light"] body{background:#080c12!important;color:#f2f6fb!important}
+html[data-theme="light"] .stat,html[data-theme="light"] .card,html[data-theme="light"] .quest,html[data-theme="light"] .rank-row,html[data-theme="light"] .achievement,html[data-theme="light"] .workout-row{background:#111821!important;color:#f2f6fb!important;border-color:#263443!important}
+@media(max-width:520px){.wrap{padding:13px;padding-top:17px}.awakening-panel{padding:15px}.daily-progress-ring{width:86px;height:86px;flex-basis:86px}.daily-progress-ring:before{inset:7px}.daily-progress-ring span{font-size:17px}.daily-progress-layout{gap:13px}.daily-progress-copy h2{font-size:23px}.roadmap-card{padding:14px}}
+
 </style>
 <style>
 .goal-plan-list{display:grid;gap:8px;margin-top:10px}
@@ -549,7 +577,8 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
           <div id="dailyChallengeBoard" class="daily-challenge-board"></div>
           <div class="section-title awakening-section-title"><h2>Attribute development</h2><span class="tag">Lifetime progress</span></div>
           <div id="categoryProgress" class="category-progress"></div>
-          <div class="card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="bar"><span id="dailyBar"></span></div><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div>
+          <div class="roadmap-card card"><div class="section-title"><div><span class="roadmap-kicker">YOUR NEXT EVOLUTION</span><h2 style="margin:3px 0 0">Personal roadmap</h2></div><span class="tag">LIVE PLAN</span></div><div id="personalRoadmap" class="personal-roadmap"></div><button class="secondary roadmap-coach-btn" data-go="coach">Build my next steps with AI Coach</button></div>
+          <div class="card daily-progress-card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="daily-progress-layout"><div class="daily-progress-ring" id="dailyProgressRing"><span id="dailyRingValue">0%</span></div><div class="daily-progress-copy"><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div></div><div class="bar legacy-daily-bar"><span id="dailyBar"></span></div></div>
           <div class="section-title" style="margin-top:18px"><h2>Quick actions</h2></div>
           <div class="quick"><button data-go="quests"><span class="ui-icon" data-icon="scroll"></span> Open daily quests</button><button data-go="workout"><span class="ui-icon" data-icon="dumbbell"></span> Training grounds</button><button data-go="coach"><span class="ui-icon" data-icon="bot"></span> Ask AI Coach</button><button data-go="ranks"><span class="ui-icon" data-icon="trophy"></span> View rank hall</button></div>
           <div class="section-title" style="margin-top:18px"><h2>Recent activity</h2></div><div id="recentActivity" class="panel-note">Complete your first quest to start your activity log.</div>
@@ -1039,6 +1068,14 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       const did=claimed.includes(t.id),ready=t.ok;
       return '<article class="daily-challenge '+(ready?'complete':'')+'"><small>'+ (ready?'OBJECTIVE COMPLETE':'ACTIVE OBJECTIVE') +'</small><b>'+t.name+'</b><p>'+t.desc+'</p><div class="challenge-reward"><span>+'+t.xp+' XP</span><span>+'+t.coins+' coins</span></div><button type="button" class="'+(did?'claimed':'secondary')+'" data-claim-challenge="'+t.id+'" '+(!ready||did?'disabled':'')+'>'+(did?'REWARD CLAIMED':ready?'CLAIM REWARD':'IN PROGRESS')+'</button></article>';
     }).join("");
+    const dailyQuests=Array.isArray(state.quests)?state.quests:[],dailyDone=dailyQuests.filter(q=>q.done).length,dailyPct=dailyQuests.length?Math.round(dailyDone/dailyQuests.length*100):0;
+    const ring=document.getElementById("dailyProgressRing");if(ring)ring.style.setProperty("--ring-progress",dailyPct+"%");
+    set("dailyRingValue",dailyPct+"%");
+    const roadmap=document.getElementById("personalRoadmap");
+    if(roadmap){
+      const milestones=[{name:"Build your foundation",detail:"Clear 3 quests and establish your starting rhythm.",goal:3},{name:"Find your consistency",detail:"Reach 10 completed quests across your categories.",goal:10},{name:"Develop your skills",detail:"Reach 25 completed quests and grow your strongest areas.",goal:25},{name:"Climb the rank ladder",detail:"Earn 1,500 lifetime XP to reach Rookie.",goal:1500,xp:true}];
+      roadmap.innerHTML=milestones.map((m,i)=>{const value=m.xp?life:total,done=value>=m.goal,pct=Math.min(100,Math.round(value/m.goal*100));return '<div class="roadmap-step '+(done?'complete':'')+'"><div class="roadmap-step-marker">'+(done?'✓':String(i+1).padStart(2,"0"))+'</div><div class="roadmap-step-body"><div class="roadmap-step-head"><b>'+m.name+'</b><span>'+(done?'COMPLETE':value.toLocaleString()+' / '+m.goal.toLocaleString())+'</span></div><p>'+m.detail+'</p><div class="roadmap-track"><i style="width:'+pct+'%"></i></div></div></div>';}).join("");
+    }
     const categories=["School","Skills","Fitness","Organization","Health","Custom"],max=Math.max(1,...categories.map(x=>num(stats[x])));
     document.getElementById("categoryProgress").innerHTML=categories.map(cat=>'<div class="category-meter"><div class="category-meter-head"><b>'+cat+'</b><span>'+num(stats[cat])+' cleared</span></div><div class="bar"><span style="width:'+Math.min(100,num(stats[cat])/max*100)+'%"></span></div></div>').join("");
   }
