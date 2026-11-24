@@ -799,27 +799,19 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
 
 
 <script>
-/* Single login implementation: bind after the app and its auth helpers load. */
+/* Reliable login implementation: no undefined guest-backup helpers. */
 (function(){
   const button=document.getElementById("loginBtn");
-  if(!button)return;
-  async function login(){
-    const message=document.getElementById("authMessage");
-    const setMessage=value=>{if(message)message.textContent=value;};
-    if(typeof cloud==="undefined"||!cloud){
-      setMessage("Account connection unavailable. Check that Supabase loaded, then refresh. Your guest progress is safe.");
-      return;
-    }
-    const required=["withAuthBusy","readGuestBackup","loadCloud","dailyResetCheck","showApp"];
-    const missing=required.filter(name=>typeof window[name]!=="function" && typeof evalSafeFunction(name)!=="function");
-    if(missing.length){
-      setMessage("LEVEL UP did not finish starting its account system. Refresh the page; your guest progress is safe.");
-      console.error("Login initialization missing:",missing);
-      return;
-    }
+  const message=document.getElementById("authMessage");
+  if(!button||!message)return;
+  const setMessage=value=>{message.textContent=value;};
+  button.addEventListener("click",async function(event){
+    event.preventDefault();
+    if(button.disabled)return;
     const email=document.getElementById("email")?.value.trim()||"";
     const password=document.getElementById("password")?.value||"";
     if(!email||!password){setMessage("Enter your email and password.");return;}
+    if(!cloud){setMessage("Account connection unavailable. Supabase did not load. Refresh and try again.");return;}
     button.disabled=true;
     const signup=document.getElementById("signupBtn");
     const forgot=document.getElementById("forgotPasswordBtn");
@@ -827,19 +819,19 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
     if(forgot)forgot.disabled=true;
     setMessage("Signing in…");
     try{
-      const guestSnapshot=readGuestBackup();
       const {data,error}=await cloud.auth.signInWithPassword({email,password});
       if(error){
         if(error.code==="email_not_confirmed"||/email not confirmed/i.test(error.message||"")){
-          throw new Error("This account still needs email confirmation. In Supabase, open Authentication → Users, select your account, and confirm its email. Then try logging in again.");
+          throw new Error("This account still needs email confirmation. Check Supabase → Authentication → Users to confirm it.");
         }
         throw error;
       }
       user=data.user;
-      const loaded=await loadCloud(guestSnapshot);
+      const loaded=await loadCloud();
       if(!loaded){
         await cloud.auth.signOut();
         user=null;
+        setMessage("You signed in, but your cloud save could not load. Your local progress has not been erased.");
         return;
       }
       guestModeActive=false;
@@ -861,25 +853,7 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       if(signup)signup.disabled=false;
       if(forgot)forgot.disabled=false;
     }
-  }
-  function evalSafeFunction(name){
-    switch(name){
-      case "withAuthBusy": return typeof withAuthBusy==="function"?withAuthBusy:null;
-      case "readGuestBackup": return typeof readGuestBackup==="function"?readGuestBackup:null;
-      case "loadCloud": return typeof loadCloud==="function"?loadCloud:null;
-      case "dailyResetCheck": return typeof dailyResetCheck==="function"?dailyResetCheck:null;
-      case "showApp": return typeof showApp==="function"?showApp:null;
-      default:return null;
-    }
-  }
-  window.levelUpLogin=login;
-  button.addEventListener("click",function(event){
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if(button.disabled)return;
-    login();
   });
-})();
-</script>
+})();</script>
 
 </body></html>
