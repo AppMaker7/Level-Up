@@ -137,7 +137,7 @@ html[data-theme="light"] .rank-row{background:#fff}
     <div class="field"><label>Username (for friends)</label><input id="signupUsername" maxlength="20" autocomplete="username" placeholder="Choose a unique username"></div>
     <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
     <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
-    <div class="actions"><button id="signupBtn">Create account</button><button class="secondary" id="loginBtn">Log in</button></div>
+    <div class="actions"><button id="signupBtn" type="button" onclick="document.getElementById('authMessage').textContent='Button tapped. Checking account connection…'">Create account</button><button class="secondary" id="loginBtn">Log in</button></div>
     <button class="secondary" id="forgotPasswordBtn" type="button" style="width:100%;margin-top:8px">Forgot password?</button>
     <div id="passwordRecoveryPanel" class="hidden" style="margin-top:12px"><div class="field"><label>New password</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters"></div><button id="updatePasswordBtn" type="button">Update password</button></div>
     <p class="small muted" id="authMessage">Create an account to back up your progress and sync it across devices. Guest mode stays on this device.</p>
