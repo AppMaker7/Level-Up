@@ -243,6 +243,117 @@ button{border-radius:10px!important;box-shadow:none!important}button.secondary{b
 input,select,textarea{background:#101010!important;color:#f5f5f5!important;border-color:#383838!important;border-radius:10px!important}
 @media(max-width:650px){.wrap{padding:13px 13px 104px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats .stat:last-child{grid-column:span 2}#authScreen{margin:22px auto;padding:20px}.hero{padding:16px!important}}
 </style>
+
+<style id="unified-layout-pass">
+/* One consistent visual system: quiet surfaces, predictable spacing, clear hierarchy. */
+:root{
+ --bg:#050505;--panel:#0c0c0c;--panel2:#141414;--line:#292929;
+ --text:#f5f5f5;--muted:#969696;--accent:#f5f5f5;
+ --page-bg:#050505;
+}
+html,body{background:#050505!important;color:#f5f5f5!important}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+.wrap{width:min(100%,1080px);padding:24px;margin:0 auto}
+.top{min-height:48px;margin-bottom:24px}
+.brand{gap:10px}.logo{width:38px;height:38px;border-radius:11px;background:#101010;border:1px solid #303030}
+.brand h1{font-size:17px;letter-spacing:1.8px;font-weight:800}
+.brand small{font-size:9px;letter-spacing:1.5px;color:#858585}
+.status{background:#101010;color:#c9c9c9;border:1px solid #303030;padding:5px 9px;font-size:10px}
+.auth{width:min(100%,400px);margin:8vh auto;padding:26px;background:#0b0b0b;border:1px solid #292929;border-radius:16px;box-shadow:none}
+.auth h2{font-size:23px;letter-spacing:-.5px;margin:0 0 7px}
+.auth>p{font-size:13px;line-height:1.6}
+.field{gap:6px;margin:14px 0}
+.field label{font-size:11px;font-weight:650;letter-spacing:.35px;color:#aaa}
+input,select,textarea,.field input,.field select,.field textarea{
+ width:100%;min-height:43px;padding:10px 12px;background:#080808!important;
+ color:#f5f5f5!important;border:1px solid #303030!important;border-radius:9px!important;
+ box-shadow:none!important;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:#858585!important}
+button{min-height:40px;padding:9px 14px;border-radius:9px!important;background:#f2f2f2!important;
+ color:#080808!important;border:1px solid #f2f2f2!important;font-size:12px;font-weight:700;
+ box-shadow:none!important;filter:none!important;transition:background .15s,border-color .15s}
+button:hover{filter:none!important;background:#dcdcdc!important}
+button.secondary,.nav button,.quick button,.settings-tile,.bottom-dock .dock-item{
+ background:#101010!important;color:#e8e8e8!important;border:1px solid #303030!important
+}
+button.secondary:hover,.nav button:hover,.quick button:hover,.settings-tile:hover{background:#191919!important}
+button:disabled{opacity:.38}
+.hero{padding:20px;background:#0b0b0b!important;border:1px solid #292929!important;border-radius:15px;margin-bottom:12px}
+.hero-row{gap:13px}.emblem{width:58px;height:58px;border-radius:12px;background:#151515!important}
+.hero h2{font-size:22px;letter-spacing:-.5px}.hero .rank{font-size:10px;letter-spacing:1.1px;color:#aaa!important}
+.xpnum{font-size:21px;color:#fff!important}
+.bar{height:6px;background:#292929!important;margin:14px 0 8px;border-radius:20px}
+.bar>span{background:#eee!important;border-radius:20px}
+.bar-label{font-size:10px;color:#999}
+.stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0 22px}
+.stat,.card,.quest,.rank-row,.achievement,.workout-row,.panel-note{
+ background:#0b0b0b!important;border:1px solid #292929!important;border-radius:12px!important;
+ box-shadow:none!important
+}
+.stat{padding:12px 8px}.stat b{font-size:21px;font-weight:750}.stat span{font-size:10px;color:#999}
+.stat small{font-size:9px;color:#777}
+.layout{grid-template-columns:minmax(0,1fr) 270px;gap:12px}
+.section-title{margin:0 0 12px;min-height:30px}
+.section-title h2{font-size:18px;letter-spacing:-.35px}
+.card{padding:15px}
+.quest{padding:11px 12px;margin:7px 0;gap:10px}
+.quest.done{background:#111!important;border-color:#454545!important}
+.qbody b{font-size:13px}.qbody small{font-size:10px;color:#999}
+.check{width:25px;height:25px;min-width:25px;border-color:#777;background:transparent;color:#fff}
+.quest.done .check{background:#eee;border-color:#eee;color:#000}
+.xp-pill,.tag,.tag.good{background:#171717!important;color:#ccc!important;border:1px solid #303030;border-radius:6px;padding:4px 7px;font-size:10px}
+.nav{gap:6px}.nav button{border-radius:8px!important}
+.nav button.active{background:#f2f2f2!important;color:#000!important;border-color:#f2f2f2!important}
+.quick{gap:7px}.quick button{text-align:left;border-radius:9px!important;padding:11px}
+.rank-row,.achievement,.workout-row{padding:11px;margin:7px 0;gap:10px}
+.rank-icon{width:44px;height:44px}
+.settings-hero,.settings-tile,.sfx-panel,.system-shell,.system-panel,.goal-survey{
+ border-radius:12px!important;box-shadow:none!important
+}
+.settings-hero{background:#0b0b0b!important;border:1px solid #292929!important;padding:16px!important}
+.settings-grid{gap:8px!important}
+.settings-tile{min-height:90px!important;padding:13px!important;text-align:left!important}
+.settings-tile b{font-size:12px}.settings-tile small{font-size:10px;color:#999!important}
+.sfx-panel{background:#0b0b0b!important;border:1px solid #292929!important;padding:15px!important}
+.sound-row{border-color:#292929!important}
+.system-shell,.system-panel{background:#0b0b0b!important;border:1px solid #292929!important}
+.system-kicker,.system-stat small{color:#aaa!important}
+.system-head h2{font-size:21px}.system-rank{background:#151515!important;color:#ddd!important;border-color:#383838!important}
+.system-grid{gap:8px}.system-stat{background:#111!important;border:1px solid #292929!important;border-radius:10px!important}
+.system-stat b{color:#fff!important}.system-stat span,.system-stat small{color:#999!important}
+.system-panel h3{color:#eee!important}.system-attribute{color:#ccc}
+.system-attribute .bar span{background:#eee!important}
+.system-select{background:#080808!important;color:#fff!important;border-color:#333!important}
+.bottom-dock{height:64px;padding:6px 10px;background:rgba(8,8,8,.97)!important;border:1px solid #303030!important;
+ border-radius:19px!important;box-shadow:0 8px 28px #0008!important;backdrop-filter:blur(16px)}
+.bottom-dock .dock-item{height:48px;border:0!important;background:transparent!important;color:#999!important}
+.bottom-dock .dock-item.active{color:#fff!important}
+.bottom-dock .dynamic-island{border-radius:14px!important;background:#f1f1f1!important;color:#050505!important;border:0!important}
+.toast{background:#eee!important;color:#080808!important;border:1px solid #eee!important;border-radius:9px!important}
+.footer{color:#777}
+#goalSurveyOverlay{background:rgba(0,0,0,.82)!important;backdrop-filter:blur(5px)}
+.goal-survey{background:#0b0b0b!important;border:1px solid #333!important;border-radius:15px!important}
+.goal-survey-option{background:#111!important;border:1px solid #303030!important;border-radius:9px!important}
+.goal-survey-option:has(input:checked){border-color:#aaa!important;background:#191919!important}
+.goal-survey-kicker{color:#aaa!important}
+.goal-survey select,.goal-survey textarea{background:#080808!important;color:#fff!important;border-color:#303030!important}
+html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="black"] body{background:#050505!important;color:#f5f5f5!important}
+@media(max-width:800px){.wrap{padding:17px}.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+@media(max-width:600px){
+ .wrap{padding:13px 12px 100px}.top{margin-bottom:16px;align-items:center}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:18px}
+ .stat{padding:10px 7px}.stat b{font-size:19px}
+ .stat:last-child{grid-column:1/-1}
+ .hero{padding:15px}.hero h2{font-size:19px}.emblem{width:50px;height:50px}
+ .xpnum{font-size:18px}.section-title h2{font-size:17px}
+ .side{grid-template-columns:1fr}
+ .auth{margin:5vh auto;padding:21px}
+ .bottom-dock{width:calc(100vw - 24px);height:61px;bottom:max(9px,env(safe-area-inset-bottom))}
+ .bottom-dock .dock-item{height:45px}
+}
+</style>
+
 </head>
 <body>
 <div class="wrap">
