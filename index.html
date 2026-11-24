@@ -578,7 +578,7 @@ document.querySelectorAll(".coachPrompt").forEach(b=>b.addEventListener("click",
 document.addEventListener("click",e=>{const open=e.target.closest("[data-open-sfx]");if(open&&!open.closest("#nav")){openSfxSettings();return;}const preview=e.target.closest("[data-sfx-preview]");if(preview){playSfx(preview.dataset.sfxPreview,true);}});
 
 window.enterGuestMode=function(){if(!authReady){authMsg("LEVEL UP is still loading. Try guest mode again in a moment.");return;}user=null;guestModeActive=true;try{const backup=readGuestBackup();normalize(createFreshState());if(backup)normalize(backup);else{let owner=null;try{owner=localStorage.getItem(CLOUD_OWNER_KEY);}catch(_){}if(!owner)loadLocal();}localStorage.setItem(GUEST_BACKUP_KEY,JSON.stringify(state));}catch(e){console.error("Guest load failed:",e);}const auth=document.getElementById("authScreen"),app=document.getElementById("app"),logout=document.getElementById("logoutBtn"),status=document.getElementById("syncStatus"),saveMode=document.getElementById("saveMode");auth.classList.add("hidden");app.classList.remove("hidden");logout.classList.add("hidden");status.textContent="GUEST MODE";if(saveMode)saveMode.textContent="Guest mode: progress is saved in this browser only.";try{render();}catch(e){console.error("Guest screen render failed:",e);document.getElementById("rankName").textContent="Beginner";document.getElementById("playerLabel").textContent="Guest";}};document.getElementById("guestBtn").onclick=window.enterGuestMode;
-async function withAuthBusy(task){const buttons=["signupBtn","loginBtn","forgotPasswordBtn"].map(id=>document.getElementById(id));buttons.forEach(b=>b.disabled=true);try{await task();}catch(error){console.error("Account action failed:",error);authMsg(error?.message||"Something went wrong. Please try again.");}finally{buttons.forEach(b=>b.disabled=false);}}
+async function withAuthBusy(task){const buttons=["signupBtn","loginBtn","forgotPasswordBtn","guestBtn"].map(id=>document.getElementById(id));buttons.forEach(b=>b.disabled=true);try{await task();}catch(error){console.error("Account action failed:",error);authMsg(error?.message||"Something went wrong. Please try again.");}finally{buttons.forEach(b=>b.disabled=false);}}
 
 document.getElementById("forgotPasswordBtn").addEventListener("click",()=>withAuthBusy(async()=>{if(!authReady)return authMsg("Account connection is still loading. Try again in a moment.");if(!cloud)return authMsg("Password reset will be available after the Supabase account connection is configured.");const email=document.getElementById("email").value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return authMsg("Enter your account email in the email field first.");const {error}=await cloud.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;authMsg("Password reset email sent if an account exists for that address. Check your inbox.");}));
 document.getElementById("updatePasswordBtn").addEventListener("click",()=>withAuthBusy(async()=>{if(!cloud)return;const password=document.getElementById("newPassword").value;if(password.length<8)return authMsg("Use a new password with at least 8 characters.");const {error}=await cloud.auth.updateUser({password});if(error)throw error;document.getElementById("passwordRecoveryPanel").classList.add("hidden");document.getElementById("newPassword").value="";await cloud.auth.signOut();user=null;showAuth();authMsg("Password updated. Log in with your new password.");}));
@@ -867,8 +867,10 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
     button.disabled=true;
     const signup=document.getElementById("signupBtn");
     const forgot=document.getElementById("forgotPasswordBtn");
+    const guest=document.getElementById("guestBtn");
     if(signup)signup.disabled=true;
     if(forgot)forgot.disabled=true;
+    if(guest)guest.disabled=true;
     setMessage("Signing in…");
     try{
       const {data,error}=await cloud.auth.signInWithPassword({email,password});
@@ -904,6 +906,7 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       button.disabled=false;
       if(signup)signup.disabled=false;
       if(forgot)forgot.disabled=false;
+      if(guest)guest.disabled=false;
     }
   });
 })();</script>
