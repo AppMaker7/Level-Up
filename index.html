@@ -840,7 +840,7 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       const meta=user.user_metadata||{};
       if(meta.username){
         const {error:profileError}=await cloud.from("profiles").upsert(
-          {user_id:user.id,username:String(meta.username).toLowerCase(),display_name:state.player||meta.username},
+          {user_id:user.id,username:String(meta.username).toLowerCase(),display_name:meta.username},
           {onConflict:"user_id"}
         );
         if(profileError)console.warn("Profile metadata sync:",profileError);
