@@ -575,7 +575,8 @@ let lastQuestReminder=Date.now();setInterval(()=>{if(!state.questReminders||docu
   const oldRender=render;
   function rarity(q){const x=Number(q.xp)||0;return x>=15?"Legendary":x>=10?"Epic":x>=8?"Rare":x>=5?"Uncommon":"Common";}
   function streak(){const days=new Set(state.activeDays);let d=new Date(),n=0;if(!days.has(dayKey()))d.setDate(d.getDate()-1);for(let i=0;i<400;i++){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(!days.has(k))break;n++;d.setDate(d.getDate()-1);}return n;}
-  const numericSeason=v=>Math.max(0,Number(v)||0);\n  function renderRPG(){
+  const numericSeason=v=>Math.max(0,Number(v)||0);
+  function renderRPG(){
     defaults();const wk=weekKey();
     if(state.weeklyKey!==wk){state.weeklyKey=wk;state.weeklyCount=0;state.bossClaims=[];state.weeklyRewardKey="";scheduleSave();}
     if(state.weeklyCount>=12&&state.weeklyRewardKey!==wk){state.weeklyRewardKey=wk;state.xp+=100;state.lifetimeXP+=100;state.coins+=30;state.inventory.push("weekly");scheduleSave();toast("Weekly challenge complete! +100 XP and 30 coins.");}
