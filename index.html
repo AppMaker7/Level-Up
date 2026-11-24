@@ -547,6 +547,7 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
             <div class="cloud-data-row"><div><b>Save status</b><div id="saveMode" class="muted small">Guest mode: progress is saved in this browser only.</div></div></div>
             <div class="actions cloud-actions"><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"><button class="secondary hidden" id="logoutBtn">Sign out</button></div>
           </section>
+        </section>
         <section class="view" id="sound">
           <div class="section-title"><h2>Sound effects</h2></div>
           <div class="sfx-panel" id="sfxSettings">
@@ -562,7 +563,6 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
               <div class="sound-row"><span><b>System notification</b><small>In-app notification sound</small></span><div class="sound-actions"><input type="checkbox" id="sfxNotify"><button class="secondary sfx-preview" data-sfx-preview="notify">Preview</button></div></div>
             </div>
           </div>
-        </section>
         </section>
         <section class="view" id="system">
 <div class="system-shell"><div class="system-kicker">LEVEL UP // PLAYER INTERFACE</div><div class="system-head"><div><h2>PLAYER STATUS</h2><div class="system-level" id="systemPlayerName">PLAYER · LEVEL 1</div></div><div class="system-rank" id="systemRank">AWAKENED</div></div><div class="bar"><span id="systemXPBar"></span></div><div class="bar-label"><span id="systemXPText">0 XP</span><span id="systemNextRank">NEXT RANK</span></div>
@@ -866,7 +866,7 @@ document.getElementById("rankCount").textContent=`${activeRanks().length} tiers`
 const selectedWorkoutDay=document.getElementById("workoutDay").value;document.getElementById("workoutPlan").innerHTML=`<h3>${selectedWorkoutDay}</h3>`+workouts[selectedWorkoutDay].map(x=>`<div class="workout-row">${iconSvg("dumbbell")} <span>${esc(x)}</span></div>`).join("");const workoutDone=(state.workoutDays||[]).includes(localDate());document.getElementById("completeWorkoutBtn").disabled=workoutDone;document.getElementById("completeWorkoutBtn").textContent=workoutDone?"Workout reward claimed today":"Complete workout · +150 XP";document.getElementById("workoutRewardStatus").textContent=workoutDone?"Today's workout reward has been claimed.":"Available once each day.";document.getElementById("reminderToggle").textContent=state.questReminders?"Turn off quest reminders":"Enable quest reminders";document.getElementById("reminderStatus").textContent=state.questReminders?"Reminders are on while the app is open.":"Reminders are off.";
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function go(view){const target=document.getElementById(view);if(!target||!target.classList.contains("view")){console.warn("Unknown app view:",view);return;}currentView=view;document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v===target));document.querySelectorAll("#nav button[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));window.scrollTo({top:0,behavior:"instant"});}
+function go(view){const target=document.getElementById(view);if(!target||!target.classList.contains("view")){console.warn("Unknown app view:",view);return;}currentView=view;document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v===target));document.querySelectorAll("#nav button[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));window.scrollTo(0,0);}
 function clearFriendUI(){["friendList","friendRequests","friendSearchResults"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent="";});const count=document.getElementById("friendCount");if(count)count.textContent="0 friends";const search=document.getElementById("friendSearch");if(search)search.value="";}
 function openSfxSettings(){go("sound");}
 let sfxContext=null;
