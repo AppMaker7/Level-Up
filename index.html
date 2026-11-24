@@ -43,7 +43,9 @@ html[data-theme="black"] .toast{background:#171717;border-color:#666;color:#fff}
 .nav .ui-icon-svg{width:17px;height:17px}
 .quick .ui-icon-svg{width:18px;height:18px}
 .achievement .rank-icon .ui-icon-svg{width:25px;height:25px}
-.workout-row .ui-icon-svg{width:19px;height:19px;flex:none}\n.check .ui-icon-svg{width:15px;height:15px}\n.delete-task .ui-icon-svg{width:15px;height:15px}
+.workout-row .ui-icon-svg{width:19px;height:19px;flex:none}
+.check .ui-icon-svg{width:15px;height:15px}
+.delete-task .ui-icon-svg{width:15px;height:15px}
 .tag .ui-icon-svg{width:13px;height:13px;vertical-align:-2px}
 #rankEditor .rank-icon{width:48px;height:48px;margin:0 auto}
 </style>
@@ -302,8 +304,7 @@ const defaultQuests=[
 {name:"Transcendent Rank",desc:"Reach Transcendent rank",icon:"transcendent-rank",ok:state.xp>=200000},
 {name:"Apex Rank",desc:"Reach Apex rank",icon:"apex-rank",ok:state.xp>=250000},
 {name:"Sovereign Rank",desc:"Reach Sovereign rank",icon:"sovereign-rank",ok:state.xp>=310000}
-];}ver"]
-};
+];}
 let state={player:"Player",xp:0,lifetimeXP:0,monthKey:localMonth(),customRanks:null,theme:{preset:"black",accent:"#ffffff"},quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[],achievements:[],workoutDays:[],questReminders:false};
 let user=null, saveTimer=null, currentView="home";
 function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
