@@ -528,6 +528,7 @@ button:active,.nav button:active,.quick button:active{transform:translateY(3px)!
       <div class="main">
         <section class="view" id="settings">
           <div class="section-title"><h2>Settings</h2><span class="tag">System control center</span></div>
+<div class="settings-sound-shortcut"><button type="button" class="dynamic-island" data-open-sfx aria-label="Open sound effect settings"><span class="island-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b>SOUND</b></button></div>
           <div class="settings-hero"><div class="system-kicker">LEVEL UP // CONFIGURATION</div><h2>Control your system.</h2><p class="muted small">Customize your interface, sounds, player data, and progression tools.</p></div>
           <div class="settings-grid">
             <button class="settings-tile" data-go="themes"><span class="ui-icon" data-icon="palette"></span><b>Appearance</b><small>Themes and accent colors</small></button>
@@ -1550,6 +1551,60 @@ input,select,textarea{background:#151421!important;color:#f4f1fb!important;borde
  .quest-first-heading h2{font-size:27px!important}
  .quest-first-footer{gap:10px!important}
  .quest-first-footer button{width:100%!important}
+}
+</style>
+
+
+<style id="barebones-settings-refresh">
+/* Bare-bones layout: quests on home, everything else under Settings. */
+.hero,.stats{display:none!important}
+#home>.section-title:first-child{display:none!important}
+#home .awakening-panel,#home .awakening-section-title,#home #dailyChallengeBoard,
+#home #categoryProgress,#home .roadmap-card,#home .daily-progress-card,
+#home .quick,#home #recentActivity{display:none!important}
+#home{padding-top:0!important}
+#home .quest-first-card{
+ display:block!important;background:transparent!important;border:0!important;
+ border-radius:0!important;box-shadow:none!important;padding:0!important;margin:0!important;
+}
+#home .quest-first-card:before{display:none!important}
+#home .quest-first-heading h2{font-size:23px!important;font-weight:700!important;letter-spacing:-.4px!important;margin:0 0 5px!important}
+#home .quest-first-heading .system-kicker{display:none!important}
+#home .quest-first-heading p{font-size:13px!important;color:#aaa!important}
+#home .quest-first-count{background:transparent!important;border:0!important;padding:0!important;font-size:16px!important;color:var(--text)!important}
+#home .quest-first-progress{height:3px!important;background:#30303a!important;margin:13px 0!important}
+#home .quest-first-progress span{background:var(--text)!important}
+#home .quest-first-row{background:transparent!important;border:0!important;border-bottom:1px solid #292832!important;border-radius:0!important;padding:13px 0!important}
+#home .quest-first-check{width:28px!important;height:28px!important;border-radius:50%!important;background:transparent!important;color:var(--text)!important;border:1px solid #777!important}
+#home .quest-first-footer{margin-top:14px!important}
+#home .quest-first-footer button{background:transparent!important;color:var(--text)!important;border:1px solid #41404b!important}
+#settings .settings-hero{display:none!important}
+#settings .section-title:first-child{margin-bottom:18px!important}
+#settings .settings-grid{display:flex!important;flex-direction:column!important;gap:0!important;margin:0 0 20px!important}
+#settings .settings-tile{
+ display:flex!important;flex-direction:row!important;align-items:center!important;
+ min-height:48px!important;padding:10px 2px!important;gap:12px!important;
+ background:transparent!important;border:0!important;border-bottom:1px solid #292832!important;
+ border-radius:0!important;box-shadow:none!important;text-align:left!important;
+}
+#settings .settings-tile .ui-icon{width:20px!important;height:20px!important;flex:none!important;color:#c5b7ff!important}
+#settings .settings-tile b{display:block!important;font-size:13px!important;font-weight:600!important}
+#settings .settings-tile small{display:none!important}
+#settings .settings-account,#settings .sfx-panel{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:12px 0!important}
+.settings-sound-shortcut{display:flex;justify-content:flex-start;margin:0 0 18px}
+.settings-sound-shortcut .dynamic-island{
+ width:auto!important;min-width:112px!important;height:46px!important;min-height:46px!important;max-height:46px!important;
+ padding:0 14px!important;box-sizing:border-box!important;display:inline-flex!important;
+ align-items:center!important;justify-content:center!important;gap:9px!important;
+ background:#050505!important;color:#eee!important;border:1px solid #444!important;
+ border-radius:30px!important;box-shadow:none!important;cursor:pointer!important;
+}
+.settings-sound-shortcut .island-wave{display:flex!important}
+.settings-sound-shortcut .dynamic-island b{font-size:10px!important;letter-spacing:1.4px!important}
+.bottom-dock{grid-template-columns:repeat(3,1fr)!important}
+@media(max-width:560px){
+ #home .quest-first-card{padding:0!important}
+ #settings .settings-tile{min-height:46px!important}
 }
 </style>
 
