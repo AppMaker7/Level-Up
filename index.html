@@ -825,7 +825,7 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
     let d=new Date(),n=0;if(!set.has(key(d)))d.setDate(d.getDate()-1);for(let i=0;i<400&&set.has(key(d));i++){n++;d.setDate(d.getDate()-1);}return n;
   }
   document.getElementById("copyProfileBtn")?.addEventListener("click",async function(){
-    const summary="LEVEL UP PLAYER CARD\\n"+(state.player||"Player")+"\\nRank: "+currentRank().name+"\\nClass: "+(state.systemClass||"Vanguard")+"\\nLifetime XP: "+num(state.lifetimeXP).toLocaleString();
+    const summary="LEVEL UP PLAYER CARD\n"+(state.player||"Player")+"\nRank: "+currentRank().name+"\nClass: "+(state.systemClass||"Vanguard")+"\nLifetime XP: "+num(state.lifetimeXP).toLocaleString();
     try{await navigator.clipboard.writeText(summary);toast("Player card copied.");}catch(_){toast("Copy isn't available in this browser.");}
   });
   const board=document.getElementById("dailyChallengeBoard");
