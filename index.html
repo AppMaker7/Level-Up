@@ -189,6 +189,12 @@ html[data-theme="light"] .rank-row{background:#fff}
 .rank-row .rl-rank-badge .rl-division{stroke:#fff!important}
 
 </style>
+<style>
+.goal-plan-list{display:grid;gap:8px;margin-top:10px}
+.goal-plan-row{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);cursor:pointer}
+.goal-plan-row input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.goal-plan-row span{display:grid;gap:3px}.goal-plan-row small{color:var(--muted);font-size:11px}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -299,8 +305,9 @@ html[data-theme="light"] .rank-row{background:#fff}
         <section class="view" id="achievements"><div class="section-title"><h2>Achievement Gallery</h2></div><div id="achievementList"></div></section>
         <section class="view" id="coach">
           <div class="section-title"><h2>System Strategist</h2><span class="tag">Offline coach</span></div>
-          <div class="coach-awakening"><div class="system-kicker">LEVEL UP // STRATEGY TERMINAL</div><h2>Make your next move count.</h2><p>Get suggestions from your actual quest history and progress. This runs locally inside LEVEL UP, needs no API key, and never sends your data to another service.</p><div class="actions"><button id="coachAnalyze">Analyze my progress</button><button class="secondary" id="coachPlan">Build a balanced quest plan</button></div></div>
+          <div class="coach-awakening"><div class="system-kicker">LEVEL UP // STRATEGY TERMINAL</div><h2>Make your next move count.</h2><p>Get suggestions from your actual quest history and progress. This runs locally inside LEVEL UP, needs no API key, and never sends your data to another service.</p><div class="actions"><button id="coachAnalyze">Analyze my progress</button><button class="secondary" id="coachPlan">Generate my suggested plan</button></div></div>
           <div class="card" style="margin-top:12px"><div class="section-title"><h3 style="margin:0">Your strategy report</h3><span class="tag">Personal stats</span></div><div id="coachOutput" class="coach-output">Run an analysis to see your strongest categories, neglected areas, and a realistic next step.</div></div>
+          <div class="card" id="coachPlanPreview" style="display:none;margin-top:12px"></div>
           <div class="panel-note" style="margin-top:12px">This is an offline rules-based planner, not a hosted generative AI model. Your app stays usable without paid services, API keys, or external accounts.</div>
         </section>
         <section class="view" id="themes"><div class="section-title"><h2>Themes</h2><span class="tag">Appearance</span></div><div class="card"><h3 style="margin-top:0">Choose a style</h3><p class="muted small">Switch the whole app between clean modern styles, then pick an accent color.</p><div class="quick"><button class="themeChoice" data-theme="modern">Modern</button><button class="themeChoice" data-theme="black">Simple black</button><button class="themeChoice" data-theme="midnight">Midnight blue</button><button class="themeChoice" data-theme="light">Clean light</button></div><div class="field" style="margin-top:18px"><label for="accentColor">Custom accent color</label><input id="accentColor" type="color" value="#6ca8ff" style="height:48px;padding:5px"></div><div class="actions"><button id="applyAccentBtn">Apply color</button><button id="resetThemeBtn" class="secondary">Reset theme</button></div><p class="muted small" id="themeStatus" style="margin-bottom:0">Theme settings are saved on this device and in your player save.</p></div></section>
@@ -808,19 +815,65 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
     ];
     coachOutput.innerHTML=lines.map(x=>'<div class="coach-insight"><b>'+x[0]+'</b><p>'+x[1]+'</p></div>').join("");
   });
+  let proposedQuestPlan=[];
+  const planPreview=document.getElementById("coachPlanPreview");
+  function buildSuggestedPlan(){
+    const survey=state.goalSurvey||{},areas=Array.isArray(survey.areas)?survey.areas:[];
+    const map={
+      "School":[{name:"Review one topic from a class",xp:8},{name:"Break one assignment into a first step",xp:6}],
+      "Fitness":[{name:"Take a comfortable movement break",xp:5},{name:"Choose an enjoyable activity and move at your own pace",xp:6}],
+      "Skills":[{name:"Practice a skill you want to improve",xp:8},{name:"Learn one small thing about a hobby",xp:6}],
+      "Organization":[{name:"Reset one small area",xp:5},{name:"Write down your top three priorities",xp:5}],
+      "Health":[{name:"Take a screen break and get some water",xp:5},{name:"Make time for a relaxing offline activity",xp:5}],
+      "Confidence":[{name:"Try one small task outside your usual routine",xp:6},{name:"Write down one thing you made progress on",xp:5}]
+    };
+    const categoryMap={"School":"School","Fitness":"Fitness","Skills":"Skills","Organization":"Organization","Health":"Health","Confidence":"Skills"};
+    let categories=areas.map(a=>categoryMap[a]||a).filter((v,i,a)=>a.indexOf(v)===i);
+    const priority=survey.priority||"";
+    const priorityCategory=priority.includes("school")?"School":priority.includes("stronger")?"Fitness":priority.includes("skill")?"Skills":priority.includes("organized")?"Organization":priority.includes("habits")?"Health":priority.includes("balanced")?"Health":"";
+    if(priorityCategory&&!categories.includes(priorityCategory))categories.unshift(priorityCategory);
+    if(!categories.length){
+      const stats=state.questStats||{};
+      categories=["School","Skills","Organization","Health"].sort((a,b)=>num(stats[a])-num(stats[b]));
+    }
+    const max=survey.time==="5–10 minutes"?2:survey.time==="20–30 minutes"?4:3;
+    const suggestions=[];
+    categories.forEach(category=>{
+      (map[category]||[]).forEach(item=>{
+        if(suggestions.length>=max)return;
+        const duplicate=(state.quests||[]).some(q=>String(q.name||"").trim().toLowerCase()===item.name.toLowerCase());
+        if(!duplicate&&!suggestions.some(q=>q.name===item.name))suggestions.push({category,name:item.name,xp:item.xp});
+      });
+    });
+    if(!suggestions.length) suggestions.push({category:"Organization",name:"Choose one small priority for today",xp:5});
+    return suggestions;
+  }
   document.getElementById("coachPlan")?.addEventListener("click",function(){
-    const stats=state.questStats||{},templates=[
-      {category:"School",name:"Review one class topic",xp:8},
-      {category:"Skills",name:"Practice a skill for 15 minutes",xp:8},
-      {category:"Fitness",name:"Take a comfortable movement break",xp:5},
-      {category:"Organization",name:"Reset one small area",xp:5},
-      {category:"Health",name:"Take a screen break and hydrate",xp:5}
-    ];
-    const selected=templates.slice().sort((a,b)=>num(stats[a.category])-num(stats[b.category])).slice(0,3);
-    let added=0;selected.forEach(t=>{if(!state.quests.some(q=>String(q.name).toLowerCase()===t.name.toLowerCase())){state.quests.push({id:"coach-"+crypto.randomUUID(),name:t.name,category:t.category,xp:t.xp,done:false,custom:true});added++;}});
-    if(!added){toast("Those suggested quests are already on your mission board.");return;}
-    state.activity=state.activity||[];state.activity.push("System Strategist added "+added+" balanced quest"+(added===1?"":"s")+".");state.activity=state.activity.slice(-30);
-    scheduleSave();render();go("quests");toast(added+" balanced quest"+(added===1?"":"s")+" added to your mission board.");
+    proposedQuestPlan=buildSuggestedPlan();
+    if(!planPreview)return;
+    const survey=state.goalSurvey||{};
+    const note=survey.areas?.length?"Built from your saved goals and available time.":"No goals survey saved yet, so this is a balanced starter plan.";
+    planPreview.style.display="block";
+    planPreview.innerHTML='<div class="section-title"><h3 style="margin:0">Your proposed quest plan</h3><span class="tag">Review first</span></div><p class="muted small">'+esc(note)+'</p><div class="goal-plan-list">'+proposedQuestPlan.map((q,i)=>'<label class="goal-plan-row"><input type="checkbox" class="goal-plan-choice" data-plan-index="'+i+'" checked><span><b>'+esc(q.name)+'</b><small>'+esc(q.category)+' · '+q.xp+' XP</small></span></label>').join("")+'</div><div class="actions" style="margin-top:12px"><button id="approveQuestPlan">Approve selected quests</button><button id="discardQuestPlan" class="secondary">Discard</button></div>';
+    planPreview.scrollIntoView({behavior:"smooth",block:"nearest"});
+  });
+  planPreview?.addEventListener("click",function(event){
+    if(event.target.closest("#discardQuestPlan")){proposedQuestPlan=[];planPreview.style.display="none";planPreview.innerHTML="";return;}
+    if(!event.target.closest("#approveQuestPlan"))return;
+    const selected=[...planPreview.querySelectorAll(".goal-plan-choice:checked")].map(el=>proposedQuestPlan[Number(el.dataset.planIndex)]).filter(Boolean);
+    if(!selected.length){toast("Select at least one quest to approve.");return;}
+    let added=0;
+    selected.forEach(q=>{
+      if((state.quests||[]).some(existing=>String(existing.name||"").trim().toLowerCase()===q.name.toLowerCase()))return;
+      state.quests.push({id:"coach-"+crypto.randomUUID(),name:q.name,category:q.category,xp:q.xp,done:false,custom:true});
+      added++;
+    });
+    if(!added){toast("Those quests are already on your mission board.");return;}
+    state.activity=state.activity||[];
+    state.activity.push("Approved "+added+" suggested quest"+(added===1?"":"s")+" from System Strategist.");
+    state.activity=state.activity.slice(-30);
+    scheduleSave();proposedQuestPlan=[];planPreview.style.display="none";planPreview.innerHTML="";
+    render();go("quests");toast(added+" approved quest"+(added===1?"":"s")+" added to your mission board.");
   });
   function streakCountText(){
     const set=new Set(state.activeDays||[]),key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
