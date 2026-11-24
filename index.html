@@ -238,24 +238,24 @@ const DEFAULT_RANKS=[
 function rankEmblem(key,index=0){
  const keys=["beginner","rookie","adventurer","elite","master","legend","mythic","ascendant","overlord","celestial","divine","eternal","transcendent","apex","sovereign"];
  const shapes=[
-  '<circle cx="50" cy="50" r="25"/><path d="M50 5v20M50 75v20M5 50h20M75 50h20M18 18l14 14m36 36 14 14M82 18 68 32M32 68 18 82"/>',
-  '<path d="M50 7 84 27 84 66 50 93 16 66 16 27Z"/><path d="M31 37h38v27H31z"/>',
-  '<path d="M50 5 61 37 94 50 61 63 50 95 39 63 6 50 39 37Z"/><path d="M50 28v44M28 50h44"/>',
-  '<path d="M8 35 29 43 50 20 71 43 92 35 79 72 50 83 21 72Z"/><path d="M25 55h50M36 67h28"/>',
-  '<path d="m50 7 11 27 29 2-22 18 7 29-25-16-25 16 7-29-22-18 29-2Z"/>',
-  '<path d="M14 83V39l18-15 18 15 18-15 18 15v44Z"/><path d="M29 83V48l21-17 21 17v35M40 57l10 10 10-10"/>',
-  '<path d="M50 5 60 30 87 13 75 41 98 55 70 61 77 91 50 73 23 91 30 61 2 55 25 41 13 13 40 30Z"/><circle cx="50" cy="51" r="8"/>',
-  '<path d="M50 8 89 50 50 92 11 50Z"/><path d="M50 8v84M11 50h78M25 25l50 50M75 25 25 75"/>',
-  '<path d="M50 6 62 32 90 26 74 50 90 74 62 68 50 94 38 68 10 74 26 50 10 26 38 32Z"/><path d="M50 35v30M35 50h30"/>',
-  '<circle cx="50" cy="50" r="34"/><ellipse cx="50" cy="50" rx="13" ry="34" transform="rotate(35 50 50)"/><path d="M9 50h82"/>',
-  '<path d="M17 86 22 36 39 49 50 14 61 49 78 36 83 86Z"/><path d="M31 69h38M40 56h20"/>',
-  '<path d="M50 8C31 30 23 42 23 59a27 27 0 0 0 54 0C77 42 69 30 50 8Z"/><path d="M39 62c6-10 16-10 22 0M42 73h16"/>',
-  '<path d="M50 6v88M6 50h88M19 19l62 62M81 19 19 81"/><path d="M50 24 61 39 76 50 61 61 50 76 39 61 24 50 39 39Z"/>',
-  '<path d="M7 36 28 43 50 18 72 43 93 36 81 73 50 88 19 73Z"/><path d="M18 52 4 65M82 52l14 13M31 62h38"/>',
-  '<circle cx="50" cy="50" r="38"/><path d="M50 12 56 38 82 50 56 56 50 88 44 62 18 50 44 44Z"/><circle cx="50" cy="50" r="10"/>'
+  '<circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="18"/><path d="M50 4v17m0 58v17M4 50h17m58 0h17M17 17l12 12m42 42 12 12M83 17 71 29M29 71 17 83"/><path d="m50 34 5 11 11 5-11 5-5 11-5-11-11-5 11-5Z"/>',
+  '<path d="M50 5 86 25 91 65 50 95 9 65 14 25Z"/><path d="m50 17 25 14 3 28-28 21-28-21 3-28Z"/><path d="m34 43 16-9 16 9v17l-16 9-16-9Z"/>',
+  '<path d="M50 4 62 35 94 50 62 65 50 96 38 65 6 50 38 35Z"/><path d="M50 19 57 43 81 50 57 57 50 81 43 57 19 50 43 43Z"/><circle cx="50" cy="50" r="7"/>',
+  '<path d="M8 29 30 37 50 15 70 37 92 29 82 73 50 91 18 73Z"/><path d="m20 43 18 7 12-14 12 14 18-7-8 23-22 12-22-12Z"/><path d="M34 59h32M42 70h16"/>',
+  '<path d="m50 4 13 25 28 4-20 20 5 29-26-14-26 14 5-29-20-20 28-4Z"/><path d="m50 24 7 15 17 2-12 12 3 17-15-8-15 8 3-17-12-12 17-2Z"/>',
+  '<path d="M13 88V35l18-17 19 17 19-17 18 17v53Z"/><path d="M23 78V40l27-24 27 24v38Z"/><path d="m35 51 15-13 15 13v18H35Z"/><path d="m42 58 8 8 8-8"/>',
+  '<path d="m50 3 10 22 25-12-11 25 23 12-25 10 12 25-25-11-9 23-10-23-25 11 11-25L3 50l23-12-11-25 25 12Z"/><path d="m50 27 7 16 16 7-16 7-7 16-7-16-16-7 16-7Z"/><circle cx="50" cy="50" r="6"/>',
+  '<path d="M50 5 91 50 50 95 9 50Z"/><path d="M50 15 81 50 50 85 19 50Z"/><path d="M50 15v70M19 50h62M28 28l44 44M72 28 28 72"/><path d="m50 33 17 17-17 17-17-17Z"/>',
+  '<path d="m50 4 13 23 27-8-8 27 14 24-28 1-18 25-18-25-28-1 14-24-8-27 27 8Z"/><path d="m50 25 8 16 18 2-13 13 3 18-16-9-16 9 3-18-13-13 18-2Z"/>',
+  '<circle cx="50" cy="50" r="39"/><ellipse cx="50" cy="50" rx="17" ry="39" transform="rotate(38 50 50)"/><ellipse cx="50" cy="50" rx="17" ry="39" transform="rotate(-38 50 50)"/><path d="M8 50h84"/><circle cx="50" cy="50" r="8"/>',
+  '<path d="M10 84 16 34 34 48 50 10 66 48 84 34 90 84Z"/><path d="m22 72 4-26 14 11 10-27 10 27 14-11 4 26Z"/><path d="M33 72h34M40 60h20"/>',
+  '<path d="M50 5C39 22 20 39 20 61a30 30 0 0 0 60 0C80 39 61 22 50 5Z"/><path d="M50 25c-7 12-16 22-16 35a16 16 0 0 0 32 0c0-13-9-23-16-35Z"/><path d="M42 64c5-8 11-8 16 0"/>',
+  '<path d="M50 3v94M3 50h94M16 16l68 68M84 16 16 84"/><path d="m50 18 9 23 23 9-23 9-9 23-9-23-23-9 23-9Z"/><circle cx="50" cy="50" r="8"/>',
+  '<path d="M6 30 28 37 50 12 72 37 94 30 84 76 50 94 16 76Z"/><path d="m15 48 19 7 16-19 16 19 19-7-8 23-27 14-27-14Z"/><path d="M28 58 15 72m57-14 13 14M36 72h28"/>',
+  '<circle cx="50" cy="50" r="42"/><circle cx="50" cy="50" r="32"/><path d="m50 9 8 25 25 8-25 8-8 25-8-25-25-8 25-8Z"/><path d="m50 32 5 13 13 5-13 5-5 13-5-13-13-5 13-5Z"/><circle cx="50" cy="50" r="5"/>'
  ];
  let n=keys.indexOf(String(key));if(n<0)n=Math.max(0,Math.min(shapes.length-1,index));
- return '<svg class="rank-emblem-art" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+shapes[n]+'</svg>';
+ return '<svg class="rank-emblem-art" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+shapes[n]+'</svg>';
 }
 function iconSvg(name){
  const paths={
