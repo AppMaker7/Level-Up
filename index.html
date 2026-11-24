@@ -467,6 +467,32 @@ const defaultQuests=[
 {id:"health1",name:"Follow a relaxing bedtime routine",category:"Health",xp:5,done:false,custom:false},
 {id:"bonus1",name:"Learn something new",category:"Skills",xp:5,done:false,custom:false}
 ];
+/* Core application state and helpers restored. Keep the existing local save intact. */
+const workouts={
+  Monday:["Push-ups · 3 × 8–12 (or an easier variation)","Dumbbell floor press · 2 × 10–12","Dumbbell curls · 2 × 10–12","Overhead triceps extensions · 2 × 10"],
+  Tuesday:["Easy walk or enjoyable activity · 15–20 minutes","Gentle mobility · 5 minutes"],
+  Wednesday:["Dumbbell rows · 2 × 10–12","Reverse snow angels · 2 × 8–10","Bird dogs · 2 × 8 each side"],
+  Thursday:["Recovery day","Optional easy walk or light stretching"],
+  Friday:["Push-ups · 2 × 8–12","Dumbbell floor press · 2 × 10–12","Dumbbell curls · 2 × 10–12","Comfortable plank · 2 short holds"],
+  Saturday:["Fun physical activity of your choice","Light stretching if it feels good"],
+  Sunday:["Rest and recover"]
+};
+const GUEST_BACKUP_KEY="levelup-life-rpg-guest-backup-v1";
+let state={player:"Player",xp:0,lifetimeXP:0,monthKey:localMonth(),customRanks:null,theme:{preset:"black",accent:"#ffffff"},quests:structuredClone(defaultQuests),lastReset:localDate(),activity:[],achievements:[],workoutDays:[],questReminders:false,sfx:{enabled:false,volume:50,quest:true,rank:true,achievement:true,chest:true,notify:true}};
+let user=null,saveTimer=null,currentView="home",guestModeActive=false;
+function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function localMonth(){return localDate().slice(0,7);}
+function activeRanks(){return Array.isArray(state.customRanks)&&state.customRanks.length?state.customRanks:ranks;}
+function applyTheme(){const t=state.theme||{preset:"black",accent:"#ffffff"},base=THEMES[t.preset]||THEMES.black,root=document.documentElement;root.dataset.theme=t.preset||"black";for(const k of ["bg","panel","panel2","line","text","muted"])root.style.setProperty("--"+k,base[k]);root.style.setProperty("--page-bg",base.page);root.style.setProperty("--accent",t.accent||base.accent);document.body.style.background=base.page;const picker=document.getElementById("accentColor");if(picker)picker.value=t.accent||base.accent;}
+function checkMonthReset(){if(state.monthKey!==localMonth()){state.xp=0;state.monthKey=localMonth();state.quests=state.quests.map(q=>({...q,done:false}));state.lastReset=localDate();state.activity.push("New monthly season started — rank reset to Beginner.");state.activity=state.activity.slice(-30);scheduleSave();toast("New month, fresh rank climb!");}}
+function freshDay(){state.quests=state.quests.map(q=>({...q,done:false}));state.lastReset=localDate();}
+function toast(msg){const el=document.getElementById("toast");if(!el)return;el.textContent=msg;el.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",2600);}
+function currentRank(){const list=activeRanks();let r=list[0]||DEFAULT_RANKS[0];for(const item of list)if(state.xp>=item.xp)r=item;return r;}
+function rankIndex(){return activeRanks().findIndex(r=>r.name===currentRank().name);}
+function progress(){const list=activeRanks(),i=rankIndex(),cur=list[i]||list[0],next=list[i+1];return next?{pct:Math.min(100,(state.xp-cur.xp)/(next.xp-cur.xp)*100),remaining:Math.max(0,next.xp-state.xp),next}:{pct:100,remaining:0,next:null};}
+function completed(){return state.quests.filter(q=>q.done);}
+function dailyXP(){return completed().reduce((sum,q)=>sum+(Number(q.xp)||0),0);}
+function readGuestBackup(){try{const raw=localStorage.getItem(GUEST_BACKUP_KEY);return raw?JSON.parse(raw):null;}catch(error){console.warn("Guest backup could not be read:",error);return null;}}
 function achievementData(){
 const done=completed(),cats=["School","Skills","Fitness","Organization","Health"],stats=state.questStats||{},total=Object.values(stats).reduce((a,b)=>a+(Number(b)||0),0);
 return [
