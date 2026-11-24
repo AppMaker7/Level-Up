@@ -94,19 +94,35 @@ html[data-theme="light"] .nav button.active{background:var(--accent);color:#fff;
 .system-quest{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(91,139,177,.18)}.system-quest:last-child{border:0;padding-bottom:0}.system-quest .grow{flex:1;min-width:0}.system-quest b{font-size:13px;display:block;overflow-wrap:anywhere}.system-quest small{color:#86a7c5;font-size:11px}.system-quest button{padding:7px 10px;font-size:11px;background:#14517a;border:1px solid #347eae}.system-log{font-size:12px;color:#91abc3;padding:7px 0;border-bottom:1px solid rgba(91,139,177,.15)}.system-log:last-child{border:0}.system-select{background:#0c1c2e!important;border-color:#315574!important;color:#d9f2ff!important}
 html[data-theme="light"] .system-shell,html[data-theme="black"] .system-shell{background:#081321!important;color:#e8f5ff!important;border-color:#244766!important}
 @media(max-width:520px){.system-shell{padding:14px}.system-head h2{font-size:21px}.system-grid{gap:7px}.system-stat{padding:10px}.system-stat b{font-size:20px}.system-attribute{grid-template-columns:75px 1fr 25px;gap:6px}}
-/* Minimal monochrome rank emblems inspired by the original LEVEL UP rank set. */
-.rank-icon{background:transparent!important;border:1px solid var(--line);box-shadow:none!important;border-radius:13px}
-.rank-icon .rank-emblem-art{width:82%;height:82%;display:block;color:#f4f7ff;filter:none}
-.hero .emblem{background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:16px}
-.hero .emblem .rank-emblem-art{width:86%;height:86%;color:#fff;filter:none}
+/* Rocket League-inspired rank progression: tier-colored shield badges and division markers. */
+.rank-icon{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:12px;overflow:visible}
+.rank-icon .rank-emblem-art{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.38))}
+.rl-rank-badge{color:#c77b48}
+.rl-shield-shadow{fill:currentColor;opacity:.16;stroke:currentColor;stroke-width:2}
+.rl-shield{fill:currentColor;fill-opacity:.24;stroke:currentColor;stroke-width:3.5;stroke-linejoin:round}
+.rl-inner{fill:none;stroke:currentColor;stroke-width:2.2;opacity:.9}
+.rl-center{fill:currentColor;fill-opacity:.22;stroke:currentColor;stroke-width:2.6;stroke-linejoin:round}
+.rl-center-line,.rl-wing{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.rl-division{fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round}
+.rl-division-label{font-size:9px;letter-spacing:1.5px;font-weight:800;color:currentColor;opacity:.82;margin-top:3px}
 .rank-row{transition:border-color .2s,background .2s}
-.rank-row:not(.locked){border-color:rgba(255,255,255,.28)}
-.rank-row.locked .rank-icon{opacity:.42;filter:grayscale(1)}
-html[data-theme="light"] .rank-icon .rank-emblem-art{color:#25344b}
-html[data-theme="light"] .hero .emblem .rank-emblem-art{color:#25344b}
-html[data-theme="light"] .hero .emblem{border-color:#c3cfdf}
-html[data-theme="black"] .rank-icon .rank-emblem-art,html[data-theme="black"] .hero .emblem .rank-emblem-art{color:#fff}
-@media(max-width:520px){.rank-row{gap:9px;padding:11px}.rank-row .rank-icon{width:46px;height:46px;flex:0 0 46px}}
+.rank-row:not(.locked){border-color:color-mix(in srgb,var(--rank-color,#8da5c7) 55%,var(--line))}
+.rank-row .rank-icon{color:var(--rank-color,#c77b48)}
+.rank-row:nth-child(1){--rank-color:#c77b48}.rank-row:nth-child(2){--rank-color:#d18a52}.rank-row:nth-child(3){--rank-color:#aeb9c8}
+.rank-row:nth-child(4){--rank-color:#aeb9c8}.rank-row:nth-child(5){--rank-color:#c0c9d5}.rank-row:nth-child(6){--rank-color:#e0b64f}
+.rank-row:nth-child(7){--rank-color:#e0b64f}.rank-row:nth-child(8){--rank-color:#6bd4c4}.rank-row:nth-child(9){--rank-color:#62cbbb}
+.rank-row:nth-child(10){--rank-color:#58a9ef}.rank-row:nth-child(11){--rank-color:#58a9ef}.rank-row:nth-child(12){--rank-color:#9b79e8}
+.rank-row:nth-child(13){--rank-color:#9b79e8}.rank-row:nth-child(14){--rank-color:#d8a9ff}.rank-row:nth-child(15){--rank-color:#f2d27b}
+.rank-row.locked{opacity:.62}
+.rank-row:not(.locked) .rank-icon{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--rank-color) 28%,transparent))}
+#rankIcon .rl-rank-badge{width:100%;height:100%;color:#c77b48}
+#rankIcon .rl-rank-badge[data-tier="1"]{color:#d18a52}#rankIcon .rl-rank-badge[data-tier="2"]{color:#aeb9c8}
+#rankIcon .rl-rank-badge[data-tier="3"]{color:#aeb9c8}#rankIcon .rl-rank-badge[data-tier="4"]{color:#c0c9d5}#rankIcon .rl-rank-badge[data-tier="5"]{color:#e0b64f}
+#rankIcon .rl-rank-badge[data-tier="6"]{color:#e0b64f}#rankIcon .rl-rank-badge[data-tier="7"]{color:#6bd4c4}#rankIcon .rl-rank-badge[data-tier="8"]{color:#62cbbb}
+#rankIcon .rl-rank-badge[data-tier="9"]{color:#58a9ef}#rankIcon .rl-rank-badge[data-tier="10"]{color:#58a9ef}#rankIcon .rl-rank-badge[data-tier="11"]{color:#9b79e8}
+#rankIcon .rl-rank-badge[data-tier="12"]{color:#9b79e8}#rankIcon .rl-rank-badge[data-tier="13"]{color:#d8a9ff}#rankIcon .rl-rank-badge[data-tier="14"]{color:#f2d27b}
+html[data-theme="light"] .rank-row{background:#fff}
+@media(max-width:520px){.rank-row{gap:9px;padding:11px}.rank-row .rank-icon{width:50px;height:50px;flex:0 0 50px}}
 </style>
 </head>
 <body>
@@ -237,25 +253,8 @@ const DEFAULT_RANKS=[
 ];let ranks=structuredClone(DEFAULT_RANKS);
 function rankEmblem(key,index=0){
  const keys=["beginner","rookie","adventurer","elite","master","legend","mythic","ascendant","overlord","celestial","divine","eternal","transcendent","apex","sovereign"];
- const shapes=[
-  '<circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="18"/><path d="M50 4v17m0 58v17M4 50h17m58 0h17M17 17l12 12m42 42 12 12M83 17 71 29M29 71 17 83"/><path d="m50 34 5 11 11 5-11 5-5 11-5-11-11-5 11-5Z"/>',
-  '<path d="M50 5 86 25 91 65 50 95 9 65 14 25Z"/><path d="m50 17 25 14 3 28-28 21-28-21 3-28Z"/><path d="m34 43 16-9 16 9v17l-16 9-16-9Z"/>',
-  '<path d="M50 4 62 35 94 50 62 65 50 96 38 65 6 50 38 35Z"/><path d="M50 19 57 43 81 50 57 57 50 81 43 57 19 50 43 43Z"/><circle cx="50" cy="50" r="7"/>',
-  '<path d="M8 29 30 37 50 15 70 37 92 29 82 73 50 91 18 73Z"/><path d="m20 43 18 7 12-14 12 14 18-7-8 23-22 12-22-12Z"/><path d="M34 59h32M42 70h16"/>',
-  '<path d="m50 4 13 25 28 4-20 20 5 29-26-14-26 14 5-29-20-20 28-4Z"/><path d="m50 24 7 15 17 2-12 12 3 17-15-8-15 8 3-17-12-12 17-2Z"/>',
-  '<path d="M13 88V35l18-17 19 17 19-17 18 17v53Z"/><path d="M23 78V40l27-24 27 24v38Z"/><path d="m35 51 15-13 15 13v18H35Z"/><path d="m42 58 8 8 8-8"/>',
-  '<path d="m50 3 10 22 25-12-11 25 23 12-25 10 12 25-25-11-9 23-10-23-25 11 11-25L3 50l23-12-11-25 25 12Z"/><path d="m50 27 7 16 16 7-16 7-7 16-7-16-16-7 16-7Z"/><circle cx="50" cy="50" r="6"/>',
-  '<path d="M50 5 91 50 50 95 9 50Z"/><path d="M50 15 81 50 50 85 19 50Z"/><path d="M50 15v70M19 50h62M28 28l44 44M72 28 28 72"/><path d="m50 33 17 17-17 17-17-17Z"/>',
-  '<path d="m50 4 13 23 27-8-8 27 14 24-28 1-18 25-18-25-28-1 14-24-8-27 27 8Z"/><path d="m50 25 8 16 18 2-13 13 3 18-16-9-16 9 3-18-13-13 18-2Z"/>',
-  '<circle cx="50" cy="50" r="39"/><ellipse cx="50" cy="50" rx="17" ry="39" transform="rotate(38 50 50)"/><ellipse cx="50" cy="50" rx="17" ry="39" transform="rotate(-38 50 50)"/><path d="M8 50h84"/><circle cx="50" cy="50" r="8"/>',
-  '<path d="M10 84 16 34 34 48 50 10 66 48 84 34 90 84Z"/><path d="m22 72 4-26 14 11 10-27 10 27 14-11 4 26Z"/><path d="M33 72h34M40 60h20"/>',
-  '<path d="M50 5C39 22 20 39 20 61a30 30 0 0 0 60 0C80 39 61 22 50 5Z"/><path d="M50 25c-7 12-16 22-16 35a16 16 0 0 0 32 0c0-13-9-23-16-35Z"/><path d="M42 64c5-8 11-8 16 0"/>',
-  '<path d="M50 3v94M3 50h94M16 16l68 68M84 16 16 84"/><path d="m50 18 9 23 23 9-23 9-9 23-9-23-23-9 23-9Z"/><circle cx="50" cy="50" r="8"/>',
-  '<path d="M6 30 28 37 50 12 72 37 94 30 84 76 50 94 16 76Z"/><path d="m15 48 19 7 16-19 16 19 19-7-8 23-27 14-27-14Z"/><path d="M28 58 15 72m57-14 13 14M36 72h28"/>',
-  '<circle cx="50" cy="50" r="42"/><circle cx="50" cy="50" r="32"/><path d="m50 9 8 25 25 8-25 8-8 25-8-25-25-8 25-8Z"/><path d="m50 32 5 13 13 5-13 5-5 13-5-13-13-5 13-5Z"/><circle cx="50" cy="50" r="5"/>'
- ];
- let n=keys.indexOf(String(key));if(n<0)n=Math.max(0,Math.min(shapes.length-1,index));
- return '<svg class="rank-emblem-art" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+shapes[n]+'</svg>';
+ let n=keys.indexOf(String(key));if(n<0)n=Math.max(0,Math.min(14,index));
+ return '<svg class="rank-emblem-art rl-rank-badge" data-tier="'+n+'" viewBox="0 0 100 100" role="img" aria-label="Rank emblem" xmlns="http://www.w3.org/2000/svg"><path class="rl-shield-shadow" d="M50 4 91 19 86 62 50 96 14 62 9 19Z"/><path class="rl-shield" d="M50 7 87 21 82 60 50 90 18 60 13 21Z"/><path class="rl-inner" d="M50 17 76 27 72 57 50 78 28 57 24 27Z"/><path class="rl-center" d="m50 28 8 15 16 7-16 7-8 15-8-15-16-7 16-7Z"/><path class="rl-center-line" d="M50 17v11m0 44v6M24 50h12m28 0h12"/><path class="rl-wing" d="m18 39 17 6m47-6-17 6M24 57l15 7m37-7-15 7"/><path class="rl-division" d="M39 82h22M44 87h12"/></svg>';
 }
 function iconSvg(name){
  const paths={
@@ -419,7 +418,7 @@ const r=currentRank(),p=progress(),done=completed(),ach=achievementData(),earned
 document.getElementById("rankIcon").innerHTML=rankEmblem(r.icon,rankIndex());document.getElementById("rankName").textContent=r.name;document.getElementById("rankLabel").textContent="CURRENT RANK";document.getElementById("playerLabel").textContent=state.player||"Player";document.getElementById("totalXP").textContent=state.xp.toLocaleString();document.getElementById("xpBar").style.width=p.pct+"%";document.getElementById("xpProgress").textContent=Math.floor(p.pct)+"% to next rank";document.getElementById("nextRank").textContent=p.next?`${p.remaining.toLocaleString()} XP to ${p.next.name}`:"TOP RANK";document.getElementById("seasonLabel").textContent=`${new Date().toLocaleDateString(undefined,{month:"long",year:"numeric"})} season`;document.getElementById("lifetimeXPLabel").textContent=`Lifetime: ${state.lifetimeXP.toLocaleString()} XP`;document.getElementById("doneCount").textContent=done.length;document.getElementById("remainingCount").textContent=state.quests.length-done.length;document.getElementById("achievementCount").textContent=earned;document.getElementById("dailyProgress").textContent=`${done.length} / ${state.quests.length}`;document.getElementById("dailyBar").style.width=(state.quests.length?done.length/state.quests.length*100:0)+"%";document.getElementById("todayXP").textContent=dailyXP()+" XP";document.getElementById("dateLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});document.getElementById("sideRank").textContent=r.name;document.getElementById("sideXP").textContent=state.xp.toLocaleString()+" XP";document.getElementById("playerName").value=state.player||"Player";
 document.getElementById("questCounter").textContent=`${done.length}/${state.quests.length} completed`;
 document.getElementById("questList").innerHTML=state.quests.filter(q=>!q.done).map(q=>`<div class="quest"><button class="check" aria-label="Complete quest" data-toggle="${esc(q.id)}">${iconSvg("check")}</button><div class="qbody"><b>${esc(q.name)}</b><small>${esc(q.category)}${q.custom?" · Custom":""}</small></div><span class="xp-pill">+${q.xp} XP</span><button class="secondary delete-task" data-delete="${esc(q.id)}" title="Delete quest" aria-label="Delete quest">${iconSvg("close")}</button></div>`).join("")||`<div class="panel-note">All quests completed. Nice work — you can add more below.</div>`;
-document.getElementById("rankList").innerHTML=activeRanks().map((x,i)=>{const unlocked=state.xp>=x.xp,active=x.name===r.name;return `<div class="rank-row ${unlocked?"":"locked"}" style="${active?"border-color:#659eff;background:#1b304c":""}"><div class="rank-icon">${rankEmblem(x.icon,i)}</div><div class="grow"><b>${x.name}</b><div class="muted small">${x.xp.toLocaleString()} XP required</div></div><span class="tag ${unlocked?"good":""}">${active?"CURRENT":unlocked?"UNLOCKED":iconSvg("lock")+" LOCKED"}</span></div>`}).join("");
+document.getElementById("rankList").innerHTML=activeRanks().map((x,i)=>{const unlocked=state.xp>=x.xp,active=x.name===r.name;return `<div class="rank-row ${unlocked?"":"locked"}" style="${active?"border-color:#659eff;background:#1b304c":""}"><div class="rank-icon">${rankEmblem(x.icon,i)}</div><div class="grow"><b>${x.name}</b><div class="muted small">${x.xp.toLocaleString()} XP required</div><div class="rl-division-label">DIVISION ${["I","II","III"][i%3]}</div></div><span class="tag ${unlocked?"good":""}">${active?"CURRENT":unlocked?"UNLOCKED":iconSvg("lock")+" LOCKED"}</span></div>`}).join("");
 document.getElementById("achievementList").innerHTML=ach.map(a=>`<div class="achievement ${a.ok?"":"locked"}"><div class="rank-icon">${iconSvg(a.icon)}</div><div class="grow"><b>${a.name}</b><div class="muted small">${a.desc}</div></div><span class="tag ${a.ok?"good":""}">${a.ok?"UNLOCKED":"LOCKED"}</span></div>`).join("");
 document.getElementById("rankCount").textContent=`${activeRanks().length} tiers`;document.getElementById("rankEditor").innerHTML=activeRanks().map((r,i)=>`<div class="formrow" style="gap:7px;align-items:center"><div class="field" style="max-width:65px"><label>Icon</label><div class="rank-icon">${rankEmblem(r.icon,i)}</div><input type="hidden" data-rank-icon="${i}" value="${esc(r.icon)}"></div><div class="field"><label>Rank name</label><input data-rank-name="${i}" maxlength="20" value="${esc(r.name)}" ${i===0?"readonly":""}></div><div class="field" style="max-width:130px"><label>XP required</label><div class="panel-note" style="text-align:center;padding:11px">${r.xp.toLocaleString()} XP</div></div></div>`).join("");document.getElementById("recentActivity").textContent=state.activity.length?state.activity.slice(-4).reverse().join(" · "):"Complete your first quest to start your activity log.";
 const selectedWorkoutDay=document.getElementById("workoutDay").value;document.getElementById("workoutPlan").innerHTML=`<h3>${selectedWorkoutDay}</h3>`+workouts[selectedWorkoutDay].map(x=>`<div class="workout-row">${iconSvg("dumbbell")} <span>${esc(x)}</span></div>`).join("");const workoutDone=(state.workoutDays||[]).includes(localDate());document.getElementById("completeWorkoutBtn").disabled=workoutDone;document.getElementById("completeWorkoutBtn").textContent=workoutDone?"Workout reward claimed today":"Complete workout · +150 XP";document.getElementById("workoutRewardStatus").textContent=workoutDone?"Today's workout reward has been claimed.":"Available once each day.";document.getElementById("reminderToggle").textContent=state.questReminders?"Turn off quest reminders":"Enable quest reminders";document.getElementById("reminderStatus").textContent=state.questReminders?"Reminders are on while the app is open.":"Reminders are off.";
