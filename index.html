@@ -22,6 +22,24 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-
 @media(max-width:800px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,minmax(0,1fr))}.side .card:first-child{grid-column:1/-1}}
 @media(max-width:520px){#rankEditor .formrow{flex-direction:row;gap:5px}#rankEditor .field{min-width:0}#rankEditor .field:first-child{max-width:55px!important}#rankEditor .field:last-child{max-width:95px!important}.wrap{padding:13px}.top{align-items:flex-start}.brand h1{font-size:19px}.hero{padding:15px}.hero h2{font-size:20px}.emblem{width:55px;height:55px}.stats{gap:7px}.stat{padding:11px 5px}.stat b{font-size:20px}.side{grid-template-columns:1fr}.formrow{flex-direction:column;align-items:stretch}.xpnum{font-size:18px}}
 
+/* Theme-specific surface colors: keep every preset visually distinct. */
+html[data-theme="light"] body{background:#f2f5f9!important;color:#172033}
+html[data-theme="light"] .hero{background:linear-gradient(120deg,#e2eaf7,#f8fbff)!important;border-color:#c7d5e8!important;color:#172033}
+html[data-theme="light"] .hero .rank,html[data-theme="light"] .xpnum{color:#315da8}
+html[data-theme="light"] .emblem,html[data-theme="light"] .rank-icon{background:#e2eaf7!important;color:#244b91}
+html[data-theme="light"] .nav button{background:#e5ebf4!important;color:#34445d!important;border-color:#cbd5e1!important}
+html[data-theme="light"] .nav button.active{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important}
+html[data-theme="light"] button:not(.secondary){background:var(--accent);color:#fff}
+html[data-theme="light"] button.secondary,html[data-theme="light"] .quick button{background:#e8eef7!important;color:#24344d!important;border-color:#cbd5e1!important}
+html[data-theme="light"] .tag,html[data-theme="light"] .xp-pill{background:#e5edf8!important;color:#31527f!important}
+html[data-theme="light"] .quest.done{background:#e4f3eb!important;border-color:#b7dfc8!important}
+html[data-theme="light"] .panel-note{background:#e8eef7!important;border-color:#cbd5e1!important;color:#53647c}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
+html[data-theme="midnight"] .hero{background:linear-gradient(120deg,#102d4c,#0d2038)!important;border-color:#294766!important}
+html[data-theme="midnight"] .nav button,html[data-theme="midnight"] .quick button{background:#102943!important;color:#c8e7ff!important;border-color:#294766!important}
+html[data-theme="midnight"] button:not(.secondary){background:#1677a8;color:#fff}
+html[data-theme="midnight"] button.secondary{background:#173653;color:#d7efff;border-color:#294766}
+html[data-theme="midnight"] .emblem,html[data-theme="midnight"] .rank-icon{background:#173653;color:#d7efff}
 /* True monochrome mode: every surface stays black/charcoal with white text. */
 html[data-theme="black"] body{background:#000!important;color:#fff}
 html[data-theme="black"] .auth,html[data-theme="black"] .stat,html[data-theme="black"] .card,html[data-theme="black"] .quest,html[data-theme="black"] .rank-row,html[data-theme="black"] .achievement,html[data-theme="black"] .workout-row,html[data-theme="black"] .panel-note{background:#080808!important;border-color:#303030!important;color:#fff}
@@ -339,7 +357,7 @@ function achievementData(){const done=completed(),cats=["School","Skills","Fitne
 {name:"Quest Hunter",desc:"Complete every quest today",icon:"target",ok:state.quests.length>0&&done.length===state.quests.length},
 {name:"XP Collector",desc:"Earn 150 XP in a day",icon:"zap",ok:dailyXP()>=150}
 ];}
-function normalize(s){if(!s||typeof s!=="object")return;state={...state,...s};if(!Array.isArray(state.quests))state.quests=structuredClone(defaultQuests);if(!Array.isArray(state.activity))state.activity=[];if(!Number.isFinite(state.xp))state.xp=0;if(!Number.isFinite(state.lifetimeXP))state.lifetimeXP=state.xp;if(!state.monthKey)state.monthKey=localMonth();if(!state.theme||state.theme.preset==="modern")state.theme={preset:"black",accent:"#ffffff"};if(!Array.isArray(state.workoutDays))state.workoutDays=[];if(typeof state.questReminders!=="boolean")state.questReminders=false;if(Array.isArray(state.customRanks)&&state.customRanks.length){ranks=state.customRanks;while(ranks.length<DEFAULT_RANKS.length){const template=DEFAULT_RANKS[ranks.length],last=ranks[ranks.length-1];ranks.push({...template,xp:Math.max(template.xp,(last?.xp||0)+15000)});}state.customRanks=ranks;}if(state.lastReset!==localDate())freshDay();checkMonthReset();}
+function normalize(s){if(!s||typeof s!=="object")return;state={...state,...s};if(!Array.isArray(state.quests))state.quests=structuredClone(defaultQuests);if(!Array.isArray(state.activity))state.activity=[];if(!Number.isFinite(state.xp))state.xp=0;if(!Number.isFinite(state.lifetimeXP))state.lifetimeXP=state.xp;if(!state.monthKey)state.monthKey=localMonth();if(!state.theme||!THEMES[state.theme.preset])state.theme={preset:"modern",accent:THEMES.modern.accent};else state.theme={...state.theme,accent:state.theme.accent||THEMES[state.theme.preset].accent};if(!Array.isArray(state.workoutDays))state.workoutDays=[];if(typeof state.questReminders!=="boolean")state.questReminders=false;if(Array.isArray(state.customRanks)&&state.customRanks.length){ranks=state.customRanks;while(ranks.length<DEFAULT_RANKS.length){const template=DEFAULT_RANKS[ranks.length],last=ranks[ranks.length-1];ranks.push({...template,xp:Math.max(template.xp,(last?.xp||0)+15000)});}state.customRanks=ranks;}if(state.lastReset!==localDate())freshDay();checkMonthReset();}
 function loadLocal(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)normalize(JSON.parse(raw));else localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn(e);}}
 function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
 async function save(){saveLocal();if(cloud&&user){document.getElementById("syncStatus").textContent="SAVING…";const {error}=await cloud.from("player_saves").upsert({user_id:user.id,state:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});document.getElementById("syncStatus").textContent=error?"SYNC ERROR":"CLOUD SAVED";if(error)console.error(error);}}
