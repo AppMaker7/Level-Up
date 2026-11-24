@@ -219,6 +219,145 @@ html[data-theme="light"] .stat,html[data-theme="light"] .card,html[data-theme="l
 
 /* Minimal navigation layout: keep secondary stats and sidebar out of the main experience. */
 #app>.stats{display:none!important}.layout{display:block!important}.layout>.side{display:none!important}.bottom-dock{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+
+
+
+/* LEVEL UP — full monochrome redesign */
+:root{
+  --bg:#000;--panel:#090909;--panel2:#111;--line:#292929;
+  --text:#f5f5f5;--muted:#929292;--blue:#fff;--green:#d8d8d8;
+  --gold:#fff;--pink:#ddd;--accent:#fff;--page-bg:#000;
+}
+html,html[data-theme],body{background:#000!important;color:#f5f5f5!important}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.12px}
+.wrap{max-width:900px;padding:22px 20px 112px}
+.top{margin-bottom:26px;align-items:center}
+.logo{background:#080808;border:1px solid #303030;border-radius:13px}
+.brand h1{font-size:20px;font-weight:900;letter-spacing:3px}
+.brand small{font-size:9px;letter-spacing:2px;color:#777}
+.status{background:#0b0b0b;color:#ddd;border:1px solid #333;border-radius:30px;letter-spacing:1px;font-size:10px}
+.hero,.settings-hero,.profile-showcase,.awakening-panel,.coach-awakening,.system-shell{
+  background:linear-gradient(145deg,#101010,#050505)!important;
+  border:1px solid #303030!important;border-radius:22px!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.48)!important;
+}
+.hero{padding:22px;margin-bottom:20px}
+.hero-row{gap:16px}
+.emblem{background:#111!important;border:1px solid #3a3a3a;border-radius:16px;color:#fff}
+.hero h2{font-size:25px;font-weight:850;letter-spacing:-.8px}
+.hero .rank,.system-kicker,.roadmap-kicker{color:#aaa!important;letter-spacing:2px;font-weight:800}
+.xpnum{color:#fff!important;font-size:25px}
+.bar{height:7px;background:#292929!important;border-radius:20px}
+.bar>span{background:linear-gradient(90deg,#777,#fff)!important}
+.bar-label{color:#888}
+.section-title{margin:4px 0 14px}
+.section-title h2{font-size:21px;font-weight:850;letter-spacing:-.6px}
+.tag,.xp-pill{background:#141414!important;color:#ddd!important;border:1px solid #303030!important;border-radius:30px}
+.card,.stat,.quest,.rank-row,.achievement,.workout-row,.panel-note,
+.system-panel,.system-stat,.daily-challenge,.category-meter,.season-tier,
+.season-track-progress,.skill-tree-awakening,.skill-node,.coach-insight,
+.coach-output,.sfx-panel,.settings-account{
+  background:#090909!important;color:#f3f3f3!important;
+  border:1px solid #292929!important;border-radius:16px!important;
+  box-shadow:none!important;
+}
+.card,.system-panel,.sfx-panel,.settings-account{padding:17px}
+.quest{padding:14px;margin:9px 0;transition:border-color .18s,background .18s}
+.quest.done{background:#111!important;border-color:#666!important}
+.quest.done .check{background:#fff!important;border-color:#fff!important;color:#000!important}
+.check{border:1.5px solid #777;color:#fff;background:#080808}
+.qbody b,.settings-tile b{font-weight:750}
+.qbody small,.muted,.small{color:#929292}
+button,button:not(.secondary),button.secondary,.quick button,.settings-tile{
+  color:#f5f5f5!important;background:#111!important;
+  border:1px solid #353535!important;border-radius:12px!important;
+  box-shadow:none!important;transition:background .16s,border-color .16s,transform .16s;
+}
+button:not(.secondary){background:#f1f1f1!important;color:#050505!important;border-color:#f1f1f1!important;font-weight:800}
+button:hover{filter:none!important;background:#242424!important;color:#fff!important;border-color:#555!important}
+button:not(.secondary):hover{background:#d8d8d8!important;color:#000!important}
+button:active{transform:scale(.985);box-shadow:none!important}
+button.secondary{background:#111!important;color:#eee!important;border-color:#353535!important}
+input,select,textarea,.field input,.field select,.field textarea{
+  background:#080808!important;color:#f5f5f5!important;border:1px solid #303030!important;
+  border-radius:11px!important;accent-color:#fff;
+}
+input:focus,select:focus,textarea:focus{border-color:#aaa!important;outline:none;box-shadow:0 0 0 2px #ffffff12}
+.nav.bottom-dock{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));
+  width:min(540px,calc(100% - 28px));height:68px;padding:7px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px;
+  background:rgba(8,8,8,.96)!important;border:1px solid #353535!important;
+  border-radius:19px!important;box-shadow:0 14px 44px #000!important;
+  backdrop-filter:blur(18px);z-index:50;
+}
+.bottom-dock .dock-item,.nav button{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  min-width:0;padding:6px 3px!important;background:transparent!important;
+  color:#777!important;border:1px solid transparent!important;border-radius:13px!important;
+  box-shadow:none!important;
+}
+.bottom-dock .dock-item small{font-size:10px;font-weight:700;letter-spacing:.2px}
+.bottom-dock .dock-item.active,.nav button.active{
+  background:#f2f2f2!important;color:#050505!important;border-color:#f2f2f2!important;
+}
+.bottom-dock .ui-icon{width:20px;height:20px;flex-basis:20px!important}
+.settings-grid{gap:10px}
+.settings-tile{min-height:104px!important;padding:16px!important;gap:8px!important;align-items:flex-start!important;text-align:left}
+.settings-tile .ui-icon{color:#fff!important}
+.settings-tile small{color:#888!important;font-size:11px}
+.settings-tile:hover{background:#171717!important;border-color:#666!important}
+.settings-hero{padding:20px;margin-bottom:16px}
+.settings-hero h2{font-size:23px;letter-spacing:-.7px}
+.quest-first-card{background:#080808!important;border:1px solid #303030!important;border-radius:20px!important;padding:18px!important;box-shadow:0 16px 40px #0008!important}
+.quest-first-heading h2{font-size:22px;font-weight:850;letter-spacing:-.6px}
+.quest-first-heading p{color:#888!important}
+.quest-first-count{background:#151515!important;border:1px solid #393939!important;color:#fff!important}
+.quest-first-progress{background:#282828!important}
+.quest-first-progress span{background:#fff!important}
+.quest-first-footer{border-top:1px solid #292929!important;color:#aaa!important}
+.quest-tools{gap:8px}
+.rank-row .rank-icon{background:#080808!important;border-color:#555!important;color:#fff!important}
+.rank-row .rl-rank-badge{color:#fff!important}
+.rank-row .rl-shield,.rank-row .rl-center{stroke:#fff!important}
+.rank-row .rl-inner,.rank-row .rl-center-line,.rank-row .rl-wing,.rank-row .rl-division{stroke:#fff!important}
+.profile-avatar,.profile-card-emblem,.awakening-orb,.season-tier-icon,.skill-node-symbol{
+  background:#111!important;color:#fff!important;border-color:#444!important;box-shadow:none!important
+}
+.system-shell{padding:18px}
+.system-rank{background:#151515!important;color:#fff!important;border-color:#555!important}
+.system-stat{background:#101010!important;border-color:#303030!important}
+.system-stat b{color:#fff!important}
+.system-stat small,.system-stat span{color:#999!important}
+.system-panel h3{color:#eee!important}
+.system-attribute .bar{background:#282828!important}
+.system-attribute .bar span{background:#fff!important}
+.daily-progress-ring{background:conic-gradient(#fff var(--ring-progress),#292929 0)!important;box-shadow:none!important}
+.daily-progress-ring:before{background:#090909!important;border-color:#333!important}
+.daily-progress-ring span{color:#fff!important}
+.roadmap-step-marker{background:#111!important;border-color:#555!important;color:#ddd!important}
+.roadmap-step.complete .roadmap-step-marker{background:#fff!important;color:#000!important;border-color:#fff!important}
+.roadmap-track{background:#292929!important}
+.roadmap-track i{background:#fff!important}
+.daily-challenge.complete,.season-tier.reached,.skill-node.unlocked{background:#111!important;border-color:#666!important}
+.quest.done .xp-pill,.tag.good{background:#191919!important;color:#eee!important;border-color:#555!important}
+.toast{background:#111!important;color:#fff!important;border:1px solid #555!important;box-shadow:0 12px 35px #000!important}
+.footer{color:#666!important}
+html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="black"] body{background:#000!important;color:#f5f5f5!important}
+html[data-theme="light"] .hero,html[data-theme="light"] .card,html[data-theme="light"] .quest,
+html[data-theme="light"] .settings-hero,html[data-theme="light"] .settings-tile,
+html[data-theme="light"] input,html[data-theme="light"] select{background:#090909!important;color:#f5f5f5!important;border-color:#303030!important}
+@media(max-width:620px){
+  .wrap{padding:16px 13px 106px!important}
+  .top{margin-bottom:20px}
+  .hero{padding:17px}
+  .hero h2{font-size:21px}
+  .xpnum{font-size:20px}
+  .section-title h2{font-size:19px}
+  .settings-tile{min-height:94px!important;padding:13px!important}
+  .quest-first-card{padding:14px!important}
+}
+
 </style>
 <style>
 .goal-plan-list{display:grid;gap:8px;margin-top:10px}
