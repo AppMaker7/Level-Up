@@ -354,12 +354,36 @@ html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="
 }
 </style>
 
+
+<style id="settings-flat-layout">
+/* Settings content sits directly on the page, without nested grey shells. */
+.settings-hero,.sfx-panel,.settings-account{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ border-radius:0!important;padding:0!important;
+}
+.settings-hero{margin:0 0 20px!important}
+.settings-hero h2{margin:5px 0;font-size:19px}
+.settings-grid{background:transparent!important;border:0!important;padding:0!important}
+.settings-tile{background:#0b0b0b!important;border:1px solid #292929!important;border-radius:10px!important;box-shadow:none!important}
+.sfx-panel{margin-top:24px!important}
+.sfx-panel .section-title{margin-bottom:8px}
+.sfx-panel>p{margin:0 0 12px}
+.sound-row{background:transparent!important;border:0!important;border-bottom:1px solid #252525!important;border-radius:0!important;padding:12px 2px!important}
+.sfx-list{background:transparent!important;border:0!important;padding:0!important}
+.settings-account{margin-top:25px!important}
+.cloud-data-row{padding:12px 2px;border-bottom:1px solid #252525}
+.cloud-data-row b{font-size:13px}
+.cloud-actions{margin-top:12px;align-items:center}
+.cloud-actions button{min-width:110px}
+#saveMode{margin-top:3px;background:transparent!important;border:0!important;padding:0!important;border-radius:0!important}
+@media(max-width:520px){.cloud-actions{gap:7px}.cloud-actions button{flex:1}}
+</style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div class="brand"><div class="logo" aria-label="LEVEL UP logo"><svg viewBox="0 0 48 48" role="img" aria-hidden="true" style="width:34px;height:34px;display:block"><path d="M24 4 7 22h10v19h14V22h10L24 4Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M19 29h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div><h1>LEVEL UP</h1><small>YOUR REAL LIFE RPG</small></div></div>
-    <div class="actions"><span class="status" id="syncStatus">GUEST MODE</span><button class="secondary hidden" id="logoutBtn">Log out</button></div>
+    <div class="actions"><span class="status" id="syncStatus">GUEST MODE</span></div>
   </header>
 
   <section id="authScreen" class="auth">
@@ -409,6 +433,11 @@ html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="
             <button class="settings-tile" data-go="system"><span class="ui-icon" data-icon="spark"></span><b>System mode</b><small>Player status and attributes</small></button>
             <button class="settings-tile" data-go="rpg"><span class="ui-icon" data-icon="gamepad-2"></span><b>RPG Hub</b><small>Skill tree, shop, and inventory</small></button>
           </div>
+          <section class="settings-account" id="cloudDataSettings">
+            <div class="section-title"><h2>Cloud data</h2></div>
+            <div class="cloud-data-row"><div><b>Save status</b><div id="saveMode" class="muted small">Guest mode: progress is saved in this browser only.</div></div></div>
+            <div class="actions cloud-actions"><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"><button class="secondary hidden" id="logoutBtn">Sign out</button></div>
+          </section>
           <section class="sfx-panel" id="sfxSettings">
             <div class="section-title"><h2>Sound effects</h2><span class="tag">Audio controls</span></div>
             <p class="muted small">Original in-app sounds. Sounds start off until you turn them on.</p>
@@ -492,8 +521,8 @@ html[data-theme="light"] body,html[data-theme="midnight"] body,html[data-theme="
         <section class="view" id="profile">
           <div class="section-title"><h2>Player Profile</h2><span class="tag">Identity card</span></div><div class="profile-showcase"><div class="profile-avatar" id="profileAvatar">◈</div><div class="profile-showcase-copy"><small>LEVEL UP PLAYER CARD</small><h2 id="profileCardName">Player</h2><b id="profileCardRank">BEGINNER</b><span id="profileCardClass">VANGUARD</span><small id="profileCardXP">0 LIFETIME XP</small></div><div class="profile-card-emblem" id="profileCardEmblem"></div></div><div class="card">
             <div class="field"><label>Player name</label><input id="playerName" maxlength="24" placeholder="Player"></div><div class="field"><label>Player emblem</label><select id="playerAvatar"><option value="◈">◇ Core</option><option value="✦">✦ Star</option><option value="⚡">⚡ Spark</option><option value="♜">♜ Tower</option><option value="⬡">⬡ Hex</option><option value="☄">☄ Comet</option><option value="✧">✧ Nova</option><option value="◎">◎ Orbit</option></select></div>
-            <div class="field"><label>Save mode</label><div id="saveMode" class="panel-note">Guest mode: progress is saved in this browser only.</div></div>
-            <div class="actions"><button id="saveProfileBtn">Save profile</button><button type="button" class="secondary" id="copyProfileBtn">Copy player card</button><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"></div>
+            
+            <div class="actions"><button id="saveProfileBtn">Save profile</button><button type="button" class="secondary" id="copyProfileBtn">Copy player card</button></div>
             <hr style="border-color:var(--line);margin:18px 0"><button class="danger" id="resetBtn">Reset all progress</button>
           </div>
         </section>
