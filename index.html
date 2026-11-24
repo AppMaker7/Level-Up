@@ -1410,7 +1410,7 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
 (function(){
   function paintQuestFirst(){
     const root=document.getElementById("questFirstList");
-    if(!root||!window.state)return;
+    if(!root||typeof state==="undefined")return;
     const quests=Array.isArray(state.quests)?state.quests:[];
     const done=quests.filter(q=>q.done).length;
     const open=quests.filter(q=>!q.done);
