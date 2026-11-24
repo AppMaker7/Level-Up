@@ -784,7 +784,8 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.
       const xp=row=>Number((row.querySelector(".xp-pill")?.textContent||"").replace(/[^0-9]/g,""))||0;
       if(sort==="xp-high")return xp(b)-xp(a);
       if(sort==="xp-low")return xp(a)-xp(b);
-      return rows.indexOf(a)-rows.indexOf(b);
+      const order=row=>state.quests.findIndex(q=>q.id===row.querySelector("[data-toggle]")?.dataset.toggle);
+      return order(a)-order(b);
     }).forEach(row=>list.appendChild(row));
   }
   ["questSearch","questFilter","questSort"].forEach(id=>document.getElementById(id)?.addEventListener(id==="questSearch"?"input":"change",applyQuestFilters));
