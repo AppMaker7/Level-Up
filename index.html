@@ -1464,4 +1464,26 @@ button.secondary,.settings-tile{background:#1b1b1b!important;color:#f2f2f2!impor
 .settings-tile{min-height:76px!important;padding:10px!important}
 @media(max-width:560px){.wrap{padding:14px 12px 96px}.quest-first-card{padding:13px!important}.quest-first-footer{flex-direction:column;align-items:stretch}.quest-first-footer button{width:100%}}
 </style>
+<style id="icon-only-minimal-ui">
+/* Remove card surfaces; use simple spacing and icon navigation instead. */
+.card,.panel-note,.stat,.system-panel,.roadmap-card,.settings-hero,.awakening-panel,.quest-first-card,.quest,.achievement,.rank-row,.workout-row,.settings-tile{
+  background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+.card,.panel-note,.system-panel,.roadmap-card,.settings-hero{padding-left:0!important;padding-right:0!important}
+.quest-first-card{padding:10px 0!important;margin:10px 0 18px!important}
+.quest-first-row{background:transparent!important;border:0!important;border-bottom:1px solid #303030!important;border-radius:0!important;padding:10px 0!important}
+.quest-first-progress{height:4px!important}
+.settings-grid{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px!important;margin:12px 0 20px!important}
+.settings-tile{min-width:0!important;min-height:58px!important;padding:8px 4px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important}
+.settings-tile .ui-icon{width:25px!important;height:25px!important;margin:0!important;color:#f2f2f2!important}
+.settings-tile .ui-icon svg{width:25px!important;height:25px!important}
+.settings-tile b,.settings-tile small{display:none!important}
+.settings-tile:focus-visible{outline:2px solid #eee!important;outline-offset:3px}
+.settings-grid .settings-tile{border:0!important;background:transparent!important}
+.settings-grid .settings-tile:hover{background:#202020!important}
+.bottom-dock{background:#101010!important;border:0!important;box-shadow:none!important}
+.bottom-dock .dock-item{background:transparent!important;border:0!important}
+.bottom-dock .dock-item.active{background:#252525!important}
+@media(max-width:560px){.settings-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important}.settings-tile{min-height:52px!important}}
+</style>
 </body></html>
