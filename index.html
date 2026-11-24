@@ -131,6 +131,7 @@ html[data-theme="light"] .rank-row{background:#fff}
 @media(max-width:520px){.bottom-dock{height:68px;bottom:max(9px,env(safe-area-inset-bottom));padding:7px 9px}.settings-grid{gap:8px}.settings-tile{min-height:92px;padding:11px!important}.settings-hero{padding:16px}}
 
 /* SYSTEM AWAKENING — command center and progression layer */
+.coach-awakening{padding:19px;border-radius:18px;border:1px solid rgba(111,166,224,.3);background:radial-gradient(circle at 100% 0,rgba(80,156,255,.19),transparent 42%),linear-gradient(145deg,#13263e,#0a111d)}.coach-awakening h2{margin:8px 0;font-size:23px}.coach-awakening p{max-width:580px;color:#a9bdd6;font-size:12px}.coach-output{display:grid;gap:10px}.coach-insight{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}.coach-insight b{display:block;margin-bottom:3px}.coach-insight p{margin:0;color:var(--muted);font-size:12px}
 .quest-tools{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:10px 0}.quest-tools input,.quest-tools select{min-width:0;padding:10px;background:var(--panel);border-color:var(--line);color:var(--text);border-radius:11px;font-size:12px}@media(max-width:520px){.quest-tools{grid-template-columns:1fr 1fr}.quest-tools input{grid-column:1/-1}}
 .awakening-panel{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(124,177,235,.32);border-radius:20px;background:radial-gradient(circle at 88% 5%,rgba(80,156,255,.2),transparent 33%),linear-gradient(135deg,#101d30,#090f1a 75%);box-shadow:0 18px 48px rgba(0,0,0,.24);margin:14px 0 20px}
 .awakening-panel:after{content:"";position:absolute;right:-45px;bottom:-100px;width:230px;height:230px;border:1px solid rgba(125,183,255,.13);border-radius:50%;box-shadow:0 0 0 24px rgba(125,183,255,.025),0 0 0 50px rgba(125,183,255,.02);pointer-events:none}
@@ -295,8 +296,10 @@ html[data-theme="light"] .rank-row{background:#fff}
         <section class="view" id="ranks"><div class="section-title"><h2>Rank Hall</h2><span class="tag" id="rankCount">15 tiers</span></div><div class="card" style="margin-bottom:12px"><h3 style="margin-top:0">Your rank ladder</h3><p class="muted small">Rank XP requirements are locked and ranks cannot be deleted. You can still rename ranks or add new ones.</p><div id="rankEditor"></div><div class="actions" style="margin-top:10px"><button id="addRankBtn" class="secondary">＋ Add rank</button><button id="saveRanksBtn">Save rank names</button><button id="defaultRanksBtn" class="secondary">Restore defaults</button></div></div><div id="rankList"></div></section>
         <section class="view" id="achievements"><div class="section-title"><h2>Achievement Gallery</h2></div><div id="achievementList"></div></section>
         <section class="view" id="coach">
-          <div class="section-title"><h2>AI Coach</h2><span class="tag">Planning assistant</span></div>
-          <div class="card"><h3><span class="ui-icon" data-icon="bot"></span> SYSTEM AI</h3><p class="muted">Use these prompts to ask an AI assistant to plan your quests, schedule, or workouts. This opens ChatGPT in a new tab; it does not silently modify your app data.</p><div class="actions"><button class="secondary coachPrompt" data-prompt="Create a realistic daily quest plan for my life RPG with school, skills, organization, health, and fitness. Give each quest an XP value.">Create daily quests</button><button class="secondary coachPrompt" data-prompt="Build a balanced weekly workout routine using bodyweight and light dumbbells, no bench. Keep it age-appropriate and include recovery.">Build workout plan</button><button class="secondary coachPrompt" data-prompt="Help me make a realistic weekly schedule balancing school, homework, hobbies, exercise, and enough sleep.">Build weekly schedule</button><button class="secondary coachPrompt" data-prompt="Give me realistic new life RPG challenges and achievements with XP rewards.">New challenges</button></div></div>
+          <div class="section-title"><h2>System Strategist</h2><span class="tag">Offline coach</span></div>
+          <div class="coach-awakening"><div class="system-kicker">LEVEL UP // STRATEGY TERMINAL</div><h2>Make your next move count.</h2><p>Get suggestions from your actual quest history and progress. This runs locally inside LEVEL UP, needs no API key, and never sends your data to another service.</p><div class="actions"><button id="coachAnalyze">Analyze my progress</button><button class="secondary" id="coachPlan">Build a balanced quest plan</button></div></div>
+          <div class="card" style="margin-top:12px"><div class="section-title"><h3 style="margin:0">Your strategy report</h3><span class="tag">Personal stats</span></div><div id="coachOutput" class="coach-output">Run an analysis to see your strongest categories, neglected areas, and a realistic next step.</div></div>
+          <div class="panel-note" style="margin-top:12px">This is an offline rules-based planner, not a hosted generative AI model. Your app stays usable without paid services, API keys, or external accounts.</div>
         </section>
         <section class="view" id="themes"><div class="section-title"><h2>Themes</h2><span class="tag">Appearance</span></div><div class="card"><h3 style="margin-top:0">Choose a style</h3><p class="muted small">Switch the whole app between clean modern styles, then pick an accent color.</p><div class="quick"><button class="themeChoice" data-theme="modern">Modern</button><button class="themeChoice" data-theme="black">Simple black</button><button class="themeChoice" data-theme="midnight">Midnight blue</button><button class="themeChoice" data-theme="light">Clean light</button></div><div class="field" style="margin-top:18px"><label for="accentColor">Custom accent color</label><input id="accentColor" type="color" value="#6ca8ff" style="height:48px;padding:5px"></div><div class="actions"><button id="applyAccentBtn">Apply color</button><button id="resetThemeBtn" class="secondary">Reset theme</button></div><p class="muted small" id="themeStatus" style="margin-bottom:0">Theme settings are saved on this device and in your player save.</p></div></section>
         <section class="view" id="rpg">
@@ -786,6 +789,35 @@ window.levelUpLogin = function(){
   ["questSearch","questFilter","questSort"].forEach(id=>document.getElementById(id)?.addEventListener(id==="questSearch"?"input":"change",applyQuestFilters));
   const previousRender=render;
   render=function(){previousRender();renderAwakening();applyQuestFilters();};
+  const coachOutput=document.getElementById("coachOutput");
+  document.getElementById("coachAnalyze")?.addEventListener("click",function(){
+    const stats=state.questStats||{},cats=["School","Skills","Fitness","Organization","Health"],ranked=cats.map(name=>({name,count:num(stats[name])})).sort((a,b)=>b.count-a.count);
+    const total=Object.values(stats).reduce((a,b)=>a+num(b),0),strong=ranked[0],focus=ranked[ranked.length-1],pending=(state.quests||[]).filter(q=>!q.done).length;
+    const lines=[
+      ["CURRENT STATUS",total+" quests completed across your journey, with "+pending+" missions currently open."],
+      ["STRONGEST AREA",strong.name+" is your most-developed category with "+strong.count+" completed quests."],
+      ["NEXT OPPORTUNITY",focus.name+" has "+focus.count+" completions. Try one small mission in this category when it fits your day."],
+      ["CONSISTENCY",streakCountText()+" active days in your current streak. Keep your plan realistic and leave room for rest."]
+    ];
+    coachOutput.innerHTML=lines.map(x=>'<div class="coach-insight"><b>'+x[0]+'</b><p>'+x[1]+'</p></div>').join("");
+  });
+  document.getElementById("coachPlan")?.addEventListener("click",function(){
+    const stats=state.questStats||{},templates=[
+      {category:"School",name:"Review one class topic",xp:8},
+      {category:"Skills",name:"Practice a skill for 15 minutes",xp:8},
+      {category:"Fitness",name:"Take a comfortable movement break",xp:5},
+      {category:"Organization",name:"Reset one small area",xp:5},
+      {category:"Health",name:"Take a screen break and hydrate",xp:5}
+    ];
+    const selected=templates.slice().sort((a,b)=>num(stats[a.category])-num(stats[b.category])).slice(0,3);
+    selected.forEach(t=>{if(!state.quests.some(q=>q.name===t.name)){state.quests.push({id:"coach-"+crypto.randomUUID(),name:t.name,category:t.category,xp:t.xp,done:false,custom:true});}});
+    state.activity=state.activity||[];state.activity.push("System Strategist generated a balanced 3-quest plan.");state.activity=state.activity.slice(-30);
+    scheduleSave();render();go("quests");toast("Balanced quest plan added to your mission board.");
+  });
+  function streakCountText(){
+    const set=new Set(state.activeDays||[]),key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    let d=new Date(),n=0;if(!set.has(key(d)))d.setDate(d.getDate()-1);for(let i=0;i<400&&set.has(key(d));i++){n++;d.setDate(d.getDate()-1);}return n;
+  }
   const board=document.getElementById("dailyChallengeBoard");
   board?.addEventListener("click",function(e){
     const b=e.target.closest("[data-claim-challenge]");if(!b)return;
