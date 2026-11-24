@@ -216,6 +216,9 @@ html[data-theme="light"] body{background:#080c12!important;color:#f2f6fb!importa
 html[data-theme="light"] .stat,html[data-theme="light"] .card,html[data-theme="light"] .quest,html[data-theme="light"] .rank-row,html[data-theme="light"] .achievement,html[data-theme="light"] .workout-row{background:#111821!important;color:#f2f6fb!important;border-color:#263443!important}
 @media(max-width:520px){.wrap{padding:13px;padding-top:17px}.awakening-panel{padding:15px}.daily-progress-ring{width:86px;height:86px;flex-basis:86px}.daily-progress-ring:before{inset:7px}.daily-progress-ring span{font-size:17px}.daily-progress-layout{gap:13px}.daily-progress-copy h2{font-size:23px}.roadmap-card{padding:14px}}
 
+
+/* Minimal navigation layout: keep secondary stats and sidebar out of the main experience. */
+#app>.stats{display:none!important}.layout{display:block!important}.layout>.side{display:none!important}.bottom-dock{grid-template-columns:repeat(4,minmax(0,1fr))!important}
 </style>
 <style>
 .goal-plan-list{display:grid;gap:8px;margin-top:10px}
@@ -581,25 +584,18 @@ input,select,textarea{background:#0b0c11!important;border-color:#303440!importan
     <nav class="nav bottom-dock" id="nav" aria-label="Main navigation">
       <button class="dock-item active" data-view="home"><span class="ui-icon" data-icon="home"></span><small>Home</small></button>
       <button class="dock-item" data-view="quests"><span class="ui-icon" data-icon="scroll"></span><small>Quests</small></button>
+      <button class="dock-item" data-view="more"><span class="ui-icon" data-icon="grid-2x2"></span><small>More</small></button>
       <button class="dock-item" data-view="settings"><span class="ui-icon" data-icon="settings"></span><small>Settings</small></button>
     </nav>
     <div class="layout">
       <div class="main">
         <section class="view" id="settings">
-          <div class="section-title"><h2>Settings</h2><span class="tag">System control center</span></div>
-<div class="settings-sound-shortcut"><div class="settings-shortcut-pill" aria-label="Settings shortcuts"><button type="button" data-go="themes" aria-label="Appearance"><span class="ui-icon" data-icon="search"></span></button><button type="button" data-go="sound" aria-label="Sound effects"><span class="ui-icon" data-icon="circle-help"></span></button><button type="button" data-go="profile" aria-label="Player profile"><span class="ui-icon" data-icon="terminal"></span></button><button type="button" data-go="rpg" aria-label="RPG Hub"><span class="ui-icon" data-icon="chevrons-down"></span></button></div></div>
-          <div class="settings-hero"><div class="system-kicker">LEVEL UP // CONFIGURATION</div><h2>Control your system.</h2><p class="muted small">Customize your interface, sounds, player data, and progression tools.</p></div>
+          <div class="section-title"><h2>Settings</h2><span class="tag">App preferences</span></div>
+          <div class="settings-hero"><div class="system-kicker">LEVEL UP // CONFIGURATION</div><h2>Make it yours.</h2><p class="muted small">Change how LEVEL UP looks, sounds, and saves your progress.</p></div>
           <div class="settings-grid">
             <button class="settings-tile" data-go="themes"><span class="ui-icon" data-icon="palette"></span><b>Appearance</b><small>Themes and accent colors</small></button>
-            <button class="settings-tile" data-go="sound"><span class="ui-icon" data-icon="volume-2"></span><b>Sound effects</b><small>Volume, toggles, and previews</small></button>
-            <button class="settings-tile" data-go="profile"><span class="ui-icon" data-icon="user"></span><b>Player profile</b><small>Account and save controls</small></button>
-            <button class="settings-tile" data-go="ranks"><span class="ui-icon" data-icon="trophy"></span><b>Rank hall</b><small>Rank progression</small></button>
-            <button class="settings-tile" data-go="achievements"><span class="ui-icon" data-icon="medal"></span><b>Achievements</b><small>Your unlocked milestones</small></button>
-            <button class="settings-tile" data-go="workout"><span class="ui-icon" data-icon="dumbbell"></span><b>Training</b><small>Workout plan and reminders</small></button>
-            <button class="settings-tile" data-go="coach"><span class="ui-icon" data-icon="bot"></span><b>AI Coach</b><small>Planning assistant</small></button>
-            <button class="settings-tile" data-go="friends"><span class="ui-icon" data-icon="users"></span><b>Social</b><small>Friends and requests</small></button>
-            <button class="settings-tile" data-go="system"><span class="ui-icon" data-icon="spark"></span><b>System mode</b><small>Player status and attributes</small></button>
-            <button class="settings-tile" data-go="rpg"><span class="ui-icon" data-icon="gamepad-2"></span><b>RPG Hub</b><small>Skill tree, shop, and inventory</small></button>
+            <button class="settings-tile" data-go="sound"><span class="ui-icon" data-icon="volume-2"></span><b>Sound effects</b><small>Volume and audio controls</small></button>
+            <button class="settings-tile" data-go="profile"><span class="ui-icon" data-icon="user"></span><b>Player profile</b><small>Player name and account controls</small></button>
           </div>
           <section class="settings-account" id="cloudDataSettings">
             <div class="section-title"><h2>Cloud data</h2></div>
@@ -631,33 +627,27 @@ input,select,textarea{background:#0b0c11!important;border-color:#303440!importan
 <div class="system-panel"><h3>◇ DAILY SYSTEM REWARD</h3><p class="muted small">Complete 3 daily missions to unlock a one-time bonus. No streak penalties.</p><div class="bar"><span id="systemBonusBar"></span></div><div class="section-title"><span class="muted small" id="systemBonusStatus">0 / 3 missions complete</span><button id="systemBonusClaim" type="button">CLAIM REWARD</button></div><div class="muted small">Reward: +30 XP · +10 coins</div></div>
 <div class="system-panel"><div class="section-title"><h3 style="margin:0">◇ ACTIVE MISSIONS</h3><button class="secondary" data-go="quests">Mission board</button></div><div id="systemMissions"></div></div>
 <div class="system-panel"><h3>◇ SYSTEM LOG</h3><div id="systemLog"></div></div></section>
+        <section class="view" id="more">
+          <div class="section-title"><h2>More</h2><span class="tag">Your tools</span></div>
+          <div class="settings-hero"><div class="system-kicker">LEVEL UP // PLAYER TOOLS</div><h2>Everything else, in one place.</h2><p class="muted small">Your extra progression tools and features.</p></div>
+          <div class="settings-grid">
+            <button class="settings-tile" data-go="ranks"><span class="ui-icon" data-icon="trophy"></span><b>Rank hall</b><small>Rank progression</small></button>
+            <button class="settings-tile" data-go="achievements"><span class="ui-icon" data-icon="medal"></span><b>Achievements</b><small>Your unlocked milestones</small></button>
+            <button class="settings-tile" data-go="workout"><span class="ui-icon" data-icon="dumbbell"></span><b>Training</b><small>Workout plan and reminders</small></button>
+            <button class="settings-tile" data-go="coach"><span class="ui-icon" data-icon="bot"></span><b>AI Coach</b><small>Planning assistant</small></button>
+            <button class="settings-tile" data-go="friends"><span class="ui-icon" data-icon="users"></span><b>Social</b><small>Friends and requests</small></button>
+            <button class="settings-tile" data-go="system"><span class="ui-icon" data-icon="sparkles"></span><b>System mode</b><small>Player status and attributes</small></button>
+            <button class="settings-tile" data-go="rpg"><span class="ui-icon" data-icon="gamepad-2"></span><b>RPG hub</b><small>Challenges, skills, and rewards</small></button>
+          </div>
+        </section>
         <section class="view active" id="home">
-          <div class="section-title"><h2>Dashboard</h2><span class="tag" id="dateLabel"></span></div>
+          <div class="section-title"><h2>Home</h2><span class="tag" id="dateLabel"></span></div>
           <section class="quest-first-card" aria-label="Today's quests">
             <div class="quest-first-heading"><div><div class="system-kicker">YOUR NEXT ACTION</div><h2>Today's quests</h2><p id="questFirstSummary">Choose a mission and start earning XP.</p></div><div class="quest-first-count" id="questFirstCount">0/0</div></div>
             <div class="quest-first-progress"><span id="questFirstBar"></span></div>
             <div id="questFirstList" class="quest-first-list"></div>
             <div class="quest-first-footer"><span id="questFirstXP">Complete a quest to earn XP.</span><button type="button" class="secondary" data-go="quests">OPEN QUEST BOARD →</button></div>
           </section>
-          <div class="awakening-panel">
-            <div class="awakening-top"><div><div class="system-kicker">LEVEL UP // SYSTEM AWAKENING</div><h2>PLAYER COMMAND CENTER</h2><p id="awakeningGreeting">Your next evolution starts here.</p></div><div class="awakening-orb"><span>✦</span></div></div>
-            <div class="awakening-metrics">
-              <div><small>PLAYER LEVEL</small><b id="awakeningLevel">1</b><span id="awakeningClass">VANGUARD</span></div>
-              <div><small>ACTIVE STREAK</small><b id="awakeningStreak">0</b><span>days</span></div>
-              <div><small>COINS</small><b id="awakeningCoins">0</b><span>available</span></div>
-              <div><small>QUESTS CLEARED</small><b id="awakeningCleared">0</b><span>all time</span></div>
-            </div>
-            <div class="awakening-footer"><span id="awakeningTitle">UNTITLEd PLAYER</span><span id="awakeningSkill">NEXT LEVEL · 100 XP</span></div><div class="week-activity" id="weekActivity" aria-label="Weekly activity"></div>
-          </div>
-          <div class="section-title awakening-section-title"><h2>Daily operations</h2><span class="tag">Bonus objectives</span></div>
-          <div id="dailyChallengeBoard" class="daily-challenge-board"></div>
-          <div class="section-title awakening-section-title"><h2>Attribute development</h2><span class="tag">Lifetime progress</span></div>
-          <div id="categoryProgress" class="category-progress"></div>
-          <div class="roadmap-card card"><div class="section-title"><div><span class="roadmap-kicker">YOUR NEXT EVOLUTION</span><h2 style="margin:3px 0 0">Personal roadmap</h2></div><span class="tag">LIVE PLAN</span></div><div id="personalRoadmap" class="personal-roadmap"></div><button class="secondary roadmap-coach-btn" data-go="coach">Build my next steps with AI Coach</button></div>
-          <div class="card daily-progress-card"><div class="section-title"><b>Daily quest progress</b><span class="tag" id="dailyProgress">0 / 8</span></div><div class="daily-progress-layout"><div class="daily-progress-ring" id="dailyProgressRing"><span id="dailyRingValue">0%</span></div><div class="daily-progress-copy"><h2 id="todayXP">0 XP</h2><p class="muted small">Earn XP by completing today's quests. Lifetime XP is never lost during daily resets.</p></div></div><div class="bar legacy-daily-bar"><span id="dailyBar"></span></div></div>
-          <div class="section-title" style="margin-top:18px"><h2>Quick actions</h2></div>
-          <div class="quick"><button data-go="quests"><span class="ui-icon" data-icon="scroll"></span> Open daily quests</button><button data-go="workout"><span class="ui-icon" data-icon="dumbbell"></span> Training grounds</button><button data-go="coach"><span class="ui-icon" data-icon="bot"></span> Ask AI Coach</button><button data-go="ranks"><span class="ui-icon" data-icon="trophy"></span> View rank hall</button></div>
-          <div class="section-title" style="margin-top:18px"><h2>Recent activity</h2></div><div id="recentActivity" class="panel-note">Complete your first quest to start your activity log.</div>
         </section>
         <section class="view" id="quests">
           <div class="section-title"><h2>Daily Quests</h2><span class="tag" id="questCounter"></span></div>
